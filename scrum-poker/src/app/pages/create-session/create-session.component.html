@@ -1,0 +1,34 @@
+<h2>Create New Session</h2>
+<p>Fill out the form and submit it to create a new Scrum Poker session.</p>
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <label for="userName" class="form-label">Your name: *</label>
+      <input
+        id="userName"
+        type="text"
+        formControlName="userName"
+        placeholder="e.g. Joe"
+        class="form-control"
+        [ngClass]="{ 'is-invalid': formGroup.controls.userName.touched && formGroup.controls.userName.status === 'INVALID' }"
+      />
+      <div *ngIf="formGroup.controls.userName.touched && formGroup.controls.userName.status === 'INVALID'" class="invalid-feedback">
+        Please provide your name.
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <label for="sessionName" class="form-label">Session name:</label>
+      <input id="sessionName" type="text" formControlName="sessionName" placeholder="e.g. Planning of team X" class="form-control" />
+      <div class="form-text">The session name describes the context of the Scrum poker. It will be shown in the heading.</div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col">
+      <button type="submit">Submit</button>
+    </div>
+  </div>
+</form>

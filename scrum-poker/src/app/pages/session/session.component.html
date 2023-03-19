@@ -1,0 +1,51 @@
+<ng-container *ngIf="session?.state; else loadingBlock">
+  <h2>{{ session!.state!.name }}</h2>
+
+  <div *ngIf="settingsService.settings.active === 'created'">
+    <h3>Leader Actions</h3>
+    <button (click)="copyJoinLink()">Copy Join Link</button>
+    <button (click)="session!.reveal()">Reveal Votes</button>
+    <button (click)="session!.reset()">Reset Votes</button>
+  </div>
+
+  <div>
+    <h3>Participants</h3>
+    <p>Leader: {{ playersByRole("leader").length === 0 ? "-" : playersByRole("leader")[0].name }}</p>
+
+    <div *ngIf="playersByRole('guesser').length > 0">
+      <p>Guessers:</p>
+      <ul>
+        <ng-container *ngFor="let player of playersByRole('guesser')">
+          <li>{{ player.name }}: {{ session!.state!.state === "revealed" ? player.guess : player.guess > 0 ? "ready" : "guessing" }}</li>
+        </ng-container>
+      </ul>
+    </div>
+
+    <div *ngIf="playersByRole('observer').length > 0">
+      <p>Observer:</p>
+      <ul>
+        <ng-container *ngFor="let player of playersByRole('observer')">
+          <li>{{ player.name }}</li>
+        </ng-container>
+      </ul>
+    </div>
+  </div>
+
+  <div *ngIf="settingsService.settings.active === 'joined'">
+    <h3>Your Vote</h3>
+    <p>Please choose your guess for the currently discussed story or topic:</p>
+    <form>
+      <div class="form-check" *ngFor="let guess of guessOptions; index as i">
+        <input class="form-check-input" type="radio" [id]="'guessOption' + i" [value]="guess.value" [formControl]="playersGuess" />
+        <label class="form-check-label" [for]="'guessOption' + i">
+          {{ guess.label }}
+        </label>
+      </div>
+    </form>
+  </div>
+
+  <div>
+    <h3>Result</h3>
+  </div>
+</ng-container>
+<ng-template #loadingBlock> Initializing... </ng-template>
