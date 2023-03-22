@@ -1,4 +1,4 @@
-<ng-container *ngIf="session?.state; else loadingBlock">
+<ng-container *ngIf="session?.state; else loadingTemplate">
   <h2>{{ session!.state!.name }}</h2>
 
   <div *ngIf="settingsService.settings.active === 'created'">
@@ -10,13 +10,22 @@
 
   <div>
     <h3>Participants</h3>
-    <p>Leader: {{ playersByRole("leader").length === 0 ? "-" : playersByRole("leader")[0].name }}</p>
+    <p>
+      Leader:
+      <ng-container
+        *ngTemplateOutlet="playerTemplate; context: { player: playersByRole('leader').length === 0 ? { name: '-' } : playersByRole('leader')[0] }"
+      >
+      </ng-container>
+    </p>
 
     <div *ngIf="playersByRole('guesser').length > 0">
       <p>Guessers:</p>
       <ul>
         <ng-container *ngFor="let player of playersByRole('guesser')">
-          <li>{{ player.name }}: {{ session!.state!.state === "revealed" ? player.guess : player.guess > 0 ? "ready" : "guessing" }}</li>
+          <li>
+            <ng-container *ngTemplateOutlet="playerTemplate; context: { player }"></ng-container>:
+            {{ session!.state!.state === "revealed" ? player.guess : player.guess !== null ? "ready" : "guessing" }}
+          </li>
         </ng-container>
       </ul>
     </div>
@@ -25,7 +34,7 @@
       <p>Observer:</p>
       <ul>
         <ng-container *ngFor="let player of playersByRole('observer')">
-          <li>{{ player.name }}</li>
+          <li><ng-container *ngTemplateOutlet="playerTemplate; context: { player }"></ng-container></li>
         </ng-container>
       </ul>
     </div>
@@ -46,6 +55,51 @@
 
   <div>
     <h3>Result</h3>
+
+    <ng-container *ngIf="session!.state!.state === 'revealed'; else notYetRevealedResultTemplate">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Guess</th>
+            <th scope="col">Vote Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of guessCountTable()">
+            <th scope="row">{{ row.guess }}</th>
+            <td>{{ row.count }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="sp-chart-votes-container">
+        <ngx-charts-bar-vertical
+          [results]="chartData"
+          [xAxis]="true"
+          [yAxis]="true"
+          xAxisLabel="Guesses"
+          [showXAxisLabel]="true"
+          yAxisLabel="Vote Counts"
+          [showYAxisLabel]="true"
+          [yAxisTickFormatting]="chartYAxisFormat"
+          [yScaleMax]="playersByRole('guesser').length"
+        >
+          <ng-template #tooltipTemplate let-model="model">
+            {{ formatVoters(model) }}
+          </ng-template>
+        </ngx-charts-bar-vertical>
+      </div>
+    </ng-container>
+    <ng-template #notYetRevealedResultTemplate>
+      <p>
+        The result is not yet revealed. This will be done when all guessers have voted or the leader reveals the result intentionally. Please be
+        patient.
+      </p>
+    </ng-template>
   </div>
 </ng-container>
-<ng-template #loadingBlock> Initializing... </ng-template>
+
+<ng-template #loadingTemplate> Initializing... </ng-template>
+
+<ng-template #playerTemplate let-player="player"
+  ><span [ngClass]="{ 'sp-player-disconnected': player.state === 'disconnected' }">{{ player.name }}</span></ng-template
+>

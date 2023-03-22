@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Subscription } from "rxjs";
-import { io, Socket } from "socket.io-client";
-import { environment } from "src/environment/environment";
-import { ServerToClientEvents, ClientToServerEvents } from "@backend/messages";
-import { Player, PokerSession } from "@backend/session";
-import { SessionSettingsService } from "src/app/services/session-settings.service";
 import { FormControl } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Player } from "@backend/session";
+import { filter, map, Subscription, tap } from "rxjs";
+import { SessionSettingsService } from "src/app/services/session-settings.service";
+import { ServerCommunication } from "./server-communication";
+
+const NAME_COMPARATOR = Intl.Collator().compare;
 
 @Component({
   selector: "app-session",
@@ -38,12 +38,24 @@ export class SessionComponent implements OnInit, OnDestroy {
           this.session.disconnect();
         }
         this.session = new ServerCommunication(id, this.settingsService, this.handleErrorFromServer.bind(this));
+
+        this.subs.add(
+          this.session.state$
+            .pipe(
+              tap((_) => this.calculateChartData()),
+              map((s) => s.players.find((p) => p.name === this.settingsService.settings.userName)),
+              filter((p) => this.playersGuess.value !== null && p?.guess === null)
+            )
+            .subscribe(() => {
+              // resets the vote input when the leader reset all votes
+              this.playersGuess.patchValue(null);
+            })
+        );
       })
     );
 
     this.subs.add(
       this.playersGuess.valueChanges.subscribe((guess) => {
-        console.log("Vote: " + guess);
         if (guess !== null) {
           this.session!.guess(guess);
         }
@@ -64,74 +76,85 @@ export class SessionComponent implements OnInit, OnDestroy {
   }
 
   public playersByRole(role: Player["type"]) {
-    return this.session!.state!.players.filter((p) => p.type === role);
+    return this.session!.state!.players.filter((p) => p.type === role).sort((a, b) => NAME_COMPARATOR(a.name, b.name));
+  }
+
+  public guessCountTable() {
+    const map: { [guess: string]: number } = {};
+    this.session!.state!.players.forEach((p) => {
+      if (p.guess !== null) {
+        map[`${p.guess}`] = (map[`${p.guess}`] ?? 0) + 1;
+      }
+    });
+
+    return Object.keys(map)
+      .sort((a, b) => {
+        if (a === "-1") {
+          return b === "-1" ? 0 : 1;
+        }
+        if (b === "-1") {
+          return -1;
+        }
+        const numA: number = Number(a);
+        const numB: number = Number(b);
+        return numA - numB;
+      })
+      .map((guess) => ({
+        guess: guess === "-1" ? "?" : guess,
+        count: map[guess],
+      }));
+  }
+
+  private calculateChartData() {
+    this.chartData = this.guessCountTable().map((row) => ({
+      name: row.guess,
+      value: row.count,
+      extra: {
+        voters: this.session!.state!.players.filter((p) => `${p.guess}` === row.guess)
+          .map((p) => p.name)
+          .sort(NAME_COMPARATOR),
+      },
+    }));
+  }
+
+  public chartData: { name: string; value: number; extra: { voters: string[] } }[] = [
+    {
+      name: "2",
+      value: 2,
+      extra: {
+        voters: ["Me1", "Him", "Her"],
+      },
+    },
+    {
+      name: "3",
+      value: 1,
+      extra: {
+        voters: ["One"],
+      },
+    },
+    {
+      name: "8",
+      value: 3,
+      extra: {
+        voters: ["Two"],
+      },
+    },
+  ];
+
+  public chartYAxisFormat(val: number) {
+    if (val % 1 === 0) {
+      return val.toLocaleString();
+    } else {
+      return "";
+    }
+  }
+
+  public formatVoters(model: { extra: { voters: string[] } }) {
+    return model.extra.voters.join(", ");
   }
 
   private handleErrorFromServer(err: string) {
     console.error("Server responded with an error:", err);
     this.router.navigate(["/error"], { skipLocationChange: true });
-  }
-}
-
-class ServerCommunication {
-  private socket: Socket<ServerToClientEvents, ClientToServerEvents>;
-  public state?: PokerSession;
-
-  constructor(
-    private readonly id: string,
-    private readonly settingsService: SessionSettingsService,
-    private readonly errorHandler: (err: string) => void
-  ) {
-    this.socket = io(environment.backend.socket);
-
-    this.socket.on("connect", this.onConnect.bind(this));
-    this.socket.on("sessionUpdate", this.onSessionUpdate.bind(this));
-  }
-
-  private onConnect() {
-    if (this.settingsService.settings.active === "created") {
-      console.log("connect: sending leaderInit");
-      this.socket.emit(
-        "leaderInit",
-        {
-          config: { id: this.id, name: this.settingsService.settings.create!.sessionName ?? "A Poker Session" },
-          player: { name: this.settingsService.settings.userName!, type: "leader" },
-        },
-        this.errorHandler
-      );
-    } else if (this.settingsService.settings.active === "joined") {
-      console.log("connect: sending playerInit");
-      this.socket.emit(
-        "playerInit",
-        {
-          sessionId: this.id,
-          player: { name: this.settingsService.settings.userName!, type: this.settingsService.settings.join!.role! },
-        },
-        this.errorHandler
-      );
-    }
-  }
-
-  private onSessionUpdate(newState: PokerSession) {
-    console.log("session-update: ", newState);
-    this.state = newState;
-  }
-
-  public reveal() {
-    this.socket.emit("leaderReveal", this.errorHandler);
-  }
-
-  public reset() {
-    this.socket.emit("leaderReset", this.errorHandler);
-  }
-
-  public guess(value: number) {
-    this.socket.emit("playerUpdate", { guess: value }, this.errorHandler);
-  }
-
-  public disconnect() {
-    if (this.socket) {
-      this.socket.disconnect();
-    }
   }
 }

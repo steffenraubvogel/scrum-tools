@@ -1,22 +1,24 @@
+import { Socket } from "socket.io";
 import { ConnectionState, ServerState } from "../session";
+import { disconnectWithError } from "./common";
 
-export function handleLeaderReveal(ack: (err: string) => void, serverState: ServerState, connectionState: ConnectionState) {
+export function handleLeaderReveal(ack: (err: string) => void, serverState: ServerState, connectionState: ConnectionState, socket: Socket) {
   const validationError = validateOperation(serverState, connectionState);
   if (validationError) {
-    return ack(validationError);
+    return disconnectWithError(validationError, ack, socket);
   }
 
   serverState[connectionState.pokerSessionId!].state = "revealed";
 }
 
-export function handleLeaderReset(ack: (err: string) => void, serverState: ServerState, connectionState: ConnectionState) {
+export function handleLeaderReset(ack: (err: string) => void, serverState: ServerState, connectionState: ConnectionState, socket: Socket) {
   const validationError = validateOperation(serverState, connectionState);
   if (validationError) {
-    return ack(validationError);
+    return disconnectWithError(validationError, ack, socket);
   }
 
   serverState[connectionState.pokerSessionId!].state = "guessing";
-  serverState[connectionState.pokerSessionId!].players.forEach((p) => (p.guess = NaN));
+  serverState[connectionState.pokerSessionId!].players.forEach((p) => (p.guess = null));
 }
 
 function validateOperation(serverState: ServerState, connectionState: ConnectionState): string | null {

@@ -7,7 +7,7 @@ import { handlePlayerUpdate } from "./event-handlers/player";
 import { ClientToServerEvents, ServerToClientEvents } from "./messages";
 import { ConnectionState, ServerState } from "./session";
 import { isEqual } from "lodash";
-import { Logger } from "tslog";
+import { createLogger } from "./logging";
 
 const application = express();
 const httpServer = http.createServer(application);
@@ -17,7 +17,7 @@ const socketio = new Server<ClientToServerEvents, ServerToClientEvents>(httpServ
   },
 });
 
-const logger = new Logger({ name: "main", hideLogPositionForProduction: true });
+const logger = createLogger("main");
 const serverState: ServerState = {};
 
 socketio.on("connection", (socket) => {
@@ -63,17 +63,17 @@ socketio.on("connection", (socket) => {
 
   socket.on("playerUpdate", (msg, ack) => {
     logger.info("player-update: ", msg);
-    decorateEventHandling(() => handlePlayerUpdate(msg, ack, serverState, connectionState));
+    decorateEventHandling(() => handlePlayerUpdate(msg, ack, serverState, connectionState, socket));
   });
 
   socket.on("leaderReveal", (ack) => {
     logger.info("leader-reveal");
-    decorateEventHandling(() => handleLeaderReveal(ack, serverState, connectionState));
+    decorateEventHandling(() => handleLeaderReveal(ack, serverState, connectionState, socket));
   });
 
   socket.on("leaderReset", (ack) => {
     logger.info("leader-reset");
-    decorateEventHandling(() => handleLeaderReset(ack, serverState, connectionState));
+    decorateEventHandling(() => handleLeaderReset(ack, serverState, connectionState, socket));
   });
 
   function decorateEventHandling(action: () => void) {

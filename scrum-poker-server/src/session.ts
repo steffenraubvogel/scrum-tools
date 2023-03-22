@@ -10,7 +10,7 @@ export type ConnectionState = {
 export type Player = {
   type: "leader" | "observer" | "guesser";
   name: string;
-  guess: number;
+  guess: number | null;
   status: "disconnected" | "connected";
 };
 
