@@ -79,6 +79,10 @@ export class SessionComponent implements OnInit, OnDestroy {
     return this.session!.state!.players.filter((p) => p.type === role).sort((a, b) => NAME_COMPARATOR(a.name, b.name));
   }
 
+  public isOwnPlayer(p: Player) {
+    return p.name === this.settingsService.settings.userName;
+  }
+
   public guessCountTable() {
     const map: { [guess: string]: number } = {};
     this.session!.state!.players.forEach((p) => {

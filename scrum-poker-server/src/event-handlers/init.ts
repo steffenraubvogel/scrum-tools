@@ -75,6 +75,8 @@ export function handlePlayerInit(
     players.push({ ...msg.player, status: "connected", guess: null });
   }
 
+  // TODO: if player has not vote yet and the result was revealed already, hide again?
+
   socket.join(msg.sessionId);
 
   connectionState.pokerSessionId = msg.sessionId;
