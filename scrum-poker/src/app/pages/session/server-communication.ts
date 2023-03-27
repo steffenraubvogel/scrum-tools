@@ -37,10 +37,7 @@ export class ServerCommunication {
       this.connection$.next({ connected: false, state: "failed" });
     });
 
-    this.socket.io.on("reconnect", (attempt) => {
-      console.log("reconnect on attempt " + attempt);
-    });
-
+    // handle events
     this.socket.on("connect", this.onConnect.bind(this));
     this.socket.on("sessionUpdate", this.onSessionUpdate.bind(this));
     this.socket.on("disconnect", () => {

@@ -11,9 +11,19 @@ import { ErrorComponent } from "./pages/error/error.component";
 import { JoinSessionComponent } from "./pages/join-session/join-session.component";
 import { SessionComponent } from "./pages/session/session.component";
 import { SessionSettingsService } from "./services/session-settings.service";
+import { LoadingComponent } from "./components/loading/loading.component";
+import { ConnectionErrorComponent } from "./pages/connection-error/connection-error.component";
 
 @NgModule({
-  declarations: [AppComponent, CreateSessionComponent, SessionComponent, JoinSessionComponent, ErrorComponent],
+  declarations: [
+    AppComponent,
+    CreateSessionComponent,
+    SessionComponent,
+    JoinSessionComponent,
+    ErrorComponent,
+    LoadingComponent,
+    ConnectionErrorComponent,
+  ],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, ReactiveFormsModule, NgxChartsModule],
   providers: [SessionSettingsService, SessionGuard],
   bootstrap: [AppComponent],

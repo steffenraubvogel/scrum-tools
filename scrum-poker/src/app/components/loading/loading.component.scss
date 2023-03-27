@@ -1,0 +1,61 @@
+$fade-in-delay: 0.3s;
+$fade-duration: 0.3s;
+
+.sp-loading-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(var(--bs-body-bg-rgb), 0.75);
+  transition: opacity $fade-duration ease $fade-in-delay;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sp-loading-show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.sp-loading {
+  position: sticky;
+  top: 2em;
+  bottom: 2em;
+  transform: translateY(-50%);
+}
+
+.sp-loading-dot {
+  --animation-speed: 0.75s;
+  background-color: currentcolor;
+  width: 0.6rem;
+  height: 0.6rem;
+  margin: 0.5em;
+  border-radius: 50%;
+  animation: calc(2 * var(--animation-speed)) linear $fade-in-delay infinite sp-loading-dot both;
+
+  &:nth-child(2) {
+    animation-delay: calc(var(--animation-speed) / 4 + $fade-in-delay);
+  }
+  &:nth-child(3) {
+    animation-delay: calc(var(--animation-speed) / 4 * 2 + $fade-in-delay);
+  }
+  &:nth-child(4) {
+    animation-delay: calc(var(--animation-speed) / 4 * 3 + $fade-in-delay);
+  }
+}
+
+@keyframes sp-loading-dot {
+  0% {
+    transform: translateY(0);
+  }
+  13% {
+    transform: translateY(-1rem);
+  }
+  25% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,14 @@
+<div class="sp-error-page">
+  <h1 class="display-1 mt-5">Connection lost <i class="bi bi-emoji-frown text-warning-emphasis sp-emoji"></i></h1>
+  <div class="row justify-content-center">
+    <div class="col-auto">
+      <p>The connection to your session was lost. Possible reasons:</p>
+      <ul>
+        <li>Disconnect from the internet.</li>
+        <li>The server stopped working.</li>
+      </ul>
+
+      <a [routerLink]="getRetryRoute()" href="/" class="btn btn-primary">Retry</a>
+    </div>
+  </div>
+</div>

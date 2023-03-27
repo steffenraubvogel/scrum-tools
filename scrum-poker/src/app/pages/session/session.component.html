@@ -1,4 +1,4 @@
-<ng-container *ngIf="session?.state; else loadingTemplate">
+<ng-container *ngIf="session?.state">
   <h1>{{ session!.state!.name }}</h1>
 
   <div class="row g-3">
@@ -123,14 +123,9 @@
   </div>
 </ng-container>
 
-<ng-template #loadingTemplate>
-  <div class="d-flex justify-content-center sp-loading">
-    <div class="sp-loading-dot"></div>
-    <div class="sp-loading-dot"></div>
-    <div class="sp-loading-dot"></div>
-    <div class="sp-loading-dot"></div>
-  </div>
-</ng-template>
+<ng-container *ngIf="session?.connection$ | async as connection">
+  <app-loading [show]="connection.state === 'connecting'"> </app-loading>
+</ng-container>
 
 <ng-template #playerTemplate let-player="player">
   <span [ngClass]="{ 'sp-player-disconnected': player.status === 'disconnected', 'sp-player-own': isOwnPlayer(player) }">{{ player.name }}</span>

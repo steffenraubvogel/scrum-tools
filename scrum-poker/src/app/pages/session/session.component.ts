@@ -47,9 +47,16 @@ export class SessionComponent implements OnInit, OnDestroy {
               filter((p) => this.playersGuess.value !== null && p?.guess === null)
             )
             .subscribe(() => {
-              // resets the vote input when the leader reset all votes
+              // resets the vote input when the leader resets all votes
               this.playersGuess.patchValue(null);
             })
+        );
+
+        this.subs.add(
+          this.session.connection$.pipe(filter((con) => con.state === "failed")).subscribe(() => {
+            // redirect to connection error page
+            this.router.navigate(["connection-error"], { skipLocationChange: true });
+          })
         );
       })
     );

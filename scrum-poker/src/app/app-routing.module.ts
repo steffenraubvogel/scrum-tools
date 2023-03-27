@@ -1,6 +1,7 @@
 import { inject, NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { SessionGuard } from "./guards/session.guard";
+import { ConnectionErrorComponent } from "./pages/connection-error/connection-error.component";
 import { CreateSessionComponent } from "./pages/create-session/create-session.component";
 import { ErrorComponent } from "./pages/error/error.component";
 import { JoinSessionComponent } from "./pages/join-session/join-session.component";
@@ -15,6 +16,7 @@ const routes: Routes = [
   },
   { path: "join/:id", component: JoinSessionComponent },
   { path: "error", component: ErrorComponent },
+  { path: "connection-error", component: ConnectionErrorComponent },
   { path: "**", redirectTo: "/" },
 ];
 
