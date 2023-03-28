@@ -13,6 +13,8 @@ import { SessionComponent } from "./pages/session/session.component";
 import { SessionSettingsService } from "./services/session-settings.service";
 import { LoadingComponent } from "./components/loading/loading.component";
 import { ConnectionErrorComponent } from "./pages/connection-error/connection-error.component";
+import { FooterComponent } from './components/footer/footer.component';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { ConnectionErrorComponent } from "./pages/connection-error/connection-er
     ErrorComponent,
     LoadingComponent,
     ConnectionErrorComponent,
+    FooterComponent,
+    HeaderComponent,
   ],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, ReactiveFormsModule, NgxChartsModule],
   providers: [SessionSettingsService, SessionGuard],
