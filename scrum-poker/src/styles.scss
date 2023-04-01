@@ -1,6 +1,7 @@
 @use "sass:map";
 @import "../node_modules/bootstrap/scss/bootstrap";
 @import "../node_modules/bootstrap-icons/font/bootstrap-icons.scss";
+@import "themes.scss";
 
 .container {
   /* do not display wider than lg breakpoint */
@@ -19,11 +20,18 @@ h2 {
 }
 
 .sp-card {
-  border: $card-border-width solid rgba($black, 0.1);
+  --sp-card-border-color: rgba(0, 0, 0, 0.1);
+  --sp-card-box-shadow-color: rgba(0, 0, 0, 0.05);
+
+  border: $card-border-width solid var(--sp-card-border-color);
   border-radius: $card-border-radius;
   padding: $card-spacer-y $card-spacer-x;
-  box-shadow: rgba($black, 0.05) 0px 1px 2px;
+  box-shadow: var(--sp-card-box-shadow-color) 0px 1px 2px;
   height: 100%;
+
+  > h2 {
+    margin-top: 0;
+  }
 }
 
 .sp-error-page h1 {
@@ -34,4 +42,17 @@ h2 {
   font-size: 200%;
   vertical-align: middle;
   margin-left: 2rem;
+}
+
+.sp-chart-votes-container {
+  --sp-chart-color-sat: 60%;
+  --sp-chart-color-li: 50%;
+  --sp-chart-color-1: hsl(90, var(--sp-chart-color-sat), var(--sp-chart-color-li));
+  --sp-chart-color-2: hsl(75, var(--sp-chart-color-sat), var(--sp-chart-color-li));
+  --sp-chart-color-3: hsl(60, var(--sp-chart-color-sat), var(--sp-chart-color-li));
+  --sp-chart-color-5: hsl(45, var(--sp-chart-color-sat), var(--sp-chart-color-li));
+  --sp-chart-color-8: hsl(30, var(--sp-chart-color-sat), var(--sp-chart-color-li));
+  --sp-chart-color-13: hsl(15, var(--sp-chart-color-sat), var(--sp-chart-color-li));
+  --sp-chart-color-21: hsl(0, var(--sp-chart-color-sat), var(--sp-chart-color-li));
+  --sp-chart-color-abstained: #{$gray-500};
 }

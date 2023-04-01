@@ -1,0 +1,14 @@
+@include color-mode(neon) {
+  --bs-body-color: var(--bs-white);
+  --bs-body-color-rgb: #{to-rgb($white)};
+  --bs-body-bg: var(--bs-blue);
+  --bs-body-bg-rgb: #{to-rgb($blue)};
+  --bs-tertiary-bg: #{$blue-600};
+}
+
+@include color-mode(dark) {
+  .sp-card {
+    --sp-card-border-color: rgba(255, 255, 255, 0.1);
+    --sp-card-box-shadow-color: rgba(255, 255, 255, 0.05);
+  }
+}

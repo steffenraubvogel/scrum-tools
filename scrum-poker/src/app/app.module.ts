@@ -2,7 +2,6 @@ import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { SessionGuard } from "./guards/session.guard";
@@ -13,8 +12,10 @@ import { SessionComponent } from "./pages/session/session.component";
 import { SessionSettingsService } from "./services/session-settings.service";
 import { LoadingComponent } from "./components/loading/loading.component";
 import { ConnectionErrorComponent } from "./pages/connection-error/connection-error.component";
-import { FooterComponent } from './components/footer/footer.component';
-import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from "./components/footer/footer.component";
+import { HeaderComponent } from "./components/header/header.component";
+import { BarChartComponent } from "./components/bar-chart/bar-chart.component";
+import { QuickTestComponent } from './pages/dev/quick-test/quick-test.component';
 
 @NgModule({
   declarations: [
@@ -27,8 +28,10 @@ import { HeaderComponent } from './components/header/header.component';
     ConnectionErrorComponent,
     FooterComponent,
     HeaderComponent,
+    BarChartComponent,
+    QuickTestComponent,
   ],
-  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, ReactiveFormsModule, NgxChartsModule],
+  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, ReactiveFormsModule],
   providers: [SessionSettingsService, SessionGuard],
   bootstrap: [AppComponent],
 })

@@ -8,6 +8,7 @@ import { ClientToServerEvents, ServerToClientEvents } from "./messages";
 import { ConnectionState, ServerState } from "./session";
 import { isEqual } from "lodash";
 import { createLogger } from "./logging";
+import { handleParticipantLeave } from "./event-handlers/participant";
 
 const application = express();
 const httpServer = http.createServer(application);
@@ -35,7 +36,7 @@ socketio.on("connection", (socket) => {
       // mark player as disconnected
       if (connectionState.pokerSessionId && connectionState.playerName && serverState[connectionState.pokerSessionId]) {
         const player = serverState[connectionState.pokerSessionId].players.find((p) => p.name === connectionState.playerName);
-        if (player) {
+        if (player && player.status === "connected") {
           logger.info("marking player as disconnected");
           player.status = "disconnected";
         }
@@ -43,11 +44,13 @@ socketio.on("connection", (socket) => {
 
       // remove poker session if all players left
       if (connectionState.pokerSessionId && serverState[connectionState.pokerSessionId]) {
-        if (serverState[connectionState.pokerSessionId].players.every((p) => p.status === "disconnected")) {
+        if (serverState[connectionState.pokerSessionId].players.every((p) => p.status !== "connected")) {
           delete serverState[connectionState.pokerSessionId];
           logger.info("deleted session with id=" + connectionState.pokerSessionId + " because all participants left");
         }
       }
+
+      // TODO: if was missing only the guess of this now disconnected participant then reveal result
     });
   });
 
@@ -74,6 +77,11 @@ socketio.on("connection", (socket) => {
   socket.on("leaderReset", (ack) => {
     logger.info("leader-reset");
     decorateEventHandling(() => handleLeaderReset(ack, serverState, connectionState, socket));
+  });
+
+  socket.on("participantLeave", (ack) => {
+    logger.info("participant-leave");
+    decorateEventHandling(() => handleParticipantLeave(ack, serverState, connectionState, socket));
   });
 
   function decorateEventHandling(action: () => void) {

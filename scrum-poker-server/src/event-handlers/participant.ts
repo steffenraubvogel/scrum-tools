@@ -1,15 +1,8 @@
 import { Socket } from "socket.io";
-import { PlayerUpdateMessage } from "../messages";
 import { ConnectionState, ServerState } from "../session";
 import { disconnectWithError } from "./common";
 
-export function handlePlayerUpdate(
-  msg: PlayerUpdateMessage,
-  ack: (err: string) => void,
-  serverState: ServerState,
-  connectionState: ConnectionState,
-  socket: Socket
-) {
+export function handleParticipantLeave(ack: (err: string) => void, serverState: ServerState, connectionState: ConnectionState, socket: Socket) {
   if (connectionState.pokerSessionId === undefined || !serverState[connectionState.pokerSessionId]) {
     return disconnectWithError("Session not/no longer known", ack, socket);
   }
@@ -20,14 +13,6 @@ export function handlePlayerUpdate(
     return disconnectWithError("Player not/no longer known", ack, socket);
   }
 
-  if (existingPlayer.type !== "guesser") {
-    return disconnectWithError("Only guessers can vote", ack, socket);
-  }
-
-  existingPlayer.guess = msg.guess;
-
-  // if all relevant players voted, reveal the result
-  if (session.players.every((p) => p.status !== "connected" || p.type !== "guesser" || p.guess !== null)) {
-    session.state = "revealed";
-  }
+  existingPlayer.status = "left";
+  ack("goodbye");
 }

@@ -11,7 +11,7 @@ export type Player = {
   type: "leader" | "observer" | "guesser";
   name: string;
   guess: number | null;
-  status: "disconnected" | "connected";
+  status: "disconnected" | "left" | "connected";
 };
 
 export type PokerSessionConfig = {

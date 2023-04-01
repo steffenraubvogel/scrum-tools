@@ -24,4 +24,5 @@ export interface ClientToServerEvents {
   playerUpdate: (msg: PlayerUpdateMessage, ack: (err: string) => void) => void;
   leaderReveal: (ack: (err: string) => void) => void;
   leaderReset: (ack: (err: string) => void) => void;
+  participantLeave: (ack: (err: string) => void) => void;
 }

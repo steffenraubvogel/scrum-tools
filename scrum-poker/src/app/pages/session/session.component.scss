@@ -1,11 +1,12 @@
 .sp-chart-votes-container {
-  max-height: 50em;
+  height: 13em;
 }
 
 .sp-player-own {
   font-weight: bolder;
 }
 
-.sp-player-disconnected {
+.sp-player-disconnected,
+.sp-player-left {
   text-decoration: line-through;
 }

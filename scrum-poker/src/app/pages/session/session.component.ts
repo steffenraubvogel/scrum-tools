@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, HostListener, OnDestroy, OnInit } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Player } from "@backend/session";
 import { filter, map, Subscription, tap } from "rxjs";
 import { SessionSettingsService } from "src/app/services/session-settings.service";
 import { ServerCommunication } from "./server-communication";
+import { ChartDataPoint } from "src/app/components/bar-chart/bar-chart.component";
 
 const NAME_COMPARATOR = Intl.Collator().compare;
 
@@ -27,6 +28,7 @@ export class SessionComponent implements OnInit, OnDestroy {
     { value: 21, label: "21" },
   ];
   public playersGuess = new FormControl<number | null>(null);
+  public chartData: ChartDataPoint[] = [];
 
   constructor(private readonly route: ActivatedRoute, private readonly router: Router, public readonly settingsService: SessionSettingsService) {}
 
@@ -77,6 +79,15 @@ export class SessionComponent implements OnInit, OnDestroy {
     }
   }
 
+  @HostListener("window:beforeunload", ["$event"])
+  beforeUnloadHandler(_: Event) {
+    // this allows a graceful disconnect with "I am leaving" message to server when the browser or tab
+    // is closed gracefully or the page is navigating to another site
+    if (this.session) {
+      this.session.disconnect();
+    }
+  }
+
   public copyJoinLink() {
     const joinUrl = window.location.protocol + "//" + window.location.host + "/join/" + this.session!.state!.id;
     navigator.clipboard.writeText(joinUrl);
@@ -118,50 +129,14 @@ export class SessionComponent implements OnInit, OnDestroy {
 
   private calculateChartData() {
     this.chartData = this.guessCountTable().map((row) => ({
-      name: row.guess,
-      value: row.count,
-      extra: {
-        voters: this.session!.state!.players.filter((p) => `${p.guess}` === row.guess)
-          .map((p) => p.name)
-          .sort(NAME_COMPARATOR),
-      },
+      x: row.guess,
+      y: row.count,
+      tooltip: this.session!.state!.players.filter((p) => `${p.guess}` === row.guess)
+        .map((p) => p.name)
+        .sort(NAME_COMPARATOR)
+        .join(", "),
+      color: row.guess === "?" ? "var(--sp-chart-color-abstained)" : `var(--sp-chart-color-${row.guess})`,
     }));
-  }
-
-  public chartData: { name: string; value: number; extra: { voters: string[] } }[] = [
-    {
-      name: "2",
-      value: 2,
-      extra: {
-        voters: ["Me1", "Him", "Her"],
-      },
-    },
-    {
-      name: "3",
-      value: 1,
-      extra: {
-        voters: ["One"],
-      },
-    },
-    {
-      name: "8",
-      value: 3,
-      extra: {
-        voters: ["Two"],
-      },
-    },
-  ];
-
-  public chartYAxisFormat(val: number) {
-    if (val % 1 === 0) {
-      return val.toLocaleString();
-    } else {
-      return "";
-    }
-  }
-
-  public formatVoters(model: { extra: { voters: string[] } }) {
-    return model.extra.voters.join(", ");
   }
 
   private handleErrorFromServer(err: string) {

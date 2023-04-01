@@ -90,6 +90,15 @@ export class ServerCommunication {
   }
 
   public disconnect() {
-    this.socket.disconnect();
+    this.socket
+      .timeout(2000)
+      .emitWithAck("participantLeave")
+      .catch((err) => {
+        console.warn("Announcing leave was acknowledged with error from server: ", err);
+      })
+      .finally(() => {
+        console.log("Disconnecting socket.");
+        this.socket.disconnect();
+      });
   }
 }
