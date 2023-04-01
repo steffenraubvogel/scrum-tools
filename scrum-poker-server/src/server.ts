@@ -3,7 +3,7 @@ import http from "http";
 import { Server } from "socket.io";
 import { handleLeaderInit, handlePlayerInit } from "./event-handlers/init";
 import { handleLeaderReset, handleLeaderReveal } from "./event-handlers/leader";
-import { handlePlayerUpdate } from "./event-handlers/player";
+import { handlePlayerUpdate, revealIfAllGuessersVoted } from "./event-handlers/player";
 import { ClientToServerEvents, ServerToClientEvents } from "./messages";
 import { ConnectionState, ServerState } from "./session";
 import { isEqual } from "lodash";
@@ -33,24 +33,28 @@ socketio.on("connection", (socket) => {
     logger.info("Disconnect: pokerSessionId=" + connectionState.pokerSessionId + "; playerName=" + connectionState.playerName);
 
     decorateEventHandling(() => {
+      if (!connectionState.pokerSessionId || !serverState[connectionState.pokerSessionId]) {
+        return;
+      }
+
+      const session = serverState[connectionState.pokerSessionId];
+
       // mark player as disconnected
-      if (connectionState.pokerSessionId && connectionState.playerName && serverState[connectionState.pokerSessionId]) {
-        const player = serverState[connectionState.pokerSessionId].players.find((p) => p.name === connectionState.playerName);
+      if (connectionState.playerName) {
+        const player = session.players.find((p) => p.name === connectionState.playerName);
         if (player && player.status === "connected") {
           logger.info("marking player as disconnected");
           player.status = "disconnected";
         }
+
+        revealIfAllGuessersVoted(session);
       }
 
       // remove poker session if all players left
-      if (connectionState.pokerSessionId && serverState[connectionState.pokerSessionId]) {
-        if (serverState[connectionState.pokerSessionId].players.every((p) => p.status !== "connected")) {
-          delete serverState[connectionState.pokerSessionId];
-          logger.info("deleted session with id=" + connectionState.pokerSessionId + " because all participants left");
-        }
+      if (session.players.every((p) => p.status !== "connected")) {
+        delete serverState[connectionState.pokerSessionId];
+        logger.info("deleted session with id=" + connectionState.pokerSessionId + " because all participants left");
       }
-
-      // TODO: if was missing only the guess of this now disconnected participant then reveal result
     });
   });
 

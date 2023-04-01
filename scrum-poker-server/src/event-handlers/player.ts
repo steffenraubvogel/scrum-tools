@@ -1,6 +1,6 @@
 import { Socket } from "socket.io";
 import { PlayerUpdateMessage } from "../messages";
-import { ConnectionState, ServerState } from "../session";
+import { ConnectionState, PokerSession, ServerState } from "../session";
 import { disconnectWithError } from "./common";
 
 export function handlePlayerUpdate(
@@ -25,9 +25,15 @@ export function handlePlayerUpdate(
   }
 
   existingPlayer.guess = msg.guess;
+  revealIfAllGuessersVoted(session);
+}
 
+export function revealIfAllGuessersVoted(session: PokerSession) {
   // if all relevant players voted, reveal the result
-  if (session.players.every((p) => p.status !== "connected" || p.type !== "guesser" || p.guess !== null)) {
+  const everyoneVoted = session.players.every((p) => p.status !== "connected" || p.type !== "guesser" || p.guess !== null);
+  const atLeastOneWhoShouldVote = session.players.some((p) => p.status === "connected" && p.type === "guesser");
+
+  if (everyoneVoted && atLeastOneWhoShouldVote) {
     session.state = "revealed";
   }
 }
