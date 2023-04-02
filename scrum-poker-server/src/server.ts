@@ -46,6 +46,11 @@ application.get("/get-session-id", (req, res) => {
   res.json(sessionId);
 });
 
+application.get("/health", (req, res) => {
+  // when deployed, verfies the application is alive
+  res.send("ok");
+});
+
 application.all("/*", function (req, res, next) {
   // required for angular routing
   res.sendFile("index.html", { root: "public" });
@@ -57,10 +62,10 @@ socketio.on("connection", (socket) => {
     playerName: undefined,
   };
 
-  logger.info("Client connection established");
+  logEvent("connection established", undefined, "?");
 
   socket.on("disconnect", () => {
-    logger.info("Disconnect: pokerSessionId=" + connectionState.pokerSessionId + "; playerName=" + connectionState.playerName);
+    logEvent("disconnect");
 
     decorateEventHandling(() => {
       if (!connectionState.pokerSessionId || !serverState[connectionState.pokerSessionId]) {
@@ -73,7 +78,7 @@ socketio.on("connection", (socket) => {
       if (connectionState.playerName) {
         const player = session.players.find((p) => p.name === connectionState.playerName);
         if (player && player.status === "connected") {
-          logger.info("marking player as disconnected");
+          logEvent("marking player as disconnected");
           player.status = "disconnected";
         }
 
@@ -83,40 +88,47 @@ socketio.on("connection", (socket) => {
       // remove poker session if all players left
       if (session.players.every((p) => p.status !== "connected")) {
         delete serverState[connectionState.pokerSessionId];
-        logger.info("deleted session with id=" + connectionState.pokerSessionId + " because all participants left");
+        logEvent("deleted session because all participants left");
       }
     });
   });
 
   socket.on("leaderInit", (msg, ack) => {
-    logger.info("leader-init: ", msg);
+    logEvent("leader-init", msg, msg.config.id);
     decorateEventHandling(() => handleLeaderInit(msg, ack, serverState, connectionState, socket));
   });
 
   socket.on("playerInit", (msg, ack) => {
-    logger.info("player-init: ", msg);
+    logEvent("player-init", msg, msg.sessionId);
     decorateEventHandling(() => handlePlayerInit(msg, ack, serverState, connectionState, socket));
   });
 
   socket.on("playerUpdate", (msg, ack) => {
-    logger.info("player-update: ", msg);
+    logEvent("player-update", msg);
     decorateEventHandling(() => handlePlayerUpdate(msg, ack, serverState, connectionState, socket));
   });
 
   socket.on("leaderReveal", (ack) => {
-    logger.info("leader-reveal");
+    logEvent("leader-reveal");
     decorateEventHandling(() => handleLeaderReveal(ack, serverState, connectionState, socket));
   });
 
   socket.on("leaderReset", (ack) => {
-    logger.info("leader-reset");
+    logEvent("leader-reset");
     decorateEventHandling(() => handleLeaderReset(ack, serverState, connectionState, socket));
   });
 
   socket.on("participantLeave", (ack) => {
-    logger.info("participant-leave");
+    logEvent("participant-leave");
     decorateEventHandling(() => handleParticipantLeave(ack, serverState, connectionState, socket));
   });
+
+  function logEvent(event: string, params?: any, sessionIdOverride?: string) {
+    logger.info("[" + (connectionState.pokerSessionId ?? sessionIdOverride) + "][" + socket.id + "] " + event);
+    if (params) {
+      logger.trace("Message:", params);
+    }
+  }
 
   function decorateEventHandling(action: () => void) {
     try {
@@ -127,7 +139,7 @@ socketio.on("connection", (socket) => {
       const newSessionState = connectionState.pokerSessionId ? serverState[connectionState.pokerSessionId] : undefined;
 
       if (newSessionState && !isEqual(prevSessionState, newSessionState)) {
-        logger.info("session-update: id=" + connectionState.pokerSessionId + "; ", serverState[connectionState.pokerSessionId!]);
+        logEvent("session-update", serverState[connectionState.pokerSessionId!]);
         socketio.to(connectionState.pokerSessionId!).emit("sessionUpdate", serverState[connectionState.pokerSessionId!]);
       }
     } catch (err) {
