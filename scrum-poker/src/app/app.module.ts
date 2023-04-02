@@ -15,7 +15,8 @@ import { ConnectionErrorComponent } from "./pages/connection-error/connection-er
 import { FooterComponent } from "./components/footer/footer.component";
 import { HeaderComponent } from "./components/header/header.component";
 import { BarChartComponent } from "./components/bar-chart/bar-chart.component";
-import { QuickTestComponent } from './pages/dev/quick-test/quick-test.component';
+import { QuickTestComponent } from "./pages/dev/quick-test/quick-test.component";
+import { HttpClientModule } from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { QuickTestComponent } from './pages/dev/quick-test/quick-test.component'
     BarChartComponent,
     QuickTestComponent,
   ],
-  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, ReactiveFormsModule],
+  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, ReactiveFormsModule, HttpClientModule],
   providers: [SessionSettingsService, SessionGuard],
   bootstrap: [AppComponent],
 })

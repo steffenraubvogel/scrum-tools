@@ -1,5 +1,7 @@
 import express from "express";
 import http from "http";
+import crypto from "crypto";
+import cors from "cors";
 import { Server } from "socket.io";
 import { handleLeaderInit, handlePlayerInit } from "./event-handlers/init";
 import { handleLeaderReset, handleLeaderReveal } from "./event-handlers/leader";
@@ -20,6 +22,22 @@ const socketio = new Server<ClientToServerEvents, ServerToClientEvents>(httpServ
 
 const logger = createLogger("main");
 const serverState: ServerState = {};
+
+application.use(
+  cors({
+    origin: "http://localhost:4200",
+  })
+);
+
+application.get("/get-session-id", (req, res) => {
+  let sessionId: string;
+  do {
+    const sessionNumber = crypto.randomInt(Math.pow(2, 16));
+    sessionId = sessionNumber.toString(16);
+  } while (serverState[sessionId]);
+
+  res.json(sessionId);
+});
 
 socketio.on("connection", (socket) => {
   const connectionState: ConnectionState = {
@@ -107,4 +125,4 @@ socketio.on("connection", (socket) => {
 });
 
 const port = process.env.PORT || 4201;
-httpServer.listen(port, () => logger.info(`Server is running on port ${port}`));
+httpServer.listen(+port, () => logger.info(`Server is running on port ${port}`));

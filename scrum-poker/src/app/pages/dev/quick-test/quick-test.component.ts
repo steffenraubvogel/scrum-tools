@@ -9,7 +9,7 @@ import { SessionSettings, SessionSettingsService } from "src/app/services/sessio
 export class QuickTestComponent implements OnInit {
   constructor(private readonly route: ActivatedRoute, private readonly router: Router, public readonly settingsService: SessionSettingsService) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     const sessionId = this.route.snapshot.queryParams["sessionId"];
     const settings = JSON.parse(this.route.snapshot.queryParams["settings"]) as SessionSettings;
 

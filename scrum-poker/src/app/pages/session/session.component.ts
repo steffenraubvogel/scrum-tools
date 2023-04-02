@@ -32,7 +32,7 @@ export class SessionComponent implements OnInit, OnDestroy {
 
   constructor(private readonly route: ActivatedRoute, private readonly router: Router, public readonly settingsService: SessionSettingsService) {}
 
-  ngOnInit() {
+  public ngOnInit() {
     this.subs.add(
       this.route.params.subscribe((params) => {
         const id = params["id"];
@@ -72,7 +72,7 @@ export class SessionComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.subs.unsubscribe();
     if (this.session) {
       this.session.disconnect();
@@ -80,7 +80,7 @@ export class SessionComponent implements OnInit, OnDestroy {
   }
 
   @HostListener("window:beforeunload", ["$event"])
-  beforeUnloadHandler(_: Event) {
+  public beforeUnloadHandler(_: Event) {
     // this allows a graceful disconnect with "I am leaving" message to server when the browser or tab
     // is closed gracefully or the page is navigating to another site
     if (this.session) {

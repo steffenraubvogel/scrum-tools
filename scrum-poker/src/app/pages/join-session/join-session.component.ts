@@ -1,6 +1,7 @@
-import { Component } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Subscription } from "rxjs";
 import { SessionSettingsService } from "src/app/services/session-settings.service";
 
 @Component({
@@ -8,15 +9,29 @@ import { SessionSettingsService } from "src/app/services/session-settings.servic
   templateUrl: "./join-session.component.html",
   styleUrls: ["./join-session.component.scss"],
 })
-export class JoinSessionComponent {
+export class JoinSessionComponent implements OnInit, OnDestroy {
+  private subs: Subscription = new Subscription();
   public formGroup = new FormGroup({
     userName: new FormControl("", Validators.required),
     role: new FormControl("", Validators.required),
   });
+  private sessionId: string = "";
 
-  constructor(private readonly router: Router, private readonly settingsService: SessionSettingsService) {
+  constructor(private readonly route: ActivatedRoute, private readonly router: Router, private readonly settingsService: SessionSettingsService) {
     this.formGroup.controls.userName.patchValue(settingsService.settings.userName);
     this.formGroup.controls.role.patchValue(settingsService.settings.join?.role ?? null);
+  }
+
+  public ngOnInit(): void {
+    this.subs.add(
+      this.route.params.subscribe((params) => {
+        this.sessionId = params["id"];
+      })
+    );
+  }
+
+  public ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
   public onSubmit() {
@@ -32,8 +47,7 @@ export class JoinSessionComponent {
         active: "joined",
       });
 
-      const sessionId = "xyz";
-      this.router.navigate(["/session", sessionId]);
+      this.router.navigate(["/session", this.sessionId]);
     }
   }
 }
