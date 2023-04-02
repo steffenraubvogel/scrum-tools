@@ -12,11 +12,16 @@ import { isEqual } from "lodash";
 import { createLogger } from "./logging";
 import { handleParticipantLeave } from "./event-handlers/participant";
 
+// prepare configuration
+const port = process.env.PORT || 4201;
+const corsOrigin = process.env.CORS_ORIGIN || "http://localhost:4200";
+
+// configure and start express server
 const application = express();
 const httpServer = http.createServer(application);
 const socketio = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer, {
   cors: {
-    origin: ["http://localhost:4200"],
+    origin: [corsOrigin],
   },
 });
 
@@ -25,9 +30,10 @@ const serverState: ServerState = {};
 
 application.use(
   cors({
-    origin: "http://localhost:4200",
+    origin: corsOrigin,
   })
 );
+application.use(express.static("public"));
 
 application.get("/get-session-id", (req, res) => {
   let sessionId: string;
@@ -36,7 +42,13 @@ application.get("/get-session-id", (req, res) => {
     sessionId = sessionNumber.toString(16);
   } while (serverState[sessionId]);
 
+  logger.info("Generated session ID: " + sessionId);
   res.json(sessionId);
+});
+
+application.all("/*", function (req, res, next) {
+  // required for angular routing
+  res.sendFile("index.html", { root: "public" });
 });
 
 socketio.on("connection", (socket) => {
@@ -124,5 +136,4 @@ socketio.on("connection", (socket) => {
   }
 });
 
-const port = process.env.PORT || 4201;
 httpServer.listen(+port, () => logger.info(`Server is running on port ${port}`));

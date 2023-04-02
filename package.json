@@ -1,4 +1,11 @@
 {
+  "name": "scrum-poker-deployment",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "sh build.sh",
+    "start": "sh run.sh"
+  },
+  "devDependencies": {},
   "dependencies": {
     "@angular/cli": "^15.2.4"
   }
