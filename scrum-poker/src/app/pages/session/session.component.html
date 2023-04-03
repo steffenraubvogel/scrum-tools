@@ -48,7 +48,7 @@
             <button (click)="copyJoinLink()" class="btn btn-primary"><i class="bi bi-share"></i> Copy Join Link</button>
           </div>
           <div class="col-auto">
-            <button (click)="session!.reveal()" class="btn btn-primary"><i class="bi bi-eye"></i> Reveal Votes</button>
+            <button (click)="session!.reveal()" class="btn btn-primary" [disabled]="cannotReveal()"><i class="bi bi-eye"></i> Reveal Votes</button>
           </div>
           <div class="col-auto">
             <button (click)="session!.reset()" class="btn btn-warning"><i class="bi bi-arrow-clockwise"></i> Reset Votes</button>
@@ -61,14 +61,20 @@
       <div class="sp-card sp-card-guesser-actions">
         <h2>Your Vote</h2>
         <p>Please choose your guess for the currently discussed story or topic:</p>
-        <form>
-          <div class="form-check" *ngFor="let guess of guessOptions; index as i">
-            <input class="form-check-input" type="radio" [id]="'guessOption' + i" [value]="guess.value" [formControl]="playersGuess" />
-            <label class="form-check-label" [for]="'guessOption' + i">
-              {{ guess.label }}
-            </label>
+        <div class="sp-guess-actions-container my-4 mx-auto">
+          <div class="sp-aspect-ratio-1-to-1">
+            <div class="sp-guess-actions-grid">
+              <button
+                *ngFor="let guess of guessOptions; index as i"
+                (click)="vote(guess.value)"
+                class="btn btn-light sp-guess-action"
+                [ngClass]="{ active: playersGuess === guess.value }"
+              >
+                {{ guess.label }}
+              </button>
+            </div>
           </div>
-        </form>
+        </div>
       </div>
     </div>
 
@@ -83,6 +89,8 @@
   <div class="mt-4 sp-card">
     <h2>Result</h2>
     <ng-container *ngIf="session!.state!.state === 'revealed'; else notYetRevealedResultTemplate">
+      <p *ngIf="!isConsesus()">The average guess is ⌀ {{ getAverageGuess() }}.</p>
+      <p *ngIf="isConsesus()">Woohoo, consensus! <i class="bi bi-emoji-smile"></i></p>
       <div class="row g-3">
         <div class="col-12 col-sm-6">
           <table class="table">

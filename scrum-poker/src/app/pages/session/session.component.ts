@@ -18,7 +18,6 @@ export class SessionComponent implements OnInit, OnDestroy {
   private subs: Subscription = new Subscription();
   public session?: ServerCommunication;
   public guessOptions: { value: number; label: string }[] = [
-    { value: -1, label: "Abstain" },
     { value: 1, label: "1" },
     { value: 2, label: "2" },
     { value: 3, label: "3" },
@@ -26,8 +25,9 @@ export class SessionComponent implements OnInit, OnDestroy {
     { value: 8, label: "8" },
     { value: 13, label: "13" },
     { value: 21, label: "21" },
+    { value: -1, label: "Abstain" },
   ];
-  public playersGuess = new FormControl<number | null>(null);
+  public playersGuess: number | null = null;
   public chartData: ChartDataPoint[] = [];
 
   constructor(private readonly route: ActivatedRoute, private readonly router: Router, public readonly settingsService: SessionSettingsService) {}
@@ -46,11 +46,11 @@ export class SessionComponent implements OnInit, OnDestroy {
             .pipe(
               tap((_) => this.calculateChartData()),
               map((s) => s.players.find((p) => p.name === this.settingsService.settings.userName)),
-              filter((p) => this.playersGuess.value !== null && p?.guess === null)
+              filter((p) => this.playersGuess !== null && p?.guess === null)
             )
             .subscribe(() => {
               // resets the vote input when the leader resets all votes
-              this.playersGuess.patchValue(null);
+              this.playersGuess = null;
             })
         );
 
@@ -60,14 +60,6 @@ export class SessionComponent implements OnInit, OnDestroy {
             this.router.navigate(["connection-error"], { skipLocationChange: true });
           })
         );
-      })
-    );
-
-    this.subs.add(
-      this.playersGuess.valueChanges.subscribe((guess) => {
-        if (guess !== null) {
-          this.session!.guess(guess);
-        }
       })
     );
   }
@@ -93,12 +85,35 @@ export class SessionComponent implements OnInit, OnDestroy {
     navigator.clipboard.writeText(joinUrl);
   }
 
+  public cannotReveal(): boolean | null {
+    return this.session!.state!.state === "revealed" ||
+      this.session!.state!.players.filter((p) => p.status === "connected" && p.type === "guesser").length === 0
+      ? true
+      : null;
+  }
+
+  public vote(guess: number) {
+    this.playersGuess = guess;
+    this.session!.guess(guess);
+  }
+
   public playersByRole(role: Player["type"]) {
     return this.session!.state!.players.filter((p) => p.type === role).sort((a, b) => NAME_COMPARATOR(a.name, b.name));
   }
 
   public isOwnPlayer(p: Player) {
     return p.name === this.settingsService.settings.userName;
+  }
+
+  public isConsesus() {
+    const relevant = this.session!.state!.players.filter((p) => p.guess !== null && p.guess > 0).map((p) => p.guess!);
+    return relevant.length > 0 && relevant.every((g) => g === relevant[0]);
+  }
+
+  public getAverageGuess() {
+    const relevant = this.session!.state!.players.filter((p) => p.guess !== null && p.guess > 0).map((p) => p.guess!);
+    const average = relevant.reduce((prev, cur) => prev + cur, 0) / Math.max(relevant.length, 1);
+    return average.toLocaleString("en-US", { maximumFractionDigits: 1 });
   }
 
   public guessCountTable() {

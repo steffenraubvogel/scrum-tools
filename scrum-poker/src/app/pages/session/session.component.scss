@@ -10,3 +10,46 @@
 .sp-player-left {
   text-decoration: line-through;
 }
+
+.sp-aspect-ratio-1-to-1 {
+  padding-top: 100%; /* 1:1 Aspect Ratio */
+  position: relative;
+  & > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+}
+
+.sp-guess-actions-container {
+  max-width: 20rem;
+}
+
+.sp-guess-actions-grid {
+  --sp-border-radius: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
+.sp-guess-action {
+  border-radius: 0;
+  font-size: 2em;
+  font-weight: lighter;
+
+  &:first-child {
+    border-top-left-radius: var(--sp-border-radius);
+  }
+  &:nth-child(3) {
+    border-top-right-radius: var(--sp-border-radius);
+  }
+  &:nth-child(7) {
+    border-bottom-left-radius: var(--sp-border-radius);
+  }
+  &:last-child {
+    grid-column-end: span 2;
+    border-bottom-right-radius: var(--sp-border-radius);
+  }
+}
