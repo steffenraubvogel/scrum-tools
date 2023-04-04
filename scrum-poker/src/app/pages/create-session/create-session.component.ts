@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Component } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { finalize } from "rxjs";
 import { SessionSettingsService } from "src/app/services/session-settings.service";
 import { environment } from "src/environment/environment";
 
@@ -15,6 +16,8 @@ export class CreateSessionComponent {
     userName: new FormControl("", Validators.required),
     sessionName: new FormControl(""),
   });
+
+  public submitting: boolean = false;
 
   constructor(private readonly router: Router, private readonly settingsService: SessionSettingsService, private readonly httpClient: HttpClient) {
     this.formGroup.controls.userName.patchValue(settingsService.settings.userName);
@@ -34,14 +37,15 @@ export class CreateSessionComponent {
         active: "created",
       });
 
-      this.httpClient.get(`${environment.backend.api}/get-session-id`).subscribe({
+      this.submitting = true;
+      this.httpClient.get(`${environment.backend.api}/get-session-id`).pipe(finalize(() => this.submitting = false)).subscribe({
         next: (sessionId) => {
           this.router.navigate(["/session", sessionId]);
         },
         error: (err) => {
           console.error("Couldn't get a new session ID", err);
           this.router.navigate(["/error"]);
-        },
+        }
       });
     }
   }
