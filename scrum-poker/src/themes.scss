@@ -74,13 +74,23 @@
   --bs-border-color: #{$border-color-dark};
   --bs-border-color-translucent: #{$border-color-translucent-dark};
 
-  // own overwrites
+  // own overwrites for bootstrap
 
   --bs-body-color: #eef6ff;
   --bs-body-color-rgb: #{to-rgb(#eef6ff)};
 
+  .list-group {
+    --bs-list-group-bg: transparent;
+  }
+
+  // own overwrites for other styles
+
   body {
-    background: radial-gradient(circle, rgba(33, 37, 41, 1) 0%, rgba(59, 36, 36, 1) 43%, rgba(0, 42, 50, 1) 100%);
+    background-image: url(/assets/bg-dark-1.svg);
+    background-size: auto;
+    background-position-x: center;
+    background-position-y: top;
+    background-repeat: repeat-y;
   }
 
   footer,
@@ -89,8 +99,8 @@
   }
 
   .sp-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
-    backdrop-filter: blur(50px);
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
+    backdrop-filter: blur(5px);
     border: none;
     position: relative;
 
@@ -99,8 +109,8 @@
       position: absolute;
       inset: 0;
       border-radius: var(--bs-border-radius);
-      padding: 1px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5));
+      padding: var(--sp-card-border-width);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2));
       mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       mask-composite: exclude;
       pointer-events: none;

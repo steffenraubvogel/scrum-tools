@@ -17,6 +17,7 @@ import { HeaderComponent } from "./components/header/header.component";
 import { BarChartComponent } from "./components/bar-chart/bar-chart.component";
 import { QuickTestComponent } from "./pages/dev/quick-test/quick-test.component";
 import { HttpClientModule } from "@angular/common/http";
+import { LegalInfoComponent } from './pages/legal-info/legal-info.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { HttpClientModule } from "@angular/common/http";
     HeaderComponent,
     BarChartComponent,
     QuickTestComponent,
+    LegalInfoComponent,
   ],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, ReactiveFormsModule, HttpClientModule],
   providers: [SessionSettingsService, SessionGuard],

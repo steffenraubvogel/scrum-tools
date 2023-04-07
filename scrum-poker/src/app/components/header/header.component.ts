@@ -6,7 +6,6 @@ type Theme = "dark" | "dark-glass" | "light" | "neon" | "auto";
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",
-  styleUrls: ["./header.component.scss"],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   private themeDropdown?: bootstrap.Dropdown;

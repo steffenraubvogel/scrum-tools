@@ -21,9 +21,10 @@ h2 {
 
 .sp-card {
   --sp-card-border-color: rgba(0, 0, 0, 0.1);
+  --sp-card-border-width: #{$card-border-width};
   --sp-card-box-shadow-color: rgba(0, 0, 0, 0.05);
 
-  border: $card-border-width solid var(--sp-card-border-color);
+  border: var(--sp-card-border-width) solid var(--sp-card-border-color);
   border-radius: $card-border-radius;
   padding: $card-spacer-y $card-spacer-x;
   box-shadow: var(--sp-card-box-shadow-color) 0px 1px 2px;

@@ -8,6 +8,7 @@ import { JoinSessionComponent } from "./pages/join-session/join-session.componen
 import { SessionComponent } from "./pages/session/session.component";
 import { environment } from "src/environment/environment";
 import { QuickTestComponent } from "./pages/dev/quick-test/quick-test.component";
+import { LegalInfoComponent } from "./pages/legal-info/legal-info.component";
 
 const routes: Routes = [
   { path: "", pathMatch: "full", component: CreateSessionComponent },
@@ -17,6 +18,7 @@ const routes: Routes = [
     canActivate: [() => inject(SessionGuard).canActivate()],
   },
   { path: "join/:id", component: JoinSessionComponent },
+  { path: "legal", component: LegalInfoComponent },
   { path: "error", component: ErrorComponent },
   { path: "connection-error", component: ConnectionErrorComponent },
   { path: "dev", canActivate: [() => !environment.production], children: [{ path: "quick-test", component: QuickTestComponent }] },
