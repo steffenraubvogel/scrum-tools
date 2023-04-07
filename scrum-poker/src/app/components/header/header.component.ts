@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import * as bootstrap from "bootstrap";
 
-type Theme = "dark" | "light" | "neon" | "auto";
+type Theme = "dark" | "dark-glass" | "light" | "neon" | "auto";
 
 @Component({
   selector: "app-header",
@@ -11,7 +11,15 @@ type Theme = "dark" | "light" | "neon" | "auto";
 export class HeaderComponent implements OnInit, OnDestroy {
   private themeDropdown?: bootstrap.Dropdown;
   private readonly localStorageKey = "scrum-poker-theme";
-  private selectedTheme!: Theme;
+  public selectedTheme!: Theme;
+
+  public themes: { id: Theme; name: string }[] = [
+    { id: "auto", name: "Auto" },
+    { id: "light", name: "Light" },
+    { id: "dark", name: "Dark" },
+    { id: "dark-glass", name: "Dark Glass" },
+    { id: "neon", name: "Neon" },
+  ];
 
   public ngOnInit(): void {
     const el = document.querySelector("#theme-dropdown");

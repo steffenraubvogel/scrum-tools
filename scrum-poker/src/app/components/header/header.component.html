@@ -1,5 +1,5 @@
 <header class="mb-5 py-3 bg-body-tertiary">
-  <nav class="navbar navbar-expand navbar-expand-lg bg-body-tertiary">
+  <nav class="navbar navbar-expand navbar-expand-lg">
     <div class="container">
       <a [routerLink]="['/']" class="navbar-brand">
         <img src="/favicon.ico" alt="Logo" width="30" height="30" class="d-inline-block align-text-top" />
@@ -14,10 +14,11 @@
             <ul class="dropdown-menu dropdown-menu-end">
               <li><h6 class="dropdown-header">Choose your theme:</h6></li>
               <li><hr class="dropdown-divider" /></li>
-              <li><a class="dropdown-item" href="#" (click)="useTheme($event, 'auto')">Auto</a></li>
-              <li><a class="dropdown-item" href="#" (click)="useTheme($event, 'light')">Light</a></li>
-              <li><a class="dropdown-item" href="#" (click)="useTheme($event, 'dark')">Dark</a></li>
-              <li><a class="dropdown-item" href="#" (click)="useTheme($event, 'neon')">Neon</a></li>
+              <li *ngFor="let theme of themes">
+                <a class="dropdown-item" [ngClass]="{ active: selectedTheme === theme.id }" href="#" (click)="useTheme($event, theme.id)">{{
+                  theme.name
+                }}</a>
+              </li>
             </ul>
           </li>
         </ul>
