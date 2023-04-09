@@ -1,4 +1,5 @@
 import express from "express";
+import compression from "compression";
 import http from "http";
 import crypto from "crypto";
 import cors from "cors";
@@ -13,8 +14,9 @@ import { createLogger } from "./logging";
 import { handleParticipantLeave } from "./event-handlers/participant";
 
 // prepare configuration
-const port = process.env.PORT || 4201;
-const corsOrigin = process.env.CORS_ORIGIN || "http://localhost:4200";
+const hostname = process.env.SP_HOSTNAME || "127.0.0.1";
+const port = process.env.SP_PORT || 4201;
+const corsOrigin = process.env.SP_CORS_ORIGIN || "http://localhost:4200";
 
 // configure and start express server
 const application = express();
@@ -28,6 +30,7 @@ const socketio = new Server<ClientToServerEvents, ServerToClientEvents>(httpServ
 const logger = createLogger("main");
 const serverState: ServerState = {};
 
+application.use(compression());
 application.use(
   cors({
     origin: corsOrigin,
@@ -148,4 +151,4 @@ socketio.on("connection", (socket) => {
   }
 });
 
-httpServer.listen(+port, () => logger.info(`Server is running on port ${port}`));
+httpServer.listen(+port, hostname, () => logger.info(`Server is running on port ${hostname}:${port}`));

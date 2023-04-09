@@ -79,6 +79,39 @@
   --bs-body-color: #eef6ff;
   --bs-body-color-rgb: #{to-rgb(#eef6ff)};
 
+  .btn {
+    --bs-btn-color: #fff;
+    --bs-btn-border-color: rgba(var(--sp-btn-accent), 0.2);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-border-color: rgba(var(--sp-btn-accent), 0.8);
+    --bs-btn-focus-shadow-rgb: var(--sp-btn-accent);
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-border-color: rgba(var(--sp-btn-accent), 0.8);
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-border-color: rgba(255, 255, 255, 0.1);
+
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
+    backdrop-filter: blur(5px);
+
+    &:hover,
+    &:active,
+    &.active {
+      background: linear-gradient(160deg, rgba(var(--sp-btn-accent), 0.3) 0%, rgba(var(--sp-btn-accent), 0.1) 100%);
+    }
+  }
+
+  .btn-primary {
+    --sp-btn-accent: 129, 103, 151;
+  }
+
+  .btn-warning {
+    --sp-btn-accent: 255, 193, 7;
+  }
+
+  .btn-light {
+    --sp-btn-accent: 129, 103, 151;
+  }
+
   .list-group {
     --bs-list-group-bg: transparent;
   }
