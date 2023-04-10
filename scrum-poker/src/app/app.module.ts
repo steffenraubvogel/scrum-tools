@@ -18,6 +18,7 @@ import { BarChartComponent } from "./components/bar-chart/bar-chart.component";
 import { QuickTestComponent } from "./pages/dev/quick-test/quick-test.component";
 import { HttpClientModule } from "@angular/common/http";
 import { LegalInfoComponent } from './pages/legal-info/legal-info.component';
+import { ObfuscateDirective } from './directives/unobfuscate.directive';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { LegalInfoComponent } from './pages/legal-info/legal-info.component';
     BarChartComponent,
     QuickTestComponent,
     LegalInfoComponent,
+    ObfuscateDirective,
   ],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, ReactiveFormsModule, HttpClientModule],
   providers: [SessionSettingsService, SessionGuard],

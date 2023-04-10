@@ -15,8 +15,8 @@
 
 @include color-mode(dark-glass) {
   // copied from dark mode in bootstrap:
-  //--bs-body-color: #{$body-color-dark};
-  //--bs-body-color-rgb: #{to-rgb($body-color-dark)};
+  --bs-body-color: #{$body-color-dark};
+  --bs-body-color-rgb: #{to-rgb($body-color-dark)};
   --bs-body-bg: #{$body-bg-dark};
   --bs-body-bg-rgb: #{to-rgb($body-bg-dark)};
 
@@ -76,14 +76,11 @@
 
   // own overwrites for bootstrap
 
-  --bs-body-color: #eef6ff;
-  --bs-body-color-rgb: #{to-rgb(#eef6ff)};
-
   .btn {
     --bs-btn-color: #fff;
     --bs-btn-border-color: rgba(var(--sp-btn-accent), 0.2);
     --bs-btn-hover-color: #fff;
-    --bs-btn-hover-border-color: rgba(var(--sp-btn-accent), 0.8);
+    --bs-btn-hover-border-color: rgba(var(--sp-btn-accent), 0.6);
     --bs-btn-focus-shadow-rgb: var(--sp-btn-accent);
     --bs-btn-active-color: #fff;
     --bs-btn-active-border-color: rgba(var(--sp-btn-accent), 0.8);
@@ -93,10 +90,13 @@
     background: linear-gradient(160deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
     backdrop-filter: blur(5px);
 
-    &:hover,
+    &:hover {
+      background: linear-gradient(160deg, rgba(var(--sp-btn-accent), 0.3) 0%, rgba(var(--sp-btn-accent), 0.1) 100%);
+    }
+
     &:active,
     &.active {
-      background: linear-gradient(160deg, rgba(var(--sp-btn-accent), 0.3) 0%, rgba(var(--sp-btn-accent), 0.1) 100%);
+      background: linear-gradient(160deg, rgba(var(--sp-btn-accent), 0.5) 0%, rgba(var(--sp-btn-accent), 0.3) 100%);
     }
   }
 
@@ -132,6 +132,8 @@
   }
 
   .sp-card {
+    color: #eef6ff;
+
     background: linear-gradient(160deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
     backdrop-filter: blur(5px);
     border: none;
