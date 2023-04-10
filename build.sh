@@ -32,10 +32,11 @@ else
 fi
 
 npm run build
+npm run bundle
 
 # merge the build output
 cd ..
 mkdir -p dist/public
 mv scrum-poker/dist/scrum-poker/* dist/public
-mv scrum-poker-server/dist/* dist
-cp -r scrum-poker-server/node_modules dist
+mv scrum-poker-server/dist/bundle.js dist
+touch dist/restart-on-modified.txt
