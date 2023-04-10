@@ -2,7 +2,7 @@
 
 # fail build script when any command fails and kill background processes on script failure
 set -e
-trap 'sleep 5 && echo "Killing PIDs $(jobs -p)" && kill $(jobs -p)' ERR
+#trap 'sleep 5 && echo "Killing PIDs $(jobs -p)" && kill $(jobs -p)' ERR
 
 # configure application
 export NODE_ENV=production
@@ -20,7 +20,7 @@ echo "Starting application on $(date)"
 
 runApplication()
 {
-    node --max-old-space-size=128 bundle.js >> server.log &
+    node --max-old-space-size=128 bundle.js &
     APP_PID=$!
 }
 
@@ -30,7 +30,7 @@ runApplication
 LAST_MODIFIED=$(stat restart-on-modified.txt | grep Modify)
 
 while true; do
-    sleep 42
+    sleep 120
     NEW_LAST_MODIFIED=$(stat restart-on-modified.txt | grep Modify)
     if [ "$NEW_LAST_MODIFIED" != "$LAST_MODIFIED" ]
     then
