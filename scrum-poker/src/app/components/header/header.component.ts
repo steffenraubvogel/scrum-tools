@@ -16,8 +16,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { id: "auto", name: "Auto" },
     { id: "light", name: "Light" },
     { id: "dark", name: "Dark" },
-    { id: "dark-glass", name: "Dark Glass" },
-    { id: "neon", name: "Neon" },
+    { id: "dark-glass", name: "Dark Glassy" },
   ];
 
   public ngOnInit(): void {

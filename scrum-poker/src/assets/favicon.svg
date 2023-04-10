@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+    <g>
+        <rect fill="#ffffff" height="21.7" rx="3" ry="3" stroke="#000000" transform="matrix(1.06261 0.258359 -0.258359 1.06261 5.27967 -5.0597)" width="15.7" x="10.32" y="4.61"/>
+        <rect fill="#ffffff" height="21.7" rx="3" ry="3" stroke="#000000" transform="matrix(1.08826 0.107585 -0.107585 1.08826 1.3314 -1.89437)" width="15.7" x="8.88" y="2.69"/>
+        <rect fill="#ffffff" height="21.7" rx="3" ry="3" stroke="#000000" transform="matrix(1.08546 -0.132913 0.132913 1.08546 -1.68078 1.92762)" width="15.7" x="5.56" y="2.81"/>
+        <rect fill="#ffffff" height="21.7" rx="3" ry="3" stroke="#000000" transform="matrix(1.05373 -0.292463 0.292463 1.05373 -3.98672 3.88669)" width="15.7" x="2.64" y="4.76"/>
+        <text fill="#000000" font-family="Serif" font-size="18" opacity="0.8" stroke="#000000" stroke-width="0" text-anchor="middle" transform="matrix(1.26433 -0.351475 0.351475 1.26433 -6.83102 3.8154)" x="10.71" xml:space="preserve" y="19.4">?</text>
+    </g>
+</svg>

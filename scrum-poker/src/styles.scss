@@ -57,3 +57,11 @@ h2 {
   --sp-chart-color-21: hsl(0, var(--sp-chart-color-sat), var(--sp-chart-color-li));
   --sp-chart-color-abstained: #{$gray-500};
 }
+
+.sp-when-light {
+  // default is light theme
+  display: initial;
+}
+.sp-when-dark {
+  display: none;
+}

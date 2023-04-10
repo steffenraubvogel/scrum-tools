@@ -1,8 +1,9 @@
-<header class="mb-5 py-3 bg-body-tertiary">
+<header class="mb-5 bg-body-tertiary">
   <nav class="navbar navbar-expand navbar-expand-lg">
     <div class="container">
-      <a [routerLink]="['/']" class="navbar-brand">
-        <img src="/favicon.ico" alt="Logo" width="30" height="30" class="d-inline-block align-text-top" />
+      <a [routerLink]="['/']" class="navbar-brand d-inline-flex align-items-center">
+        <img src="/assets/favicon.svg" alt="Logo" height="32" class="me-2 sp-when-light" />
+        <img src="/assets/favicon_dark.svg" alt="Logo" height="32" class="me-2 sp-when-dark" />
         Scrum Poker
       </a>
       <div class="collapse navbar-collapse">
