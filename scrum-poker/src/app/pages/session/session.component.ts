@@ -29,6 +29,7 @@ export class SessionComponent implements OnInit, OnDestroy {
   ];
   public playersGuess: number | null = null;
   public chartData: ChartDataPoint[] = [];
+  public copied: boolean = false;
 
   constructor(private readonly route: ActivatedRoute, private readonly router: Router, public readonly settingsService: SessionSettingsService) {}
 
@@ -83,6 +84,9 @@ export class SessionComponent implements OnInit, OnDestroy {
   public copyJoinLink() {
     const joinUrl = window.location.protocol + "//" + window.location.host + "/join/" + this.session!.state!.id;
     navigator.clipboard.writeText(joinUrl);
+
+    this.copied = true;
+    setTimeout(() => (this.copied = false), 1500);
   }
 
   public cannotReveal(): boolean | null {

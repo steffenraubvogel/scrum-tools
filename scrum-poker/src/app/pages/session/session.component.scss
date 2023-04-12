@@ -53,3 +53,25 @@
     border-bottom-right-radius: var(--sp-border-radius);
   }
 }
+
+.sp-copy-button-icon {
+  position: relative;
+  i {
+    transition: 0.15s opacity ease-in-out;
+  }
+}
+
+.sp-icon-success {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.sp-success-button-icon {
+  i:first-child {
+    opacity: 0;
+  }
+  .sp-icon-success {
+    opacity: 1;
+  }
+}

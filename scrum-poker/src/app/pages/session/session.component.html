@@ -45,7 +45,12 @@
         <h2>Leader Actions</h2>
         <div class="row g-3">
           <div class="col-auto">
-            <button (click)="copyJoinLink()" class="btn btn-primary"><i class="bi bi-share"></i> Copy Join Link</button>
+            <button (click)="copyJoinLink()" class="btn btn-primary">
+              <span class="sp-copy-button-icon" [ngClass]="{ 'sp-success-button-icon': copied }"
+                ><i class="bi bi-share"></i><i class="bi bi-clipboard-check sp-icon-success"></i
+              ></span>
+              Copy Join Link
+            </button>
           </div>
           <div class="col-auto">
             <button (click)="session!.reveal()" class="btn btn-primary" [disabled]="cannotReveal()"><i class="bi bi-eye"></i> Reveal Votes</button>
