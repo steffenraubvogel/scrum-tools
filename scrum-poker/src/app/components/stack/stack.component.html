@@ -1,0 +1,5 @@
+<ng-container *ngFor="let child of templates; let i = index">
+  <span class="sp-stack-child" [ngClass]="{ 'sp-stack-active-child': activeChild === i, 'sp-stack-active-child-global': activeChild === i }">
+    <ng-container [ngTemplateOutlet]="child"></ng-container>
+  </span>
+</ng-container>

@@ -6,9 +6,9 @@
       <div class="sp-card sp-card-participants">
         <h2>Participants</h2>
         <div *ngIf="playersByRole('leader').length > 0" class="sp-participants-section">
-          <div class="small">Leader:</div>
+          <div class="small">Moderator:</div>
           <ul class="list-group list-group-flush">
-            <ng-container *ngFor="let player of playersByRole('leader')">
+            <ng-container *ngFor="let player of playersByRole('leader'); trackBy: trackByPlayerName">
               <li class="list-group-item">
                 <ng-container *ngTemplateOutlet="playerTemplate; context: { player }"></ng-container>
               </li>
@@ -19,7 +19,7 @@
         <div *ngIf="playersByRole('guesser').length > 0" class="mt-3 sp-participants-section">
           <div class="small">Guessers:</div>
           <ul class="list-group list-group-flush">
-            <ng-container *ngFor="let player of playersByRole('guesser')">
+            <ng-container *ngFor="let player of playersByRole('guesser'); trackBy: trackByPlayerName">
               <li class="list-group-item">
                 <ng-container *ngTemplateOutlet="playerTemplate; context: { player }"></ng-container>
               </li>
@@ -30,7 +30,7 @@
         <div *ngIf="playersByRole('observer').length > 0" class="mt-3 sp-participants-section">
           <div class="small">Observers:</div>
           <ul class="list-group list-group-flush">
-            <ng-container *ngFor="let player of playersByRole('observer')">
+            <ng-container *ngFor="let player of playersByRole('observer'); trackBy: trackByPlayerName">
               <li class="list-group-item">
                 <ng-container *ngTemplateOutlet="playerTemplate; context: { player }"></ng-container>
               </li>
@@ -42,7 +42,7 @@
 
     <div class="col-12 col-sm-6" *ngIf="settingsService.settings.active === 'created'">
       <div class="sp-card sp-card-leader-actions">
-        <h2>Leader Actions</h2>
+        <h2>Moderator Actions</h2>
         <div class="row g-3">
           <div class="col-auto">
             <button (click)="copyJoinLink()" class="btn btn-primary">
@@ -125,7 +125,7 @@
     </ng-container>
     <ng-template #notYetRevealedResultTemplate>
       <p>
-        The result is not yet revealed. This will be done when all guessers have voted or the leader reveals the result intentionally. Please be
+        The result is not yet revealed. This will be done when all guessers have voted or the moderator reveals the result intentionally. Please be
         patient.
       </p>
     </ng-template>
@@ -146,32 +146,21 @@
     >{{ player.name }}</span
   >
   &nbsp;
-  <ng-container [ngSwitch]="player.status">
-    <ng-container *ngSwitchCase="'disconnected'">
-      <span title="Participant disconnected">
-        <i class="bi bi-plug"></i>
-        <i class="bi bi-exclamation-triangle text-danger-emphasis"></i>
-      </span>
-    </ng-container>
-    <ng-container *ngSwitchCase="'left'">
-      <i class="bi bi-x-octagon" title="Participant left"></i>
-    </ng-container>
-    <ng-container *ngSwitchDefault>
-      <ng-container *ngIf="player.type === 'guesser'">
-        <span
-          *ngIf="session!.state!.state === 'revealed'"
-          class="badge rounded-pill text-bg-light"
-          [title]="
-            player.guess === -1 ? 'Chose to abstain from vote' : player.guess === null ? 'Did not choose anything' : 'Voted for ' + player.guess
-          "
-        >
-          {{ player.guess === -1 ? "?" : player.guess === null ? "-" : player.guess }}
-        </span>
-        <span *ngIf="session!.state!.state === 'guessing'">
-          <i class="bi bi-three-dots" *ngIf="player.guess === null" title="Did not make a selection so far"></i>
-          <i class="bi bi-check2-circle" *ngIf="player.guess !== null" title="Has made a selection"></i>
-        </span>
-      </ng-container>
-    </ng-container>
-  </ng-container>
+  <app-stack [activeChild]="mapPlayerAndSessionStatusToStackChild(player)">
+    <span *stackChild title="Participant disconnected">
+      <i class="bi bi-plug"></i>
+      <i class="bi bi-exclamation-triangle text-danger-emphasis"></i>
+    </span>
+    <i *stackChild class="bi bi-x-octagon" title="Participant left"></i>
+    <span *stackChild></span>
+    <span
+      *stackChild
+      class="badge rounded-pill text-bg-light"
+      [title]="player.guess === -1 ? 'Chose to abstain from vote' : player.guess === null ? 'Did not choose anything' : 'Voted for ' + player.guess"
+    >
+      {{ player.guess === -1 ? "?" : player.guess === null ? "-" : player.guess }}
+    </span>
+    <i *stackChild class="bi bi-three-dots" title="Did not make a selection so far"></i>
+    <i *stackChild class="bi bi-check2-circle sp-status-guessed" title="Has made a selection"></i>
+  </app-stack>
 </ng-template>

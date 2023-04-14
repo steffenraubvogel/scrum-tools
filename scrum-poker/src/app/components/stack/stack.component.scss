@@ -1,0 +1,19 @@
+:host {
+  display: inline-grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+.sp-stack-child {
+  grid-area: 1 / 1 / 1 /1;
+  justify-self: start;
+  align-self: center;
+  transition: 0.15s ease-in-out opacity;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sp-stack-active-child {
+  pointer-events: initial;
+  opacity: 1;
+}

@@ -17,8 +17,9 @@ import { HeaderComponent } from "./components/header/header.component";
 import { BarChartComponent } from "./components/bar-chart/bar-chart.component";
 import { QuickTestComponent } from "./pages/dev/quick-test/quick-test.component";
 import { HttpClientModule } from "@angular/common/http";
-import { LegalInfoComponent } from './pages/legal-info/legal-info.component';
-import { ObfuscateDirective } from './directives/unobfuscate.directive';
+import { LegalInfoComponent } from "./pages/legal-info/legal-info.component";
+import { ObfuscateDirective } from "./directives/unobfuscate.directive";
+import { StackChildDirective, StackComponent } from "./components/stack/stack.component";
 
 @NgModule({
   declarations: [
@@ -35,6 +36,8 @@ import { ObfuscateDirective } from './directives/unobfuscate.directive';
     QuickTestComponent,
     LegalInfoComponent,
     ObfuscateDirective,
+    StackComponent,
+    StackChildDirective,
   ],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, ReactiveFormsModule, HttpClientModule],
   providers: [SessionSettingsService, SessionGuard],

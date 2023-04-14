@@ -11,6 +11,10 @@
   text-decoration: line-through;
 }
 
+.sp-status-guessed {
+  color: rgb(var(--bs-success-rgb));
+}
+
 .sp-aspect-ratio-1-to-1 {
   padding-top: 100%; /* 1:1 Aspect Ratio */
   position: relative;

@@ -101,8 +101,28 @@ export class SessionComponent implements OnInit, OnDestroy {
     this.session!.guess(guess);
   }
 
+  public trackByPlayerName(index: number, item: Player) {
+    return item.name;
+  }
+
   public playersByRole(role: Player["type"]) {
     return this.session!.state!.players.filter((p) => p.type === role).sort((a, b) => NAME_COMPARATOR(a.name, b.name));
+  }
+
+  public mapPlayerAndSessionStatusToStackChild(player: Player) {
+    if (player.status === "disconnected") {
+      return 0;
+    }
+    if (player.status === "left") {
+      return 1;
+    }
+    if (player.type !== "guesser") {
+      return 2;
+    }
+    if (this.session!.state!.state === "revealed") {
+      return 3;
+    }
+    return player.guess === null ? 4 : 5;
   }
 
   public isOwnPlayer(p: Player) {
