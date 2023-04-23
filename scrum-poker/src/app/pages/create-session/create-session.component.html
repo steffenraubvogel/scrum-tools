@@ -1,5 +1,5 @@
 <h1>Create New Session</h1>
-<p>Fill out the form and submit it to create a new Scrum Poker session.</p>
+<p>Fill out the form and submit it to create a new Planning Poker session.</p>
 <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
   <div class="row mb-3">
     <div class="col-md-4">
@@ -22,7 +22,7 @@
     <div class="col-md-4">
       <label for="sessionName" class="form-label">Session name:</label>
       <input id="sessionName" type="text" formControlName="sessionName" placeholder="e.g. Planning of team X" class="form-control" />
-      <div class="form-text">The session name describes the context of the Scrum poker. It will be shown in the heading.</div>
+      <div class="form-text">The session name describes the context of the planning poker. It will be shown in the heading.</div>
     </div>
   </div>
 

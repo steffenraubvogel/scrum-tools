@@ -1,4 +1,4 @@
-# Scrum Poker
+# Planning Poker
 
 Web tool for collaborative guessing of scrum story complexity. Roles:
 
