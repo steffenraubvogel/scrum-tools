@@ -72,7 +72,7 @@
               <button
                 *ngFor="let guess of guessOptions; index as i"
                 (click)="vote(guess.value)"
-                class="btn btn-light sp-guess-action"
+                class="btn btn-guess sp-guess-action"
                 [ngClass]="{ active: playersGuess === guess.value }"
               >
                 {{ guess.label }}

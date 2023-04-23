@@ -8,10 +8,29 @@
   }
 }
 
+@include color-mode(light) {
+  .btn-guess {
+    // same as bootstrap button variant "light"
+    @include button-variant(
+      $light,
+      $light,
+      $hover-background: shade-color($light, $btn-hover-bg-shade-amount),
+      $hover-border: shade-color($light, $btn-hover-border-shade-amount),
+      $active-background: shade-color($light, $btn-active-bg-shade-amount),
+      $active-border: shade-color($light, $btn-active-border-shade-amount)
+    );
+  }
+}
+
 @include color-mode(dark) {
   .sp-card {
     --sp-card-border-color: rgba(255, 255, 255, 0.1);
     --sp-card-box-shadow-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .btn-guess {
+    // same as bootstrap button variante "secondary"
+    @include button-variant($secondary, $secondary);
   }
 }
 
@@ -109,7 +128,7 @@
     --sp-btn-accent: 255, 193, 7;
   }
 
-  .btn-light {
+  .btn-guess {
     --sp-btn-accent: 129, 103, 151;
   }
 
