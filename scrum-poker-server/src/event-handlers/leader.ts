@@ -34,7 +34,8 @@ export function handleLeaderNudge(
     return disconnectWithError(validationError, ack, socket);
   }
 
-  // TODO: throttling in case of abuse
+  // NOTE: throttling in case of abuse would be useful but the clients are already throttling on their own
+  // and other status updates could also be a problem; need to handle this in a central place
 
   if (serverState[connectionState.pokerSessionId!].state === "guessing") {
     const playersToNudge = serverState[connectionState.pokerSessionId!].players.filter((p) => p.guess === null);

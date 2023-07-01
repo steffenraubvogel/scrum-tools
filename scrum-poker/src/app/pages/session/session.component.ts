@@ -211,7 +211,7 @@ export class SessionComponent implements OnInit, OnDestroy {
       new Notification("Planning Poker", { body: "The moderator kindly asks you to pick a guess 🙂" });
     }
 
-    // reset animation after 5s (don't be too annoying)
+    // reset animation after 6s (don't be too annoying)
     setTimeout(() => (this.nudging = false), 6000);
   }
 
