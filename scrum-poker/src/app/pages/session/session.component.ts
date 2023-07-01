@@ -29,6 +29,8 @@ export class SessionComponent implements OnInit, OnDestroy {
   public playersGuess: number | null = null;
   public chartData: ChartDataPoint[] = [];
   public copied: boolean = false;
+  public nudging: boolean = false;
+  public nudgeCooldown: boolean = false;
 
   constructor(private readonly route: ActivatedRoute, private readonly router: Router, public readonly settingsService: SessionSettingsService) {}
 
@@ -67,6 +69,11 @@ export class SessionComponent implements OnInit, OnDestroy {
         );
       })
     );
+
+    // ask for notification permission (notifications used by nudging)
+    if (Notification.permission === "default") {
+      Notification.requestPermission();
+    }
   }
 
   public ngOnDestroy() {
@@ -95,7 +102,16 @@ export class SessionComponent implements OnInit, OnDestroy {
 
   public cannotReveal(): boolean | null {
     return this.session!.state!.state === "revealed" ||
-      this.session!.state!.players.filter((p) => p.status === "connected" && p.type === "guesser").length === 0
+      this.session!.state!.players.filter((p) => p.status === "connected" && p.type === "guesser" && p.guess === null).length === 0
+      ? true
+      : null;
+  }
+
+  public cannotNudge(): boolean | null {
+    // disable action if not in guessing phase or on cooldown or no one could be nudged anyway
+    return this.session!.state!.state === "revealed" ||
+      this.nudgeCooldown ||
+      this.session!.state!.players.filter((p) => p.status === "connected" && p.type === "guesser" && p.guess === null).length === 0
       ? true
       : null;
   }
@@ -103,6 +119,12 @@ export class SessionComponent implements OnInit, OnDestroy {
   public vote(guess: number) {
     this.playersGuess = guess;
     this.session!.guess(guess);
+  }
+
+  public nudge() {
+    this.session!.nudge();
+    this.nudgeCooldown = true;
+    setTimeout(() => (this.nudgeCooldown = false), 30_000);
   }
 
   public trackByPlayerName(index: number, item: Player) {
@@ -183,7 +205,14 @@ export class SessionComponent implements OnInit, OnDestroy {
   }
 
   private nudged() {
-    alert("nudged");
+    this.nudging = true;
+
+    if (Notification.permission === "granted") {
+      new Notification("Planning Poker", { body: "The moderator kindly asks you to pick a guess 🙂" });
+    }
+
+    // reset animation after 5s (don't be too annoying)
+    setTimeout(() => (this.nudging = false), 6000);
   }
 
   private handleErrorFromServer(err: string) {

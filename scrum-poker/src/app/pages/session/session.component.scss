@@ -15,6 +15,17 @@
   color: rgb(var(--bs-success-rgb));
 }
 
+.sp-leader-action-list {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+.sp-leader-action-separator {
+  grid-column: span 2;
+  border-top: 1px solid var(--bs-border-color);
+}
+
 .sp-aspect-ratio-1-to-1 {
   padding-top: 100%; /* 1:1 Aspect Ratio */
   position: relative;
@@ -29,10 +40,31 @@
 
 .sp-guess-actions-container {
   max-width: 20rem;
+  --sp-border-radius: 20px;
+  border-radius: var(--sp-border-radius);
+}
+
+.sp-guess-actions-nudge {
+  box-shadow: 0 0 0 0 rgba(var(--bs-warning-rgb), 0);
+  animation: nudge-pulse 1.5s;
+  animation-iteration-count: 3;
+}
+
+@keyframes nudge-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--bs-warning-rgb), 0.8);
+  }
+
+  70% {
+    box-shadow: 0 0 15px 15px rgba(var(--bs-warning-rgb), 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(var(--bs-warning-rgb), 0);
+  }
 }
 
 .sp-guess-actions-grid {
-  --sp-border-radius: 20px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;

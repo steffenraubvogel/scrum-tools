@@ -83,6 +83,10 @@
   --bs-form-invalid-color: #{$form-invalid-color-dark};
   --bs-form-invalid-border-color: #{$form-invalid-border-color-dark};
 
+  .table {
+    --bs-table-bg: transparent;
+  }
+
   // own overwrites for bootstrap
   .btn {
     --bs-btn-color: #fff;
@@ -143,6 +147,9 @@
     color: #eef6ff;
     .list-group-item {
       color: #eef6ff;
+    }
+    .table {
+      --bs-table-color: #eef6ff;
     }
 
     background: linear-gradient(160deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
