@@ -1,11 +1,10 @@
 import { Component, HostListener, OnDestroy, OnInit } from "@angular/core";
-import { FormControl } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Player } from "@backend/session";
-import { filter, map, Subscription, tap } from "rxjs";
+import { Subscription, filter, map, tap, throttleTime } from "rxjs";
+import { ChartDataPoint } from "src/app/components/bar-chart/bar-chart.component";
 import { SessionSettingsService } from "src/app/services/session-settings.service";
 import { ServerCommunication } from "./server-communication";
-import { ChartDataPoint } from "src/app/components/bar-chart/bar-chart.component";
 
 const NAME_COMPARATOR = Intl.Collator().compare;
 
@@ -60,6 +59,11 @@ export class SessionComponent implements OnInit, OnDestroy {
             // redirect to connection error page
             this.router.navigate(["connection-error"], { skipLocationChange: true });
           })
+        );
+
+        this.subs.add(
+          // not more than once per 30 seconds (do not spam user)
+          this.session.nudged$.pipe(throttleTime(30_000)).subscribe(() => this.nudged())
         );
       })
     );
@@ -176,6 +180,10 @@ export class SessionComponent implements OnInit, OnDestroy {
         .join(", "),
       color: row.guess === "?" ? "var(--sp-chart-color-abstained)" : `var(--sp-chart-color-${row.guess})`,
     }));
+  }
+
+  private nudged() {
+    alert("nudged");
   }
 
   private handleErrorFromServer(err: string) {

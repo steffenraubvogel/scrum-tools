@@ -43,21 +43,26 @@
     <div class="col-12 col-sm-6" *ngIf="settingsService.settings.active === 'created'">
       <div class="sp-card sp-card-leader-actions">
         <h2>Moderator Actions</h2>
-        <div class="row g-3">
-          <div class="col-auto">
-            <button (click)="copyJoinLink()" class="btn btn-primary">
-              <span class="sp-copy-button-icon" [ngClass]="{ 'sp-success-button-icon': copied }"
-                ><i class="bi bi-share"></i><i class="bi bi-clipboard-check sp-icon-success"></i
-              ></span>
-              Copy Join Link
-            </button>
-          </div>
-          <div class="col-auto">
-            <button (click)="session!.reveal()" class="btn btn-primary" [disabled]="cannotReveal()"><i class="bi bi-eye"></i> Reveal Votes</button>
-          </div>
-          <div class="col-auto">
-            <button (click)="session!.reset()" class="btn btn-warning"><i class="bi bi-arrow-clockwise"></i> Reset Votes</button>
-          </div>
+        <div class="list-group">
+          <button (click)="copyJoinLink()" class="list-group-item list-group-item-action">
+            <span class="sp-copy-button-icon" [ngClass]="{ 'sp-success-button-icon': copied }"
+              ><i class="bi bi-share"></i><i class="bi bi-clipboard-check sp-icon-success"></i
+            ></span>
+            <strong> Copy Join Link</strong><br />
+            <small>Copies the URL to your clipboard. Then share it with the participants.</small>
+          </button>
+          <button (click)="session!.reveal()" class="list-group-item list-group-item-action" [disabled]="cannotReveal()">
+            <i class="bi bi-eye"></i><strong> Reveal Votes</strong><br />
+            <small>Shows the result of votes despite not all participants having voted yet.</small>
+          </button>
+          <button (click)="session!.reset()" class="list-group-item list-group-item-action">
+            <i class="bi bi-arrow-clockwise"></i><strong> Reset Votes</strong><br />
+            <small>Clears votes as preparation for the next topic.</small>
+          </button>
+          <button (click)="session!.nudge()" class="list-group-item list-group-item-action">
+            <i class="bi bi-bell"></i><strong> Nudge Non-Voters</strong><br />
+            <small>Friendly reminder to all who haven't guessed so far that they should pick a guess now. Cool-down 30s.</small>
+          </button>
         </div>
       </div>
     </div>

@@ -75,7 +75,8 @@ export function handlePlayerInit(
     players.push({ ...msg.player, status: "connected", guess: null });
   }
 
-  socket.join(msg.sessionId);
+  // join session room and player individual room
+  socket.join([msg.sessionId, msg.sessionId + "#" + msg.player.name]);
 
   connectionState.pokerSessionId = msg.sessionId;
   connectionState.playerName = msg.player.name;

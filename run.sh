@@ -2,14 +2,13 @@
 
 # fail build script when any command fails and kill background processes on script failure
 set -e
-#trap 'sleep 5 && echo "Killing PIDs $(jobs -p)" && kill $(jobs -p)' ERR
 
 # configure application
 export NODE_ENV=production
 export SP_HOSTNAME=127.0.0.1
 export SP_PORT=4201
 export SP_CORS_ORIGIN=https://sp.rv-sys.de
-export SP_LOG_LEVEL=2
+export SP_LOG_LEVEL=3
 
 # change to dist folder relative to script location
 DIR="$(cd "$(dirname "$0")" && pwd)"

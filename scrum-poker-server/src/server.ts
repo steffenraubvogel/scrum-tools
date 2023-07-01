@@ -5,7 +5,7 @@ import crypto from "crypto";
 import cors from "cors";
 import { Server } from "socket.io";
 import { handleLeaderInit, handlePlayerInit } from "./event-handlers/init";
-import { handleLeaderReset, handleLeaderReveal } from "./event-handlers/leader";
+import { handleLeaderNudge, handleLeaderReset, handleLeaderReveal } from "./event-handlers/leader";
 import { handlePlayerUpdate, revealIfAllGuessersVoted } from "./event-handlers/player";
 import { ClientToServerEvents, ServerToClientEvents } from "./messages";
 import { ConnectionState, ServerState } from "./session";
@@ -121,13 +121,18 @@ socketio.on("connection", (socket) => {
     decorateEventHandling(() => handleLeaderReset(ack, serverState, connectionState, socket));
   });
 
+  socket.on("leaderNudge", (ack) => {
+    logEvent("leader-nudge");
+    decorateEventHandling(() => handleLeaderNudge(ack, serverState, connectionState, socket, socketio));
+  });
+
   socket.on("participantLeave", (ack) => {
     logEvent("participant-leave");
     decorateEventHandling(() => handleParticipantLeave(ack, serverState, connectionState, socket));
   });
 
   function logEvent(event: string, params?: any, sessionIdOverride?: string) {
-    logger.info("[" + (connectionState.pokerSessionId ?? sessionIdOverride) + "][" + socket.id + "] " + event);
+    logger.debug("[" + (connectionState.pokerSessionId ?? sessionIdOverride) + "][" + socket.id + "] " + event);
     if (params) {
       logger.trace("Message:", params);
     }

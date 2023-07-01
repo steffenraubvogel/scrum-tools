@@ -4,7 +4,7 @@ import { createLogger } from "../logging";
 const logger = createLogger("comm");
 
 export function disconnectWithError(errMsg: string, ack: (err: string) => void, socket: Socket) {
-  logger.info("[" + socket.id + "] ack with error: " + errMsg);
+  logger.warn("[" + socket.id + "] ack with error: " + errMsg);
   ack(errMsg);
   socket.disconnect();
 }
