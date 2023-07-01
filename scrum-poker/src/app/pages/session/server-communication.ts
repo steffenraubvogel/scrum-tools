@@ -1,6 +1,6 @@
 import { ClientToServerEvents, ServerToClientEvents } from "@backend/messages";
 import { PokerSession } from "@backend/session";
-import { ReplaySubject } from "rxjs";
+import { ReplaySubject, Subject } from "rxjs";
 import { io, Socket } from "socket.io-client";
 import { SessionSettingsService } from "src/app/services/session-settings.service";
 import { environment } from "src/environment/environment";
@@ -13,6 +13,7 @@ export class ServerCommunication {
     connected: boolean;
     state: "connected" | "connecting" | "failed";
   }>(1);
+  public nudged$ = new Subject<{}>();
 
   constructor(
     private readonly id: string,
@@ -40,6 +41,7 @@ export class ServerCommunication {
     // handle events
     this.socket.on("connect", this.onConnect.bind(this));
     this.socket.on("sessionUpdate", this.onSessionUpdate.bind(this));
+    this.socket.on("nudge", this.onNudge.bind(this));
     this.socket.on("disconnect", () => {
       console.log("disconnected");
     });
@@ -72,9 +74,19 @@ export class ServerCommunication {
   }
 
   private onSessionUpdate(newState: PokerSession) {
-    console.log("session-update: ", newState);
+    console.log("session-update"); //, newState); // do not make it too easy to view other's votes
     this.state = newState;
     this.state$.next(newState);
+  }
+
+  private onNudge() {
+    console.log("nudge received");
+    if (this.state?.state === "guessing") {
+      const me = this.state.players.find((p) => p.name === this.settingsService.settings.userName!);
+      if (me?.guess === null) {
+        this.nudged$.next({});
+      }
+    }
   }
 
   public reveal() {
@@ -83,6 +95,10 @@ export class ServerCommunication {
 
   public reset() {
     this.socket.emit("leaderReset", this.errorHandler);
+  }
+
+  public nudge() {
+    this.socket.emit("leaderNudge", this.errorHandler);
   }
 
   public guess(value: number) {

@@ -43,20 +43,39 @@
     <div class="col-12 col-sm-6" *ngIf="settingsService.settings.active === 'created'">
       <div class="sp-card sp-card-leader-actions">
         <h2>Moderator Actions</h2>
-        <div class="row g-3">
-          <div class="col-auto">
-            <button (click)="copyJoinLink()" class="btn btn-primary">
+
+        <div class="sp-leader-action-list">
+          <div class="sp-leader-action">
+            <button (click)="copyJoinLink()" class="btn btn-primary w-100">
               <span class="sp-copy-button-icon" [ngClass]="{ 'sp-success-button-icon': copied }"
                 ><i class="bi bi-share"></i><i class="bi bi-clipboard-check sp-icon-success"></i
               ></span>
-              Copy Join Link
+              Share
             </button>
           </div>
-          <div class="col-auto">
-            <button (click)="session!.reveal()" class="btn btn-primary" [disabled]="cannotReveal()"><i class="bi bi-eye"></i> Reveal Votes</button>
+          <div class="sp-leader-action-description">
+            <small>Copies the join-URL to your clipboard. Share it with the participants.</small>
           </div>
-          <div class="col-auto">
-            <button (click)="session!.reset()" class="btn btn-warning"><i class="bi bi-arrow-clockwise"></i> Reset Votes</button>
+          <div class="sp-leader-action-separator"></div>
+          <div class="sp-leader-action">
+            <button (click)="session!.reveal()" class="btn btn-primary w-100" [disabled]="cannotReveal()"><i class="bi bi-eye"></i> Reveal</button>
+          </div>
+          <div class="sp-leader-action-description">
+            <small>Shows the result of votes despite not all participants having voted yet.</small>
+          </div>
+          <div class="sp-leader-action-separator"></div>
+          <div class="sp-leader-action">
+            <button (click)="session!.reset()" class="btn btn-warning w-100"><i class="bi bi-arrow-clockwise"></i> Reset</button>
+          </div>
+          <div class="sp-leader-action-description">
+            <small>Clears votes as preparation for the next topic.</small>
+          </div>
+          <div class="sp-leader-action-separator"></div>
+          <div class="sp-leader-action">
+            <button (click)="nudge()" class="btn btn-primary w-100" [disabled]="cannotNudge()"><i class="bi bi-hand-index"></i> Nudge</button>
+          </div>
+          <div class="sp-leader-action-description">
+            <small>Friendly reminder to all who haven't guessed so far that they should pick a guess now. Cool-down 30s.</small>
           </div>
         </div>
       </div>
@@ -66,7 +85,7 @@
       <div class="sp-card sp-card-guesser-actions">
         <h2>Your Vote</h2>
         <p>Please choose your guess for the currently discussed story or topic:</p>
-        <div class="sp-guess-actions-container my-4 mx-auto">
+        <div class="sp-guess-actions-container my-4 mx-auto" [ngClass]="{ 'sp-guess-actions-nudge': nudging }">
           <div class="sp-aspect-ratio-1-to-1">
             <div class="sp-guess-actions-grid">
               <button

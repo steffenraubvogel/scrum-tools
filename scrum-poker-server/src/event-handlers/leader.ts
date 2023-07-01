@@ -1,6 +1,7 @@
-import { Socket } from "socket.io";
+import { Server, Socket } from "socket.io";
 import { ConnectionState, ServerState } from "../session";
 import { disconnectWithError } from "./common";
+import { ClientToServerEvents, ServerToClientEvents } from "../messages";
 
 export function handleLeaderReveal(ack: (err: string) => void, serverState: ServerState, connectionState: ConnectionState, socket: Socket) {
   const validationError = validateOperation(serverState, connectionState);
@@ -19,6 +20,29 @@ export function handleLeaderReset(ack: (err: string) => void, serverState: Serve
 
   serverState[connectionState.pokerSessionId!].state = "guessing";
   serverState[connectionState.pokerSessionId!].players.forEach((p) => (p.guess = null));
+}
+
+export function handleLeaderNudge(
+  ack: (err: string) => void,
+  serverState: ServerState,
+  connectionState: ConnectionState,
+  socket: Socket,
+  socketio: Server<ClientToServerEvents, ServerToClientEvents>
+) {
+  const validationError = validateOperation(serverState, connectionState);
+  if (validationError) {
+    return disconnectWithError(validationError, ack, socket);
+  }
+
+  // NOTE: throttling in case of abuse would be useful but the clients are already throttling on their own
+  // and other status updates could also be a problem; need to handle this in a central place
+
+  if (serverState[connectionState.pokerSessionId!].state === "guessing") {
+    const playersToNudge = serverState[connectionState.pokerSessionId!].players.filter((p) => p.guess === null);
+    for (let player of playersToNudge) {
+      socketio.to(connectionState.pokerSessionId! + "#" + player.name).emit("nudge");
+    }
+  }
 }
 
 function validateOperation(serverState: ServerState, connectionState: ConnectionState): string | null {

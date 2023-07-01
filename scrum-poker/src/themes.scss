@@ -54,34 +54,17 @@
   --bs-tertiary-bg: #{$body-tertiary-bg-dark};
   --bs-tertiary-bg-rgb: #{to-rgb($body-tertiary-bg-dark)};
 
-  --bs-emphasis-color: #{$emphasis-color-dark};
+  @each $color, $value in $theme-colors-text-dark {
+    --bs-#{$color}-text-emphasis: #{$value};
+  }
 
-  --bs-primary-text: #{$primary-text-dark};
-  --bs-secondary-text: #{$secondary-text-dark};
-  --bs-success-text: #{$success-text-dark};
-  --bs-info-text: #{$info-text-dark};
-  --bs-warning-text: #{$warning-text-dark};
-  --bs-danger-text: #{$danger-text-dark};
-  --bs-light-text: #{$light-text-dark};
-  --bs-dark-text: #{$dark-text-dark};
+  @each $color, $value in $theme-colors-bg-subtle-dark {
+    --bs-#{$color}-bg-subtle: #{$value};
+  }
 
-  --bs-primary-bg-subtle: #{$primary-bg-subtle-dark};
-  --bs-secondary-bg-subtle: #{$secondary-bg-subtle-dark};
-  --bs-success-bg-subtle: #{$success-bg-subtle-dark};
-  --bs-info-bg-subtle: #{$info-bg-subtle-dark};
-  --bs-warning-bg-subtle: #{$warning-bg-subtle-dark};
-  --bs-danger-bg-subtle: #{$danger-bg-subtle-dark};
-  --bs-light-bg-subtle: #{$light-bg-subtle-dark};
-  --bs-dark-bg-subtle: #{$dark-bg-subtle-dark};
-
-  --bs-primary-border-subtle: #{$primary-border-subtle-dark};
-  --bs-secondary-border-subtle: #{$secondary-border-subtle-dark};
-  --bs-success-border-subtle: #{$success-border-subtle-dark};
-  --bs-info-border-subtle: #{$info-border-subtle-dark};
-  --bs-warning-border-subtle: #{$warning-border-subtle-dark};
-  --bs-danger-border-subtle: #{$danger-border-subtle-dark};
-  --bs-light-border-subtle: #{$light-border-subtle-dark};
-  --bs-dark-border-subtle: #{$dark-border-subtle-dark};
+  @each $color, $value in $theme-colors-border-subtle-dark {
+    --bs-#{$color}-border-subtle: #{$value};
+  }
 
   --bs-heading-color: #{$headings-color-dark};
 
@@ -94,6 +77,15 @@
 
   --bs-border-color: #{$border-color-dark};
   --bs-border-color-translucent: #{$border-color-translucent-dark};
+
+  --bs-form-valid-color: #{$form-valid-color-dark};
+  --bs-form-valid-border-color: #{$form-valid-border-color-dark};
+  --bs-form-invalid-color: #{$form-invalid-color-dark};
+  --bs-form-invalid-border-color: #{$form-invalid-border-color-dark};
+
+  .table {
+    --bs-table-bg: transparent;
+  }
 
   // own overwrites for bootstrap
   .btn {
@@ -155,6 +147,9 @@
     color: #eef6ff;
     .list-group-item {
       color: #eef6ff;
+    }
+    .table {
+      --bs-table-color: #eef6ff;
     }
 
     background: linear-gradient(160deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
