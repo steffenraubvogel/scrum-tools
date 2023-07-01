@@ -20,7 +20,7 @@ echo "Starting application on $(date)"
 
 runApplication()
 {
-    node --max-old-space-size=128 bundle.js &
+    node --max-old-space-size=128 bundle.js >> logs/server.log &
     APP_PID=$!
 }
 
