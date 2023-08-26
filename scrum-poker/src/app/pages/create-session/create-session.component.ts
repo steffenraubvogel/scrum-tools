@@ -33,20 +33,39 @@ export class CreateSessionComponent {
         userName: val.userName,
         create: {
           sessionName: val.sessionName ?? null,
+          lastSessionId: this.settingsService.settings.create?.lastSessionId ?? null,
         },
         active: "created",
       });
 
+      const params: { [param: string]: string } = {};
+      if (this.settingsService.settings.create?.lastSessionId) {
+        // the server will try to use this session ID if available
+        params["lastId"] = this.settingsService.settings.create?.lastSessionId;
+      }
+
       this.submitting = true;
-      this.httpClient.get(`${environment.backend.api}/get-session-id`).pipe(finalize(() => this.submitting = false)).subscribe({
-        next: (sessionId) => {
-          this.router.navigate(["/session", sessionId]);
-        },
-        error: (err) => {
-          console.error("Couldn't get a new session ID", err);
-          this.router.navigate(["/error"]);
-        }
-      });
+      this.httpClient
+        .get<string>(`${environment.backend.api}/get-session-id`, { params })
+        .pipe(finalize(() => (this.submitting = false)))
+        .subscribe({
+          next: (sessionId) => {
+            this.router.navigate(["/session", sessionId]);
+
+            // remember the session ID for next time to have durable URLs for join
+            // this is for convenience of the users
+            this.settingsService.remember({
+              create: {
+                ...this.settingsService.settings.create!,
+                lastSessionId: sessionId,
+              },
+            });
+          },
+          error: (err) => {
+            console.error("Couldn't get a new session ID", err);
+            this.router.navigate(["/error"]);
+          },
+        });
     }
   }
 }

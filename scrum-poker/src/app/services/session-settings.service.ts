@@ -6,6 +6,7 @@ export type SessionSettings = {
   userName: string | null;
   create: {
     sessionName: string | null;
+    lastSessionId: string | null;
   } | null;
   join: {
     role: "guesser" | "observer" | null;
@@ -43,6 +44,6 @@ export class SessionSettingsService {
       ...this._settings,
       ...settings,
     };
-    localStorage.setItem(LOCAL_STORAGE_CREATE_INPUTS, JSON.stringify(settings));
+    localStorage.setItem(LOCAL_STORAGE_CREATE_INPUTS, JSON.stringify(this.settings));
   }
 }

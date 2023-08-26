@@ -40,12 +40,17 @@ application.use(express.static("public"));
 
 application.get("/get-session-id", (req, res) => {
   let sessionId: string;
-  do {
-    const sessionNumber = crypto.randomInt(Math.pow(2, 16));
-    sessionId = sessionNumber.toString(16);
-  } while (serverState[sessionId]);
+  const lastId = req.query.lastId;
+  if (typeof lastId === "string" && lastId && lastId.length <= 16 && !serverState[lastId]) {
+    sessionId = lastId;
+  } else {
+    do {
+      const sessionNumber = crypto.randomInt(Math.pow(2, 16));
+      sessionId = sessionNumber.toString(16);
+    } while (serverState[sessionId]);
+  }
 
-  logger.info("Generated session ID: " + sessionId);
+  logger.info("Determined session ID: " + sessionId);
   res.json(sessionId);
 });
 
