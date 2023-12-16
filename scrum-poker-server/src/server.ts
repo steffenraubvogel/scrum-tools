@@ -30,6 +30,8 @@ const socketio = new Server<ClientToServerEvents, ServerToClientEvents>(httpServ
 const logger = createLogger("main");
 const serverState: ServerState = {};
 
+logger.info(`Starting application (arch=${process.arch}; platform=${process.platform}; pid=${process.pid}; nodejs version=${process.version})`);
+
 application.use(compression());
 application.use(
   cors({
