@@ -1,15 +1,13 @@
-import { Injectable } from "@angular/core";
-import { Router, UrlTree } from "@angular/router";
+import { inject } from "@angular/core";
+import { CanActivateFn, Router } from "@angular/router";
 import { SessionSettingsService } from "../services/session-settings.service";
 
-@Injectable()
-export class SessionGuard {
-  constructor(private readonly router: Router, private readonly settingsService: SessionSettingsService) {}
+export const sessionGuard = (() => {
+  const settingsService = inject(SessionSettingsService);
+  const router = inject(Router);
 
-  canActivate(): boolean | UrlTree {
-    if (!this.settingsService.settings.active) {
-      return this.router.createUrlTree(["/"]);
-    }
-    return true;
+  if (!settingsService.settings.active) {
+    return router.createUrlTree(["/"]);
   }
-}
+  return true;
+}) satisfies CanActivateFn;
