@@ -64,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "scrum-poker:build:production"
+              "buildTarget": "scrum-poker:build:production"
             },
             "development": {
-              "browserTarget": "scrum-poker:build:development"
+              "buildTarget": "scrum-poker:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -75,7 +75,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "scrum-poker:build"
+            "buildTarget": "scrum-poker:build"
           }
         },
         "test": {
