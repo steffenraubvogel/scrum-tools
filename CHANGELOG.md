@@ -2,8 +2,9 @@
 
 ## 1.0
 
-- improvement: hide guess results when a new guesser joins
 - started version change log
+- improvement: hide guess results when a new guesser joins
+- angular upgrade to latest stable (17)
 
 ## 0.8 and before
 
