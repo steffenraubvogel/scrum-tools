@@ -56,11 +56,12 @@ export function handlePlayerInit(
   }
 
   // merge into players
-  if (!serverState[msg.sessionId]) {
+  const sessionState = serverState[msg.sessionId];
+  if (!sessionState) {
     return disconnectWithError("Poker session does not exist.", ack, socket);
   }
 
-  const players = serverState[msg.sessionId].players;
+  const players = sessionState.players;
   const existingPlayer = players.find((p) => p.name === msg.player.name);
   if (existingPlayer) {
     if (existingPlayer.type === "leader") {
@@ -73,6 +74,10 @@ export function handlePlayerInit(
   } else {
     // add player
     players.push({ ...msg.player, status: "connected", guess: null });
+
+    // hide guesses if already revealed: if a guesser joins late, this gives them
+    // a chance to vote without seeing other's votes
+    sessionState.state = "guessing";
   }
 
   // join session room and player individual room
