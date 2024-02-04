@@ -77,7 +77,9 @@ export function handlePlayerInit(
 
     // hide guesses if already revealed: if a guesser joins late, this gives them
     // a chance to vote without seeing other's votes
-    sessionState.state = "guessing";
+    if (msg.player.type === "guesser") {
+      sessionState.state = "guessing";
+    }
   }
 
   // join session room and player individual room
