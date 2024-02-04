@@ -1,7 +1,7 @@
 @use "sass:map";
 @use "sass:math";
-@import "../node_modules/bootstrap/scss/bootstrap";
-@import "../node_modules/bootstrap-icons/font/bootstrap-icons.scss";
+@import "bootstrap/scss/bootstrap"; /* using @import "bootstrap" would import CSS instead of SCSS */
+@import "bootstrap-icons";
 @import "themes.scss";
 
 .container {

@@ -37,6 +37,6 @@ npm run bundle
 # merge the build output
 cd ..
 mkdir -p dist/public
-mv scrum-poker/dist/scrum-poker/* dist/public
+mv scrum-poker/dist/scrum-poker/browser/* dist/public
 mv scrum-poker-server/dist/bundle.js dist
 touch dist/restart-on-modified.txt
