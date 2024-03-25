@@ -41,6 +41,11 @@ Use prettier and format on save.
 2. Start the frontend in folder scrum-poker: `npm run start`
 3. Open http://localhost:4200 in browser.
 
+### Testing
+
+After starting the application, you can run Playwright end-to-end tests with `npm run e2e`. To develop new tests,
+call `npm run e2e:dev` instead which will open the Playwright UI.
+
 ## Deployment
 
 In the project root, run the _build.sh_ which builds and assembles the whole application to _dist_ folder.

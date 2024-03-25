@@ -6,7 +6,10 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "e2e": "playwright test",
+    "e2e:dev": "playwright test --ui",
+    "e2e:report": "playwright show-report"
   },
   "private": true,
   "dependencies": {
@@ -29,7 +32,10 @@
     "@angular-devkit/build-angular": "^17.1.2",
     "@angular/cli": "~17.1.2",
     "@angular/compiler-cli": "^17.1.2",
+    "@playwright/test": "^1.42.1",
     "@types/bootstrap": "^5.2.6",
+    "@types/node": "^20.11.30",
+    "monocart-coverage-reports": "^2.7.7",
     "typescript": "~5.3.3"
   }
 }
