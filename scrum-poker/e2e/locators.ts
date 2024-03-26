@@ -59,4 +59,29 @@ export class Locators {
       },
     };
   }
+
+  public get errors() {
+    return {
+      general: {
+        title: this.page.getByRole("heading", { name: "Whoops" }),
+      },
+      connectionLost: {
+        title: this.page.getByRole("heading", { name: "Connection lost" }),
+      },
+    };
+  }
+
+  public get legal() {
+    return {
+      email: this.page.locator('css=a[href^="mailto"]'),
+    };
+  }
+
+  public get everywhere() {
+    return {
+      footer: {
+        legal: this.page.getByRole("link", { name: "legal" }),
+      },
+    };
+  }
 }

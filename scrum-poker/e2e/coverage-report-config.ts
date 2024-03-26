@@ -7,5 +7,5 @@ export default {
   outputDir: "./coverage-reports",
   reports: ["v8", "console-summary"],
   entryFilter: (entry) => entry.url.indexOf("main.js") !== -1,
-  sourceFilter: (sourcePath) => sourcePath.search(/src\//) !== -1,
+  sourceFilter: (sourcePath) => sourcePath.search(/src\//) !== -1 && sourcePath.search(/quick-test/) === -1,
 } satisfies CoverageReportOptions;
