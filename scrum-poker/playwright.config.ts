@@ -5,6 +5,7 @@ import { defineConfig, devices } from "@playwright/test";
  */
 export default defineConfig({
   testDir: "./e2e",
+  snapshotPathTemplate: "{testDir}/screenshots/{arg}{ext}",
   globalSetup: require.resolve("./e2e/global-setup.ts"),
   globalTeardown: require.resolve("./e2e/global-teardown.ts"),
   fullyParallel: false,

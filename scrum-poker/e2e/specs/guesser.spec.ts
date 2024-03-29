@@ -5,8 +5,12 @@ import test from "../fixtures";
 test.describe("guesser", () => {
   test("voting first", async ({ helper }) => {
     const session = await helper.prepareSession();
-    const { locators: locators1 } = await helper.joinSession(session.joinUrl, "guesser1");
+    const { locators: locators1, page } = await helper.joinSession(session.joinUrl, "guesser1");
     const { locators: locators2 } = await helper.joinSession(session.joinUrl, "guesser2");
+
+    await expect(locators1.session.participantsOwnPlayer).toBeVisible();
+    await expect(locators2.session.participantsOwnPlayer).toBeVisible();
+    await helper.visualComparison(page);
 
     // guesser 2: vote 1 and check updated
     await locators2.session.guess(1).click();
@@ -34,7 +38,7 @@ test.describe("guesser", () => {
 
   test("voting last", async ({ helper }) => {
     const session = await helper.prepareSession();
-    const { locators: locators1 } = await helper.joinSession(session.joinUrl, "guesser1");
+    const { locators: locators1, page } = await helper.joinSession(session.joinUrl, "guesser1");
     const { locators: locators2 } = await helper.joinSession(session.joinUrl, "guesser2");
 
     await expect(locators1.session.result.table).not.toBeVisible();
@@ -69,5 +73,7 @@ test.describe("guesser", () => {
     for (let loc of [locators1, locators2]) {
       await checker(loc);
     }
+
+    await helper.visualComparison(page);
   });
 });

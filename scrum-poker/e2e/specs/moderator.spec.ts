@@ -3,9 +3,9 @@ import test from "../fixtures";
 
 test.describe("moderator", () => {
   test("reset", async ({ locators, helper }) => {
-    const session = await helper.prepareSession("Mod1", true);
-    const { locators: locators1 } = await helper.joinSession(session.joinUrl, "guesser1");
-    const { locators: locators2 } = await helper.joinSession(session.joinUrl, "guesser2");
+    const { joinUrl, page } = await helper.prepareSession("Mod1", true);
+    const { locators: locators1 } = await helper.joinSession(joinUrl, "guesser1");
+    const { locators: locators2 } = await helper.joinSession(joinUrl, "guesser2");
 
     await locators1.session.guess(1).click();
     await locators2.session.guess(1).click();
@@ -23,12 +23,14 @@ test.describe("moderator", () => {
       const statusStack1 = helper.stackComponent(statusGuesser1.stack);
       await statusStack1.expectActive(statusGuesser1.notVotedSoFar);
     }
+
+    await helper.visualComparison(page);
   });
 
   test("reveal", async ({ locators, helper }) => {
-    const session = await helper.prepareSession("Mod1", true);
-    const { locators: locators1 } = await helper.joinSession(session.joinUrl, "guesser1");
-    await helper.joinSession(session.joinUrl, "guesser2");
+    const { joinUrl } = await helper.prepareSession("Mod1", true);
+    const { locators: locators1 } = await helper.joinSession(joinUrl, "guesser1");
+    await helper.joinSession(joinUrl, "guesser2");
 
     await locators1.session.guess(1).click();
 

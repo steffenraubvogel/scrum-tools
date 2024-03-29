@@ -11,8 +11,11 @@ test.describe("create session", () => {
     await expect(locators.createSession.yourNameValidation).toBeVisible();
   });
 
-  test("with valid inputs", async ({ locators, page }) => {
+  test("with valid inputs", async ({ helper, locators, page }) => {
     await page.goto("/");
+
+    await helper.visualComparison();
+
     await locators.createSession.yourName.fill("Testuser");
     await locators.createSession.sessionName.fill("Testsession1");
     await locators.createSession.submit.click();
