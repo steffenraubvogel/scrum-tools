@@ -111,7 +111,44 @@
   </div>
 
   <div class="mt-4 sp-card">
-    <h2>Result</h2>
+    <div class="d-flex">
+      <h2 class="flex-grow-1">Result</h2>
+      <div class="dropdown">
+        <button
+          class="btn btn-sm dropdown-toggle"
+          [class.btn-dark]="isDarkTheme()"
+          [class.btn-light]="!isDarkTheme()"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <i class="bi bi-gear"></i>
+        </button>
+        <ul class="dropdown-menu">
+          <li><h3 class="dropdown-header">Chart</h3></li>
+          <li>
+            <button
+              class="dropdown-item"
+              [class.active]="settingsService.settings.presentation.chart === 'bar'"
+              type="button"
+              (click)="pickChart('bar')"
+            >
+              <i class="bi bi-bar-chart-line"></i> Bar Chart
+            </button>
+          </li>
+          <li>
+            <button
+              class="dropdown-item"
+              [class.active]="settingsService.settings.presentation.chart === 'radial'"
+              type="button"
+              (click)="pickChart('radial')"
+            >
+              <i class="bi bi-pie-chart"></i> Pie Chart
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
     <ng-container *ngIf="session!.state!.state === 'revealed'; else notYetRevealedResultTemplate">
       <p *ngIf="!isConsesus()">The average guess is ⌀ {{ getAverageGuess() }}. Discuss and argue your votes.</p>
       <p *ngIf="isConsesus()">Woohoo, consensus! <i class="bi bi-emoji-smile"></i></p>
@@ -132,13 +169,21 @@
             </tbody>
           </table>
         </div>
-        <div class="col-12 col-sm-6 sp-chart-votes-container">
+        <div *ngIf="settingsService.settings.presentation.chart === 'bar'" class="col-12 col-sm-6 sp-bar-chart-votes-container">
           <app-bar-chart
             xAxisLabel="Guesses"
             yAxisLabel="Vote Counts"
             [yAxisMaxValue]="playersByRole('guesser').length"
             [data]="chartData"
           ></app-bar-chart>
+        </div>
+        <div *ngIf="settingsService.settings.presentation.chart === 'radial'" class="col-12 col-sm-6 sp-radial-chart-votes-container">
+          <app-radial-chart
+            axisLabel="Vote Counts"
+            [axisMaxValue]="playersByRole('guesser').length"
+            [allCategories]="chartCategories"
+            [data]="chartData"
+          ></app-radial-chart>
         </div>
       </div>
     </ng-container>

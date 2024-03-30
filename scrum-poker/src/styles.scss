@@ -46,7 +46,8 @@ h2 {
   margin-left: 2rem;
 }
 
-.sp-chart-votes-container {
+.sp-bar-chart-votes-container,
+.sp-radial-chart-votes-container {
   --sp-chart-color-sat: 60%;
   --sp-chart-color-li: 50%;
   $guesses: 1, 2, 3, 5, 8, 13, 21;

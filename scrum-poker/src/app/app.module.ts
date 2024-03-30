@@ -9,6 +9,7 @@ import { BarChartComponent } from "./components/bar-chart/bar-chart.component";
 import { FooterComponent } from "./components/footer/footer.component";
 import { HeaderComponent } from "./components/header/header.component";
 import { LoadingComponent } from "./components/loading/loading.component";
+import { RadialChartComponent } from "./components/radial-chart/radial-chart.component";
 import { StackChildDirective, StackComponent } from "./components/stack/stack.component";
 import { ObfuscateDirective } from "./directives/unobfuscate.directive";
 import { ConnectionErrorComponent } from "./pages/connection-error/connection-error.component";
@@ -32,6 +33,7 @@ import { SessionSettingsService } from "./services/session-settings.service";
     FooterComponent,
     HeaderComponent,
     BarChartComponent,
+    RadialChartComponent,
     QuickTestComponent,
     LegalInfoComponent,
     ObfuscateDirective,
