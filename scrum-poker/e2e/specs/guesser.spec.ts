@@ -42,7 +42,7 @@ test.describe("guesser", () => {
     const { locators: locators2 } = await helper.joinSession(session.joinUrl, "guesser2");
 
     await expect(locators1.session.result.table).not.toBeVisible();
-    await expect(locators1.session.result.chart).not.toBeVisible();
+    await expect(locators1.session.result.barChart.chart).not.toBeVisible();
 
     // both guesser: vote 1 and check updated
     await locators1.session.guess(1).click();
@@ -63,17 +63,25 @@ test.describe("guesser", () => {
       await statusStack2.expectText(statusGuesser2.voteBadge, "1");
 
       await expect(locators.session.result.table).toBeVisible();
-      await expect(locators.session.result.chart).toBeVisible();
-      await expect(locators.session.result.chartXAxisValue).toHaveCount(1);
-      await expect(locators.session.result.chartXAxisValue).toHaveText("1");
-      await expect(locators.session.result.chartYAxisValue).toHaveCount(3);
-      await expect(locators.session.result.chartYAxisValue.filter({ hasText: "2" })).toBeVisible();
+      await expect(locators.session.result.barChart.chart).toBeVisible(); // bar chart active by default
+      await expect(locators.session.result.barChart.chartXAxisValue).toHaveCount(1);
+      await expect(locators.session.result.barChart.chartXAxisValue).toHaveText("1");
+      await expect(locators.session.result.barChart.chartYAxisValue).toHaveCount(3);
+      await expect(locators.session.result.barChart.chartYAxisValue.filter({ hasText: "2" })).toBeVisible();
     };
 
     for (let loc of [locators1, locators2]) {
       await checker(loc);
     }
 
+    await helper.visualComparison(page);
+
+    // switch chart to radial and check
+    await locators1.session.result.preferences.dropdown.click();
+    await expect(locators1.session.result.preferences.barChart).toHaveClass(/active/);
+    await locators1.session.result.preferences.radialChart.click();
+
+    await expect(locators1.session.result.radialChart.chart).toBeVisible();
     await helper.visualComparison(page);
   });
 });

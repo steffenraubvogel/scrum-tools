@@ -12,6 +12,9 @@ export type SessionSettings = {
     role: "guesser" | "observer" | null;
   } | null;
   active: "created" | "joined" | null;
+  presentation: {
+    chart: "bar" | "radial";
+  };
 };
 
 @Injectable()
@@ -21,13 +24,16 @@ export class SessionSettingsService {
     create: null,
     join: null,
     active: null,
+    presentation: {
+      chart: "bar",
+    },
   };
 
   constructor() {
     const prevInputs = localStorage.getItem(LOCAL_STORAGE_CREATE_INPUTS);
     if (prevInputs) {
       try {
-        this._settings = JSON.parse(prevInputs);
+        this._settings = { ...this._settings, ...JSON.parse(prevInputs) };
         this._settings.active = null;
       } catch (err) {
         console.warn("Unable to restore previous inputs", err);

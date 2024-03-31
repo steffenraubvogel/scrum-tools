@@ -2,7 +2,7 @@ import { Component, HostListener, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Player } from "@backend/session";
 import { Subscription, filter, map, tap, throttleTime } from "rxjs";
-import { ChartDataPoint } from "src/app/components/bar-chart/bar-chart.component";
+import { ChartDataPoint } from "src/app/components/chart-commons";
 import { SessionSettingsService } from "src/app/services/session-settings.service";
 import { ServerCommunication } from "./server-communication";
 
@@ -28,6 +28,9 @@ export class SessionComponent implements OnInit, OnDestroy {
   ];
   public playersGuess: number | null = null;
   public chartData: ChartDataPoint[] = [];
+  public chartCategories = this.guessOptions.map((opt) =>
+    opt.value === -1 ? { name: "?", color: "var(--sp-chart-color-abstained)" } : { name: `${opt.value}`, color: `var(--sp-chart-color-${opt.value})` }
+  );
   public copied: boolean = false;
   public nudging: boolean = false;
   public nudgeCooldown: boolean = false;
@@ -218,5 +221,18 @@ export class SessionComponent implements OnInit, OnDestroy {
   private handleErrorFromServer(err: string) {
     console.error("Server responded with an error:", err);
     this.router.navigate(["/error"], { skipLocationChange: true });
+  }
+
+  public isDarkTheme() {
+    const theme = document.documentElement.getAttribute("data-bs-theme");
+    return theme && theme.includes("dark");
+  }
+
+  public pickChart(type: "bar" | "radial") {
+    this.settingsService.remember({
+      presentation: {
+        chart: type,
+      },
+    });
   }
 }

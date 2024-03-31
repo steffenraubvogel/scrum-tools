@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.2
+
+- added new radial chart alternative for votes visualization
+
 ## 1.1
 
 - added e2e tests with Playwright (and coverage)

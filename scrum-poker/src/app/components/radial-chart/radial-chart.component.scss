@@ -1,0 +1,51 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.sp-radial-chart-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  svg {
+    height: 100%;
+
+    text {
+      fill: var(--bs-body-color);
+    }
+  }
+}
+
+.sp-radial-chart-arc {
+  transition-property: transform, opacity;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+
+  > path {
+    transition-property: transform, opacity;
+    transition-duration: 0.15s;
+    transition-timing-function: ease-in-out;
+    transform: scale(1);
+    opacity: 1;
+
+    animation: 0.3s ease-in-out grow-scale-arc both;
+
+    &:hover {
+      transform: scale(1.05);
+      opacity: 0.85;
+    }
+  }
+}
+
+@keyframes grow-scale-arc {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

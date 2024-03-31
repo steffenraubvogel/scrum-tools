@@ -53,9 +53,19 @@ export class Locators {
       },
       result: {
         table: this.page.locator("css=table.table"),
-        chart: this.page.locator("css=.sp-bar-chart-container"),
-        chartXAxisValue: this.page.locator("css=.sp-bar-chart-x-axis-value"),
-        chartYAxisValue: this.page.locator("css=.sp-bar-chart-y-axis-value"),
+        preferences: {
+          dropdown: this.page.locator("css=.sp-card button.dropdown-toggle"),
+          barChart: this.page.locator("css=button.dropdown-item", { hasText: "Bar" }),
+          radialChart: this.page.locator("css=button.dropdown-item", { hasText: "Pie" }),
+        },
+        barChart: {
+          chart: this.page.locator("css=.sp-bar-chart-container"),
+          chartXAxisValue: this.page.locator("css=.sp-bar-chart-x-axis-value"),
+          chartYAxisValue: this.page.locator("css=.sp-bar-chart-y-axis-value"),
+        },
+        radialChart: {
+          chart: this.page.locator("css=.sp-radial-chart-container"),
+        },
       },
     };
   }

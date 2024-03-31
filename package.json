@@ -6,7 +6,5 @@
     "start": "sh run.sh"
   },
   "devDependencies": {},
-  "dependencies": {
-    "@angular/cli": "^15.2.4"
-  }
+  "dependencies": {}
 }
