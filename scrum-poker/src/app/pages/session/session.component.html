@@ -124,7 +124,7 @@
         >
           <i class="bi bi-gear"></i>
         </button>
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu dropdown-menu-end">
           <li><h3 class="dropdown-header">Chart</h3></li>
           <li>
             <button
@@ -153,7 +153,7 @@
       <p *ngIf="!isConsesus()">The average guess is ⌀ {{ getAverageGuess() }}. Discuss and argue your votes.</p>
       <p *ngIf="isConsesus()">Woohoo, consensus! <i class="bi bi-emoji-smile"></i></p>
       <div class="row g-3">
-        <div class="col-12 col-sm-6">
+        <div class="col-12 col-sm-5">
           <table class="table">
             <thead>
               <tr>
@@ -169,7 +169,7 @@
             </tbody>
           </table>
         </div>
-        <div *ngIf="settingsService.settings.presentation.chart === 'bar'" class="col-12 col-sm-6 sp-bar-chart-votes-container">
+        <div *ngIf="settingsService.settings.presentation.chart === 'bar'" class="col-12 col-sm-7 sp-bar-chart-votes-container">
           <app-bar-chart
             xAxisLabel="Guesses"
             yAxisLabel="Vote Counts"
@@ -177,7 +177,7 @@
             [data]="chartData"
           ></app-bar-chart>
         </div>
-        <div *ngIf="settingsService.settings.presentation.chart === 'radial'" class="col-12 col-sm-6 sp-radial-chart-votes-container">
+        <div *ngIf="settingsService.settings.presentation.chart === 'radial'" class="col-12 col-sm-7 sp-radial-chart-votes-container">
           <app-radial-chart
             axisLabel="Vote Counts"
             [axisMaxValue]="playersByRole('guesser').length"

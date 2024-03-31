@@ -11,6 +11,10 @@
 
   svg {
     height: 100%;
+
+    text {
+      fill: var(--bs-body-color);
+    }
   }
 }
 
@@ -26,9 +30,22 @@
     transform: scale(1);
     opacity: 1;
 
+    animation: 0.3s ease-in-out grow-scale-arc both;
+
     &:hover {
       transform: scale(1.05);
       opacity: 0.85;
     }
+  }
+}
+
+@keyframes grow-scale-arc {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
   }
 }
