@@ -30,7 +30,7 @@
     transform: scale(1);
     opacity: 1;
 
-    animation: 0.3s ease-in-out grow-scale-arc both;
+    animation: 0.3s ease-in-out grow-scale-arc none;
 
     &:hover {
       transform: scale(1.05);
@@ -42,10 +42,10 @@
 @keyframes grow-scale-arc {
   0% {
     transform: scale(0);
-    opacity: 0;
+    fill-opacity: 0;
   }
   100% {
     transform: scale(1);
-    opacity: 1;
+    fill-opacity: 1;
   }
 }
