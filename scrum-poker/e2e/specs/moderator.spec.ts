@@ -11,12 +11,12 @@ test.describe("moderator", () => {
     await locators2.session.guess(1).click();
 
     await expect(locators.session.result.table).toBeVisible();
-    await expect(locators.session.result.chart).toBeVisible();
+    await expect(locators.session.result.barChart.chart).toBeVisible();
 
     // reset and check updated
     await locators.session.actions.reset.click();
     await expect(locators.session.result.table).not.toBeVisible();
-    await expect(locators.session.result.chart).not.toBeVisible();
+    await expect(locators.session.result.barChart.chart).not.toBeVisible();
 
     for (let g of ["guesser1", "guesser2"]) {
       const statusGuesser1 = locators.session.participantsPlayerStatus(g);
@@ -35,12 +35,12 @@ test.describe("moderator", () => {
     await locators1.session.guess(1).click();
 
     await expect(locators.session.result.table).not.toBeVisible();
-    await expect(locators.session.result.chart).not.toBeVisible();
+    await expect(locators.session.result.barChart.chart).not.toBeVisible();
 
     // reveal and check updated
     await locators.session.actions.reveal.click();
     await expect(locators.session.result.table).toBeVisible();
-    await expect(locators.session.result.chart).toBeVisible();
+    await expect(locators.session.result.barChart.chart).toBeVisible();
 
     const statusGuesser1 = locators.session.participantsPlayerStatus("guesser1");
     const statusStack1 = helper.stackComponent(statusGuesser1.stack);

@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3
+
+- upgrade to Angular v18
+- update frontend and server dependencies
+- masked application version from visual comparison in e2e tests
+
 ## 1.2
 
 - added new radial chart alternative for votes visualization

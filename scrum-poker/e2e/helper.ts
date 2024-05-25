@@ -64,6 +64,7 @@ export class TestHelper {
 
     await expect(p).toHaveScreenshot({
       fullPage: true,
+      mask: [p.locator("css=#version-info")],
     });
   }
 }

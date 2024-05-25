@@ -1,4 +1,4 @@
-import { HttpClientModule } from "@angular/common/http";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
@@ -40,8 +40,8 @@ import { SessionSettingsService } from "./services/session-settings.service";
     StackComponent,
     StackChildDirective,
   ],
-  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, ReactiveFormsModule, HttpClientModule],
-  providers: [SessionSettingsService],
   bootstrap: [AppComponent],
+  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, ReactiveFormsModule],
+  providers: [SessionSettingsService, provideHttpClient(withInterceptorsFromDi())],
 })
 export class AppModule {}
