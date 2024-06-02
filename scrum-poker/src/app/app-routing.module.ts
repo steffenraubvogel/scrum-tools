@@ -18,6 +18,7 @@ const routes: Routes = [
     canActivate: [sessionGuard],
   },
   { path: "join/:id", component: JoinSessionComponent },
+  { path: "wheel", loadChildren: () => import("./pages/wheel/wheel.component").then((m) => m.ROUTES) },
   { path: "legal", component: LegalInfoComponent },
   { path: "error", component: ErrorComponent },
   { path: "connection-error", component: ConnectionErrorComponent },
