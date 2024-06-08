@@ -1,76 +1,222 @@
 <h1>Wheel of Names</h1>
 
-<table class="table table-hover align-middle">
-  <thead>
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Active</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (item of items; track item.name) {
-    <tr>
-      <td>{{ item.name }}</td>
-      <td>
-        <input class="form-check-input" type="checkbox" [(ngModel)]="item.active" />
-      </td>
-      <td>
-        <button class="btn btn-primary btn-sm" type="button" (click)="removeItem(item)">Remove</button>
-      </td>
-    </tr>
-    } @empty {
-    <tr>
-      <td colspan="3">-</td>
-    </tr>
-    }
-  </tbody>
-</table>
+<div class="accordion" id="accordion-names">
+  <div class="accordion-item">
+    <div class="accordion-header">
+      <button
+        class="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#accordion-item-1"
+        aria-expanded="false"
+        aria-controls="accordion-item-1"
+      >
+        Configure Names
+      </button>
+    </div>
+    <div id="accordion-item-1" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+      <div class="accordion-body">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Color</th>
+              <th scope="col">Active</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of items; track item.name) {
+            <tr>
+              <td>{{ item.name }}</td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i
+                      class="bi bi-brush-fill"
+                      [ngStyle]="{
+                        color: nameColor(item.color)
+                      }"
+                    ></i>
+                  </button>
+                  <div class="dropdown-menu p-2">
+                    <div class="sp-color-matrix">
+                      @for (hue of colors; track hue) {
+                      <button
+                        class="btn"
+                        type="button"
+                        [ngStyle]="{
+                          'background-color': nameColor(hue)
+                        }"
+                        (click)="pickColor(item, hue)"
+                      ></button>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <input class="form-check-input" type="checkbox" [(ngModel)]="item.active" />
+              </td>
+              <td>
+                <button
+                  class="btn btn-outline-secondary btn-sm"
+                  type="button"
+                  (click)="prepareEditItem(item)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#name-dialog"
+                >
+                  <i class="bi bi-pencil"></i>
+                </button>
+                &nbsp;
+                <button class="btn btn-outline-secondary btn-sm" type="button" (click)="removeItem(item)"><i class="bi bi-trash"></i></button>
+              </td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="3">-</td>
+            </tr>
+            }
+          </tbody>
+        </table>
 
-<button class="btn btn-primary" type="button" (click)="addItem()">Add Name</button>
+        <button class="btn btn-primary" type="button" (click)="prepareAddItem()" data-bs-toggle="modal" data-bs-target="#name-dialog">
+          Add Name
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 @if (effectiveItems.length > 1) {
-<div class="wheel-container">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 180 120">
-    @for (item of effectiveItems; track item.name; let idx = $index) {
+<div class="wheel-container d-flex justify-content-center">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 120 120">
+    <!-- wheel border -->
+    <filter id="borderFilters">
+      <feDropShadow dx="2" dy="2" stdDeviation="2" flood-opacity="0.25" />
+    </filter>
+    <g filter="url(#borderFilters)">
+      <circle cy="50" r="51" cx="50" fill="grey" stroke="black" stroke-width="0"></circle>
+    </g>
+
     <g
-      stroke="black"
-      stroke-width="0.25"
-      [attr.fill]="'hsl(' + item.color + ', 70%, 50%)'"
+      id="wheel-group"
+      transform-origin="50 50"
       [ngStyle]="{
+        transform: 'rotate(' + targetRotation + 'deg)',
+        '--rotation-duration': rotationDuration + 's'
+      }"
+    >
+      @for (item of effectiveItems; track item.name; let idx = $index) {
+      <!-- arc -->
+      <g
+        stroke="black"
+        stroke-width="0"
+        [attr.fill]="nameColor(item.color)"
+        [ngStyle]="{
         'transform': 'rotate(' + (360 / effectiveItems.length * idx) + 'deg)',
       }"
-      transform-origin="50 50"
-      class="sp-radial-chart-arc"
-    >
-      <path
-        attr.d="M 50 50 L 50 0 A 50 50 0 0 1 {{ 50 + math.sin((2 * math.PI) / this.effectiveItems.length) * 50 }} {{
-          50 - math.cos((2 * math.PI) / this.effectiveItems.length) * 50
-        }} Z"
         transform-origin="50 50"
-      ></path>
-      <title>{{ item.name }}</title>
-    </g>
-
-    <g [ngStyle]="{'transform': 'rotate(' + (360 / effectiveItems.length * (idx + 0.5)) + 'deg)',}" transform-origin="50 50">
-      <text
-        [attr.x]="50"
-        [attr.y]="5"
-        style="font-size: 8px"
-        [attr.stroke]="'hsl(' + item.color + ', 70%, 25%)'"
-        stroke-width="0.2"
-        fill="white"
-        text-anchor="end"
-        dominant-baseline="middle"
-        transform-origin="50 5"
-        transform="rotate(-90)"
+        class="sp-radial-chart-arc"
       >
-        {{ item.name }}
-      </text>
-    </g>
-    }
+        <path
+          attr.d="M 50 50 L 50 0 A 50 50 0 0 1 {{ 50 + math.sin((2 * math.PI) / this.effectiveItems.length) * 50 }} {{
+            50 - math.cos((2 * math.PI) / this.effectiveItems.length) * 50
+          }} Z"
+          transform-origin="50 50"
+        ></path>
+        <title>{{ item.name }}</title>
+      </g>
 
-    <circle cy="50" r="2" cx="50" fill="black"></circle>
+      <!-- name text on arc -->
+      <g [ngStyle]="{ transform: 'rotate(' + (360 / effectiveItems.length) * (idx + 0.5) + 'deg)' }" transform-origin="50 50">
+        <text
+          [attr.x]="50"
+          [attr.y]="5"
+          [ngStyle]="{
+            'font-size': item.fontSize + 'px'
+          }"
+          [attr.stroke]="'hsl(' + item.color + ', 70%, 25%)'"
+          [attr.stroke-width]="0 * (item.fontSize / 8) * 0.2"
+          fill="black"
+          text-anchor="end"
+          dominant-baseline="middle"
+          transform-origin="50 5"
+          transform="rotate(-90)"
+        >
+          {{ item.name }}
+        </text>
+      </g>
+      }
+    </g>
+
+    <!-- middle dot -->
+    <circle cy="50" r="2" cx="50" fill="white" stroke="black" stroke-width="0"></circle>
+
+    <!-- indicator -->
+    <g transform="translate(100 50) scale(1.5 1.5)">
+      <path
+        id="indicator"
+        d="M -1 -2 L 1 -2 L 1 2 L -1 2 L -3 0 Z M -0.65 -1.5 L -2.15 0 L -0.65 1.5 L 0.25 1.5 L 0.25 -1.5 Z"
+        fill="#222"
+        stroke-width="0"
+      ></path>
+    </g>
   </svg>
 </div>
+<button class="btn btn-primary" type="button" (click)="start()" [disabled]="rotating ? true : null">Start</button> &nbsp;
+<button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#share-dialog">Share</button>
 }
+
+<div style="opacity: 0; pointer-events: none">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 180 120" width="5" height="5" style="position: absolute; left: 0; top: 0">
+    <!-- this element is just for determining text sizes to fit names in their arcs -->
+    <text id="text-helper" stroke-width="0.2"></text>
+  </svg>
+</div>
+
+<!-- modal dialog for adding/changing names -->
+<div class="modal fade" id="name-dialog" tabindex="-1" aria-labelledby="name-dialog-heading" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="name-dialog-heading">{{ !nameDialog.item ? "Add New" : "Edit" }} Name</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="applyItem()">
+          <input name="name" class="form-control" type="text" placeholder="Enter the name" maxlength="20" [(ngModel)]="nameDialog.enteredText" />
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="applyItem()">Apply</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal dialog for share action -->
+<div class="modal fade" id="share-dialog" tabindex="-1" aria-labelledby="share-dialog-heading" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="share-dialog-heading">Share Configuration</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex">
+          <i class="bi bi-share fs-1 pe-5"></i>
+          <p>
+            The share URL will be copied to your clipboard. All relevant configuration is contained in the URL. Additionally, your last names
+            configuration will be remembered in your browser.
+          </p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="share()">Copy URL to Clipboard</button>
+      </div>
+    </div>
+  </div>
+</div>
