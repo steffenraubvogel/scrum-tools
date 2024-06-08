@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 104 104">
+    <filter id="saturate">
+        <feColorMatrix type="saturate" in="SourceGraphic" values="0.65"/>
+    </filter>
+    <g>
+        <circle cy="50" r="51" cx="50" fill="grey" stroke="black" stroke-width="0"></circle>
+    </g>
+    <g id="wheel-group" transform-origin="50 50" style="transform: rotate(283.51deg); --rotation-duration: 4s;" filter="url(#saturate)">
+        <g stroke="black" stroke-width="0" transform-origin="50 50" class="sp-radial-chart-arc" fill="hsl(216, 100%, 60%)" style="transform: rotate(0deg);">
+            <path transform-origin="50 50" d="M 50 50 L 50 0 A 50 50 0 0 1 97.55282581475768 34.54915028125263 Z"></path>
+        </g>
+        <g transform-origin="50 50" style="transform: rotate(36deg);">
+            <text fill="black" text-anchor="end" dominant-baseline="middle" transform-origin="50 5" transform="rotate(-90)" x="50" y="5" stroke="hsl(216, 70%, 25%)" stroke-width="0" style="font-size: 10.5px;"> Jane </text>
+        </g>
+        <g stroke="black" stroke-width="0" transform-origin="50 50" class="sp-radial-chart-arc" fill="hsl(43, 100%, 60%)" style="transform: rotate(72deg);">
+            <path transform-origin="50 50" d="M 50 50 L 50 0 A 50 50 0 0 1 97.55282581475768 34.54915028125263 Z"></path>
+        </g>
+        <g transform-origin="50 50" style="transform: rotate(108deg);">
+            <text fill="black" text-anchor="end" dominant-baseline="middle" transform-origin="50 5" transform="rotate(-90)" x="50" y="5" stroke="hsl(43, 70%, 25%)" stroke-width="0" style="font-size: 10.5px;"> John </text>
+        </g>
+        <g stroke="black" stroke-width="0" transform-origin="50 50" class="sp-radial-chart-arc" fill="hsl(302, 100%, 60%)" style="transform: rotate(144deg);">
+            <path transform-origin="50 50" d="M 50 50 L 50 0 A 50 50 0 0 1 97.55282581475768 34.54915028125263 Z"></path>
+        </g>
+        <g transform-origin="50 50" style="transform: rotate(180deg);">
+            <text fill="black" text-anchor="end" dominant-baseline="middle" transform-origin="50 5" transform="rotate(-90)" x="50" y="5" stroke="hsl(302, 70%, 25%)" stroke-width="0" style="font-size: 10.5px;"> Joe </text>
+        </g>
+        <g stroke="black" stroke-width="0" transform-origin="50 50" class="sp-radial-chart-arc" fill="hsl(129, 100%, 60%)" style="transform: rotate(216deg);">
+            <path transform-origin="50 50" d="M 50 50 L 50 0 A 50 50 0 0 1 97.55282581475768 34.54915028125263 Z"></path>
+        </g>
+        <g transform-origin="50 50" style="transform: rotate(252deg);">
+            <text fill="black" text-anchor="end" dominant-baseline="middle" transform-origin="50 5" transform="rotate(-90)" x="50" y="5" stroke="hsl(129, 70%, 25%)" stroke-width="0" style="font-size: 7.875px;"> Jasmine </text>
+        </g>
+        <g stroke="black" stroke-width="0" transform-origin="50 50" class="sp-radial-chart-arc" fill="hsl(345, 100%, 60%)" style="transform: rotate(288deg);">
+            <path transform-origin="50 50" d="M 50 50 L 50 0 A 50 50 0 0 1 97.55282581475768 34.54915028125263 Z"></path>
+        </g>
+        <g transform-origin="50 50" style="transform: rotate(324deg);">
+            <text fill="black" text-anchor="end" dominant-baseline="middle" transform-origin="50 5" transform="rotate(-90)" x="50" y="5" stroke="hsl(345, 70%, 25%)" stroke-width="0" style="font-size: 10.5px;"> Jade </text>
+        </g>
+    </g>
+    <circle cy="50" r="2" cx="50" fill="white" stroke="black" stroke-width="0"></circle>
+    <g transform="translate(100 50) scale(1.5 1.5)">
+        <path id="indicator" d="M -1 -2 L 1 -2 L 1 2 L -1 2 L -3 0 Z M -0.65 -1.5 L -2.15 0 L -0.65 1.5 L 0.25 1.5 L 0.25 -1.5 Z" fill="#222" stroke-width="0"></path>
+    </g>
+</svg>

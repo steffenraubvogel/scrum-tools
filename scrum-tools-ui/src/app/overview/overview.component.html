@@ -1,0 +1,31 @@
+<h1>Select a Tool</h1>
+
+<div class="row row-cols-1 row-cols-md-3 row-cols-sm-2 g-4">
+  <div class="col">
+    <div class="card h-100 shadow-sm">
+      <div class="card-img-top d-flex justify-content-center p-3">
+        <img src="/assets/tool-pp.svg" alt="Poker cards" class="sp-when-light" />
+        <img src="/assets/tool-pp_dark.svg" alt="Poker cards" class="sp-when-dark" />
+      </div>
+      <div class="card-body d-flex flex-column">
+        <h2 class="card-title">Planning Poker</h2>
+        <p class="card-text flex-grow-1">
+          Collaborative guessing of scrum story complexity for scrum teams. Roles are the moderator, guessers and observers.
+        </p>
+        <a [routerLink]="['planning-poker']" class="btn btn-primary stretched-link">New Session</a>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card h-100 shadow-sm">
+      <div class="card-img-top d-flex justify-content-center p-3">
+        <img src="/assets/tool-wheel.svg" alt="Wheel of Names" />
+      </div>
+      <div class="card-body d-flex flex-column">
+        <h2 class="card-title">Wheel of Names</h2>
+        <p class="card-text flex-grow-1">Simple wheel of fortune with configurable names. Can be used to pick a person for some task..</p>
+        <a [routerLink]="['wheel-of-names']" class="btn btn-primary stretched-link">Open</a>
+      </div>
+    </div>
+  </div>
+</div>

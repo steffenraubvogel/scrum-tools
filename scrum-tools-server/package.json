@@ -1,0 +1,31 @@
+{
+  "name": "scrum-tools-server",
+  "version": "1.0.0",
+  "description": "Backend for scrum-tools-ui",
+  "main": "src/server.ts",
+  "scripts": {
+    "dev": "cross-env SP_LOG_LEVEL=2 tsx watch src/server.ts",
+    "build": "tsc",
+    "bundle": "rollup -c"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.8",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@types/compression": "^1.7.5",
+    "@types/express": "^4.17.21",
+    "@types/lodash": "^4.17.4",
+    "cross-env": "^7.0.3",
+    "rollup": "^3.29.4",
+    "tsx": "^4.11.0",
+    "typescript": "~5.4.5"
+  },
+  "dependencies": {
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "lodash": "^4.17.21",
+    "socket.io": "^4.7.5",
+    "tslog": "^4.9.2"
+  }
+}

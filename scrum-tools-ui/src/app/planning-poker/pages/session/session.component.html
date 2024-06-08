@@ -1,0 +1,230 @@
+<ng-container *ngIf="session?.state">
+  <h1>Planning Poker – {{ session!.state!.name }}</h1>
+
+  <div class="row g-3">
+    <div class="col-12 col-sm-6">
+      <div class="sp-card sp-card-participants">
+        <h2>Participants</h2>
+        <div *ngIf="playersByRole('leader').length > 0" class="sp-participants-section">
+          <div class="small">Moderator:</div>
+          <ul class="list-group list-group-flush">
+            <ng-container *ngFor="let player of playersByRole('leader'); trackBy: trackByPlayerName">
+              <li class="list-group-item">
+                <ng-container *ngTemplateOutlet="playerTemplate; context: { player }"></ng-container>
+              </li>
+            </ng-container>
+          </ul>
+        </div>
+
+        <div *ngIf="playersByRole('guesser').length > 0" class="mt-3 sp-participants-section">
+          <div class="small">Guessers:</div>
+          <ul class="list-group list-group-flush">
+            <ng-container *ngFor="let player of playersByRole('guesser'); trackBy: trackByPlayerName">
+              <li class="list-group-item">
+                <ng-container *ngTemplateOutlet="playerTemplate; context: { player }"></ng-container>
+              </li>
+            </ng-container>
+          </ul>
+        </div>
+
+        <div *ngIf="playersByRole('observer').length > 0" class="mt-3 sp-participants-section">
+          <div class="small">Observers:</div>
+          <ul class="list-group list-group-flush">
+            <ng-container *ngFor="let player of playersByRole('observer'); trackBy: trackByPlayerName">
+              <li class="list-group-item">
+                <ng-container *ngTemplateOutlet="playerTemplate; context: { player }"></ng-container>
+              </li>
+            </ng-container>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6" *ngIf="settingsService.settings.active === 'created'">
+      <div class="sp-card sp-card-leader-actions">
+        <h2>Moderator Actions</h2>
+
+        <div class="sp-leader-action-list">
+          <div class="sp-leader-action">
+            <button (click)="copyJoinLink()" class="btn btn-primary w-100">
+              <span class="sp-copy-button-icon" [ngClass]="{ 'sp-success-button-icon': copied }"
+                ><i class="bi bi-share"></i><i class="bi bi-clipboard-check sp-icon-success"></i
+              ></span>
+              Share
+            </button>
+          </div>
+          <div class="sp-leader-action-description">
+            <small>Copies the join-URL to your clipboard. Share it with the participants.</small>
+          </div>
+          <div class="sp-leader-action-separator"></div>
+          <div class="sp-leader-action">
+            <button (click)="session!.reveal()" class="btn btn-primary w-100" [disabled]="cannotReveal()"><i class="bi bi-eye"></i> Reveal</button>
+          </div>
+          <div class="sp-leader-action-description">
+            <small>Shows the result of votes despite not all participants having voted yet.</small>
+          </div>
+          <div class="sp-leader-action-separator"></div>
+          <div class="sp-leader-action">
+            <button (click)="session!.reset()" class="btn btn-warning w-100"><i class="bi bi-arrow-clockwise"></i> Reset</button>
+          </div>
+          <div class="sp-leader-action-description">
+            <small>Clears votes as preparation for the next topic.</small>
+          </div>
+          <div class="sp-leader-action-separator"></div>
+          <div class="sp-leader-action">
+            <button (click)="nudge()" class="btn btn-primary w-100" [disabled]="cannotNudge()"><i class="bi bi-hand-index"></i> Nudge</button>
+          </div>
+          <div class="sp-leader-action-description">
+            <small>Friendly reminder to all who haven't guessed so far that they should pick a guess now. Cool-down 30s.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6" *ngIf="settingsService.settings.active === 'joined' && settingsService.settings.join?.role === 'guesser'">
+      <div class="sp-card sp-card-guesser-actions">
+        <h2>Your Vote</h2>
+        <p>Please choose your guess for the currently discussed story or topic:</p>
+        <div class="sp-guess-actions-container my-4 mx-auto" [ngClass]="{ 'sp-guess-actions-nudge': nudging }">
+          <div class="sp-aspect-ratio-1-to-1">
+            <div class="sp-guess-actions-grid">
+              <button
+                *ngFor="let guess of guessOptions; index as i"
+                (click)="vote(guess.value)"
+                class="btn btn-guess sp-guess-action"
+                [ngClass]="{ active: playersGuess === guess.value }"
+              >
+                {{ guess.label }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6" *ngIf="settingsService.settings.active === 'joined' && settingsService.settings.join?.role === 'observer'">
+      <div class="sp-card sp-card-observer-actions">
+        <h2>Oberserver Actions</h2>
+        <p>No actions available for you.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4 sp-card">
+    <div class="d-flex">
+      <h2 class="flex-grow-1">Result</h2>
+      <div class="dropdown">
+        <button
+          class="btn btn-sm dropdown-toggle"
+          [class.btn-dark]="isDarkTheme()"
+          [class.btn-light]="!isDarkTheme()"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <i class="bi bi-gear"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><h3 class="dropdown-header">Chart</h3></li>
+          <li>
+            <button
+              class="dropdown-item"
+              [class.active]="settingsService.settings.presentation.chart === 'bar'"
+              type="button"
+              (click)="pickChart('bar')"
+            >
+              <i class="bi bi-bar-chart-line"></i> Bar Chart
+            </button>
+          </li>
+          <li>
+            <button
+              class="dropdown-item"
+              [class.active]="settingsService.settings.presentation.chart === 'radial'"
+              type="button"
+              (click)="pickChart('radial')"
+            >
+              <i class="bi bi-pie-chart"></i> Pie Chart
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <ng-container *ngIf="session!.state!.state === 'revealed'; else notYetRevealedResultTemplate">
+      <p *ngIf="!isConsesus()">The average guess is ⌀ {{ getAverageGuess() }}. Discuss and argue your votes.</p>
+      <p *ngIf="isConsesus()">Woohoo, consensus! <i class="bi bi-emoji-smile"></i></p>
+      <div class="row g-3">
+        <div class="col-12 col-sm-5">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Guess</th>
+                <th scope="col">Vote Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of guessCountTable()">
+                <th scope="row">{{ row.guess }}</th>
+                <td>{{ row.count }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="settingsService.settings.presentation.chart === 'bar'" class="col-12 col-sm-7 sp-bar-chart-votes-container">
+          <app-bar-chart
+            xAxisLabel="Guesses"
+            yAxisLabel="Vote Counts"
+            [yAxisMaxValue]="playersByRole('guesser').length"
+            [data]="chartData"
+          ></app-bar-chart>
+        </div>
+        <div *ngIf="settingsService.settings.presentation.chart === 'radial'" class="col-12 col-sm-7 sp-radial-chart-votes-container">
+          <app-radial-chart
+            axisLabel="Vote Counts"
+            [axisMaxValue]="playersByRole('guesser').length"
+            [allCategories]="chartCategories"
+            [data]="chartData"
+          ></app-radial-chart>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #notYetRevealedResultTemplate>
+      <p>
+        The result is not yet revealed. This will be done when all guessers have voted or the moderator reveals the result intentionally. Please be
+        patient.
+      </p>
+    </ng-template>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="session?.connection$ | async as connection">
+  <app-loading [show]="connection.state === 'connecting'"> </app-loading>
+</ng-container>
+
+<ng-template #playerTemplate let-player="player">
+  <span
+    [ngClass]="{
+      'sp-player-disconnected': player.status === 'disconnected',
+      'sp-player-left': player.status === 'left',
+      'sp-player-own': isOwnPlayer(player)
+    }"
+    >{{ player.name }}</span
+  >
+  &nbsp;
+  <app-stack [activeChild]="mapPlayerAndSessionStatusToStackChild(player)">
+    <span *stackChild title="Participant disconnected">
+      <i class="bi bi-plug"></i>
+      <i class="bi bi-exclamation-triangle text-danger-emphasis"></i>
+    </span>
+    <i *stackChild class="bi bi-x-octagon" title="Participant left"></i>
+    <span *stackChild></span>
+    <span
+      *stackChild
+      class="badge rounded-pill text-bg-light"
+      [title]="player.guess === -1 ? 'Chose to abstain from vote' : player.guess === null ? 'Did not choose anything' : 'Voted for ' + player.guess"
+    >
+      {{ player.guess === -1 ? "?" : player.guess === null ? "-" : player.guess }}
+    </span>
+    <i *stackChild class="bi bi-three-dots" title="Did not make a selection so far"></i>
+    <i *stackChild class="bi bi-check2-circle sp-status-guessed" title="Has made a selection"></i>
+  </app-stack>
+</ng-template>
