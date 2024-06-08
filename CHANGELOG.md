@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.4
+
+- moved planning poker to /planning-poker/ path
+- added simple wheel-of-names
+- renamed application to "scrum tools"
+
 ## 1.3
 
 - upgrade to Angular v18

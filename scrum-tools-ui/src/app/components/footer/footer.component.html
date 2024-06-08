@@ -1,0 +1,39 @@
+<footer class="py-4 py-md-5 mt-5 bg-body-tertiary">
+  <div class="container py-4 py-md-5 px-4 px-md-3 text-body-secondary">
+    <div class="row">
+      <div class="col-sm-4 mb-3">
+        <a [routerLink]="['/']" class="d-inline-flex align-items-center mb-2 text-body-emphasis text-decoration-none">
+          <img src="/assets/favicon.svg" alt="Logo" height="32" class="me-2 sp-when-light" />
+          <img src="/assets/favicon_dark.svg" alt="Logo" height="32" class="me-2 sp-when-dark" />
+          <span class="fs-5">Scrum Tools</span>
+        </a>
+        <ul class="list-unstyled small">
+          <li class="mb-2">© Steffen Harbich</li>
+          <li class="mb-2" id="version-info">v1.4</li>
+        </ul>
+      </div>
+      <ng-container *ngIf="'link-secondary link-underline-opacity-0 link-underline-opacity-75-hover' as linkCssClasses">
+        <div class="col-6 col-sm-3 offset-sm-1 mb-3">
+          <h5>Links</h5>
+          <ul class="list-unstyled">
+            <li class="mb-2"><a [routerLink]="['/']" [class]="linkCssClasses">Home</a></li>
+            <li class="mb-2"><a [routerLink]="['/legal']" [class]="linkCssClasses">Legal, Data Privacy</a></li>
+            <li class="mb-2"><a href="https://github.com/steffenraubvogel/scrum-tools" [class]="linkCssClasses">GitHub</a></li>
+            <li class="mb-2">
+              <a href="https://github.com/steffenraubvogel/scrum-tools/blob/main/CHANGELOG.md" [class]="linkCssClasses">Change Log</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-6 col-sm-3 offset-sm-1 mb-3">
+          <h5>Technologies</h5>
+          <ul class="list-unstyled">
+            <li class="mb-2"><a href="https://angular.io/" [class]="linkCssClasses">Angular</a></li>
+            <li class="mb-2"><a href="https://getbootstrap.com/" [class]="linkCssClasses">Bootstrap</a></li>
+            <li class="mb-2"><a href="https://socket.io/" [class]="linkCssClasses">Socket.IO</a></li>
+            <li class="mb-2"><a target="_blank" href="https://bgjar.com" title="Free SVG Background by BGJar" [class]="linkCssClasses">BGJar</a></li>
+          </ul>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</footer>

@@ -1,4 +1,8 @@
-# Planning Poker
+# Scrum Tools
+
+## Available Tools
+
+### Planning Poker
 
 Web tool for collaborative guessing of scrum story complexity. Roles:
 
@@ -7,38 +11,40 @@ Web tool for collaborative guessing of scrum story complexity. Roles:
   - Creates the session
   - Can reset votes when discussing the next story
   - Can reveal the current votes
+  - Can nudge distracted guessers ;)
 
 - Guesser
 
   - Votes or abstains from voting the current story
 
 - Observer
-  - Can do nothing but watch the process
 
-All roles will see the result of voting and the votes of every guesser after they were revealed by the moderator.
+  - Can do nothing but watching the process
+
+All roles will see the result of voting and the votes of every guesser after they were revealed.
+
+### Wheel of names
+
+Simple wheel of fortune with configurable names. Can be used to pick a person for some task.
 
 ## Development
 
-### Goal
-
-Test frameworks like WebSockets, Socket.IO and Bootstrap with Angular. Have fun with creating different themes.
-
 ### Setup
 
-Make sure NodeJS 18 and npm 8+ is installed. Run the command
+Make sure NodeJS 18+ and npm 10+ is installed. Run the command
 
 > npm i
 
-in project root and folders scrum-poker and scrum-poker-server.
+in project root and folders scrum-tools-ui and scrum-tools-server.
 
 ### Code Formatting
 
-Use prettier and format on save.
+Use prettier and format on save. Organize imports on save, too.
 
 ### Starting the application
 
-1. Start the backend in folder scrum-poker-server: `npm run dev`
-2. Start the frontend in folder scrum-poker: `npm run start`
+1. Start the backend in folder scrum-tools-server: `npm run dev`
+2. Start the frontend in folder scrum-tools-ui: `npm run start`
 3. Open http://localhost:4200 in browser.
 
 ### Testing
