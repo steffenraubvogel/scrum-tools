@@ -16,73 +16,7 @@
     </div>
     <div id="accordion-item-1" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
       <div class="accordion-body">
-        <table class="table table-hover align-middle">
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Color</th>
-              <th scope="col">Active</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (item of items; track item.name) {
-            <tr>
-              <td>{{ item.name }}</td>
-              <td>
-                <div class="dropdown">
-                  <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i
-                      class="bi bi-brush-fill"
-                      [ngStyle]="{
-                        color: nameColor(item.color)
-                      }"
-                    ></i>
-                  </button>
-                  <div class="dropdown-menu p-2">
-                    <div class="sp-color-matrix">
-                      @for (hue of colors; track hue) {
-                      <button
-                        class="btn"
-                        type="button"
-                        [ngStyle]="{
-                          'background-color': nameColor(hue)
-                        }"
-                        (click)="pickColor(item, hue)"
-                      ></button>
-                      }
-                    </div>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <input class="form-check-input" type="checkbox" [(ngModel)]="item.active" />
-              </td>
-              <td>
-                <button
-                  class="btn btn-outline-secondary btn-sm"
-                  type="button"
-                  (click)="prepareEditItem(item)"
-                  data-bs-toggle="modal"
-                  data-bs-target="#name-dialog"
-                >
-                  <i class="bi bi-pencil"></i>
-                </button>
-                &nbsp;
-                <button class="btn btn-outline-secondary btn-sm" type="button" (click)="removeItem(item)"><i class="bi bi-trash"></i></button>
-              </td>
-            </tr>
-            } @empty {
-            <tr>
-              <td colspan="3">-</td>
-            </tr>
-            }
-          </tbody>
-        </table>
-
-        <button class="btn btn-primary" type="button" (click)="prepareAddItem()" data-bs-toggle="modal" data-bs-target="#name-dialog">
-          Add Name
-        </button>
+        <app-names-editor />
       </div>
     </div>
   </div>
@@ -175,27 +109,6 @@
   </svg>
 </div>
 
-<!-- modal dialog for adding/changing names -->
-<div class="modal fade" id="name-dialog" tabindex="-1" aria-labelledby="name-dialog-heading" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="name-dialog-heading">{{ !nameDialog.item ? "Add New" : "Edit" }} Name</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form (ngSubmit)="applyItem()">
-          <input name="name" class="form-control" type="text" placeholder="Enter the name" maxlength="20" [(ngModel)]="nameDialog.enteredText" />
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="applyItem()">Apply</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- modal dialog for share action -->
 <div class="modal fade" id="share-dialog" tabindex="-1" aria-labelledby="share-dialog-heading" aria-hidden="true">
   <div class="modal-dialog">
@@ -216,6 +129,28 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="share()">Copy URL to Clipboard</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal dialog for winner presentation -->
+<div class="modal fade" id="winner-dialog" tabindex="-1" aria-labelledby="winner-dialog-heading" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="winner-dialog-heading">And the Winner is...</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-center align-items-center gap-4 py-4">
+          <img src="/assets/wheel-winner.svg" alt="Celebrating emoji" class="w-25" />
+          <span class="fs-1">{{ winner?.name }}!</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="start()">Spin Again</button>
       </div>
     </div>
   </div>

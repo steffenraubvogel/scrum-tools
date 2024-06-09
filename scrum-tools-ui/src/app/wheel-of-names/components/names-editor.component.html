@@ -1,0 +1,102 @@
+<table class="table table-hover align-middle">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Color</th>
+      <th scope="col">Active</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (item of namesService.items; track item.name) {
+    <tr>
+      <td>{{ item.name }}</td>
+      <td>
+        <div class="dropdown">
+          <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i
+              class="bi bi-brush-fill"
+              [ngStyle]="{
+                color: nameColor(item.color)
+              }"
+            ></i>
+          </button>
+          <div class="dropdown-menu p-2">
+            <div class="sp-color-matrix">
+              @for (hue of colors; track hue) {
+              <button
+                class="btn"
+                type="button"
+                [ngStyle]="{
+                  'background-color': nameColor(hue)
+                }"
+                (click)="pickItemColor(item, hue)"
+              ></button>
+              }
+            </div>
+          </div>
+        </div>
+      </td>
+      <td>
+        <input class="form-check-input" type="checkbox" [ngModel]="item.active" (ngModelChange)="enableItem(item, $event)" />
+      </td>
+      <td>
+        <button
+          class="btn btn-outline-secondary btn-sm"
+          type="button"
+          (click)="prepareEditItem(item)"
+          data-bs-toggle="modal"
+          data-bs-target="#name-dialog"
+        >
+          <i class="bi bi-pencil"></i>
+        </button>
+        &nbsp;
+        <button class="btn btn-outline-secondary btn-sm" type="button" (click)="removeItem(item)"><i class="bi bi-trash"></i></button>
+      </td>
+    </tr>
+    } @empty {
+    <tr>
+      <td colspan="3">-</td>
+    </tr>
+    }
+  </tbody>
+</table>
+
+<div class="d-flex gap-3">
+  <button class="btn btn-primary" type="button" (click)="prepareAddItem()" data-bs-toggle="modal" data-bs-target="#name-dialog">Add Name</button>
+  <button class="btn btn-secondary" type="button" (click)="sortItems()" [disabled]="namesService.items.length <= 1">Sort by Name</button>
+  <button class="btn btn-secondary" type="button" (click)="clearItems()" [disabled]="namesService.items.length <= 0">Clear</button>
+</div>
+
+<!-- modal dialog for adding/changing names -->
+<div class="modal fade" id="name-dialog" tabindex="-1" aria-labelledby="name-dialog-heading" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="name-dialog-heading">{{ !nameDialog.item ? "Add New" : "Edit" }} Name</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="applyItem()" [formGroup]="nameDialog.formGroup">
+          <label for="name-dialog-name-input" class="form-label">Name</label>
+          <input
+            id="name-dialog-name-input"
+            name="name"
+            class="form-control"
+            [class.is-invalid]="nameDialog.validated && nameDialog.formGroup.controls.name.invalid"
+            type="text"
+            formControlName="name"
+          />
+
+          @if (nameDialog.validated && nameDialog.formGroup.controls.name.invalid) {
+          <div class="invalid-feedback">Please provide a unique name, no longer than 20 characters.</div>
+          }
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="applyItem()">Apply</button>
+      </div>
+    </div>
+  </div>
+</div>

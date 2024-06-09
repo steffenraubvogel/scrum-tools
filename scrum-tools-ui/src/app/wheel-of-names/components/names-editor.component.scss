@@ -1,0 +1,22 @@
+.sp-color-matrix {
+  display: grid;
+  grid-template-columns: repeat(5, 2em);
+  grid-auto-rows: 2em;
+
+  button {
+    border-radius: 0;
+
+    &:first-child {
+      border-top-left-radius: var(--bs-btn-border-radius);
+    }
+    &:nth-child(5) {
+      border-top-right-radius: var(--bs-btn-border-radius);
+    }
+    &:nth-child(21) {
+      border-bottom-left-radius: var(--bs-btn-border-radius);
+    }
+    &:last-child {
+      border-bottom-right-radius: var(--bs-btn-border-radius);
+    }
+  }
+}
