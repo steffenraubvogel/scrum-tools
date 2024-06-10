@@ -70,8 +70,7 @@
           [ngStyle]="{
             'font-size': item.fontSize + 'px'
           }"
-          [attr.stroke]="'hsl(' + item.color + ', 70%, 25%)'"
-          [attr.stroke-width]="0 * (item.fontSize / 8) * 0.2"
+          stroke-width="0"
           fill="black"
           text-anchor="end"
           dominant-baseline="middle"
@@ -103,9 +102,9 @@
 }
 
 <div style="opacity: 0; pointer-events: none">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 180 120" width="5" height="5" style="position: absolute; left: 0; top: 0">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 120 120" width="1000" height="1000" style="position: absolute; left: 0; top: 0">
     <!-- this element is just for determining text sizes to fit names in their arcs -->
-    <text id="text-helper" stroke-width="0.2"></text>
+    <text id="text-helper" stroke-width="0"></text>
   </svg>
 </div>
 

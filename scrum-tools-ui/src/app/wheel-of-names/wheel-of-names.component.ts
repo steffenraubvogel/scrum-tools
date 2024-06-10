@@ -82,7 +82,7 @@ export class WheelComponent implements OnInit {
     do {
       fontSize = fontSize * 0.75;
       el.style.fontSize = fontSize + "px";
-      width = el.getBBox({ stroke: true }).width;
+      width = el.getBBox().width;
     } while (width > 40 && fontSize > 1);
 
     return fontSize;
