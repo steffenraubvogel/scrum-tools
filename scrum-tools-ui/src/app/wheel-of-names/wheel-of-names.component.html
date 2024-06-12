@@ -11,7 +11,12 @@
         aria-expanded="false"
         aria-controls="accordion-item-1"
       >
-        Configure Names
+        <span>
+          Configure Names
+          <span class="text-secondary"
+            >({{ effectiveItems.length === items.length ? items.length : effectiveItems.length + " of " + items.length }})</span
+          >
+        </span>
       </button>
     </div>
     <div id="accordion-item-1" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
@@ -23,8 +28,8 @@
 </div>
 
 @if (effectiveItems.length > 1) {
-<div class="wheel-container d-flex justify-content-center">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 120 120">
+<div class="sp-wheel-container d-flex justify-content-center">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 120 120" (click)="start()" [class.sp-wheel-rotating]="rotating">
     <!-- wheel border -->
     <filter id="borderFilters">
       <feDropShadow dx="2" dy="2" stdDeviation="2" flood-opacity="0.25" />
@@ -59,7 +64,6 @@
           }} Z"
           transform-origin="50 50"
         ></path>
-        <title>{{ item.name }}</title>
       </g>
 
       <!-- name text on arc -->

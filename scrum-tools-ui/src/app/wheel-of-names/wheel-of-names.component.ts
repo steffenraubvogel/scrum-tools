@@ -53,6 +53,10 @@ export class WheelComponent implements OnInit {
   }
 
   public start() {
+    if (this.rotating) {
+      return;
+    }
+
     this.rotating = true;
     this.targetRotation += 5 * 360 + Math.random() * 360;
 
@@ -80,10 +84,10 @@ export class WheelComponent implements OnInit {
     let fontSize = 14;
     let width = 0;
     do {
-      fontSize = fontSize * 0.75;
+      fontSize = fontSize * 0.8;
       el.style.fontSize = fontSize + "px";
       width = el.getBBox().width;
-    } while (width > 40 && fontSize > 1);
+    } while (width > 30 && fontSize > 1);
 
     return fontSize;
   }

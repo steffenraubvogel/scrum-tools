@@ -1,7 +1,12 @@
-.wheel-container {
+.sp-wheel-container {
   svg {
     width: 100%;
     max-width: 35em;
+    cursor: pointer;
+
+    &.sp-wheel-rotating {
+      cursor: not-allowed;
+    }
   }
 }
 
