@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.5
+
+- planning poker:
+  - fix: nudge is restricted to guessers now
+  - improvement: re-joining as session host possible
+- dependency updates
+
 ## 1.4
 
 - moved planning poker to /planning-poker/ path

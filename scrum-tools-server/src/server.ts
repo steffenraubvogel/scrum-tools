@@ -1,17 +1,17 @@
-import express from "express";
 import compression from "compression";
-import http from "http";
-import crypto from "crypto";
 import cors from "cors";
+import crypto from "crypto";
+import express from "express";
+import http from "http";
+import { isEqual } from "lodash";
 import { Server } from "socket.io";
 import { handleLeaderInit, handlePlayerInit } from "./event-handlers/init";
 import { handleLeaderNudge, handleLeaderReset, handleLeaderReveal } from "./event-handlers/leader";
+import { handleParticipantLeave } from "./event-handlers/participant";
 import { handlePlayerUpdate, revealIfAllGuessersVoted } from "./event-handlers/player";
+import { createLogger } from "./logging";
 import { ClientToServerEvents, ServerToClientEvents } from "./messages";
 import { ConnectionState, ServerState } from "./session";
-import { isEqual } from "lodash";
-import { createLogger } from "./logging";
-import { handleParticipantLeave } from "./event-handlers/participant";
 
 // prepare configuration
 const hostname = process.env.SP_HOSTNAME || "127.0.0.1";
@@ -43,7 +43,14 @@ application.use(express.static("public"));
 application.get("/get-session-id", (req, res) => {
   let sessionId: string;
   const lastId = req.query.lastId;
-  if (typeof lastId === "string" && lastId && lastId.length <= 16 && !serverState[lastId]) {
+  const leaderName = req.query.leaderName;
+
+  if (
+    typeof lastId === "string" &&
+    lastId &&
+    lastId.length <= 16 &&
+    (!serverState[lastId] || serverState[lastId].players.filter((p) => p.type === "leader" && p.name === leaderName))
+  ) {
     sessionId = lastId;
   } else {
     do {

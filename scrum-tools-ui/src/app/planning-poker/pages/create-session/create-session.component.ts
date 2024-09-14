@@ -41,6 +41,7 @@ export class CreateSessionComponent {
       if (this.settingsService.settings.create?.lastSessionId) {
         // the server will try to use this session ID if available
         params["lastId"] = this.settingsService.settings.create?.lastSessionId;
+        params["leaderName"] = this.settingsService.settings.userName!;
       }
 
       this.submitting = true;
