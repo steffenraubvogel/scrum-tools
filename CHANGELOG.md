@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.6
+
+- fix title
+- dependency updates
+
 ## 1.5
 
 - planning poker:
