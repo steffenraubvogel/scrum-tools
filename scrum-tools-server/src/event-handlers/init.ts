@@ -8,7 +8,7 @@ export function handleLeaderInit(
   ack: (err: string) => void,
   serverState: ServerState,
   connectionState: ConnectionState,
-  socket: Socket
+  socket: Socket,
 ) {
   if (msg.player.type !== "leader") {
     return disconnectWithError("Player type mismatching leader-init event", ack, socket);
@@ -45,7 +45,7 @@ export function handlePlayerInit(
   ack: (err: string) => void,
   serverState: ServerState,
   connectionState: ConnectionState,
-  socket: Socket
+  socket: Socket,
 ) {
   if (msg.player.type === "leader") {
     return disconnectWithError("Player type mismatching player-init event", ack, socket);

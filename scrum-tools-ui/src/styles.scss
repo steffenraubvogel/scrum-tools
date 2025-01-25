@@ -1,5 +1,7 @@
+@use "sass:list";
 @use "sass:map";
 @use "sass:math";
+
 @import "bootstrap/scss/bootstrap"; /* using @import "bootstrap" would import CSS instead of SCSS */
 @import "bootstrap-icons";
 @import "themes.scss";
@@ -55,7 +57,7 @@ h2 {
   $guessColorEnd: 270;
   @each $guess in $guesses {
     --sp-chart-color-#{$guess}: hsl(
-      #{$guessColorStart + math.div((index($guesses, $guess) - 1) * ($guessColorEnd - $guessColorStart), length($guesses) - 1)},
+      #{$guessColorStart + math.div((list.index($guesses, $guess) - 1) * ($guessColorEnd - $guessColorStart), list.length($guesses) - 1)},
       var(--sp-chart-color-sat),
       var(--sp-chart-color-li)
     );

@@ -10,11 +10,11 @@
         formControlName="userName"
         placeholder="e.g. Joe"
         class="form-control"
-        [ngClass]="{ 'is-invalid': formGroup.controls.userName.touched && formGroup.controls.userName.status === 'INVALID' }"
+        [class.is-invalid]="formGroup.controls.userName.touched && formGroup.controls.userName.status === 'INVALID'"
       />
-      <div *ngIf="formGroup.controls.userName.touched && formGroup.controls.userName.status === 'INVALID'" class="invalid-feedback">
-        Please provide your name.
-      </div>
+      @if (formGroup.controls.userName.touched && formGroup.controls.userName.status === "INVALID") {
+        <div class="invalid-feedback">Please provide your name.</div>
+      }
     </div>
   </div>
 
@@ -29,7 +29,9 @@
   <div class="row mb-3">
     <div class="col">
       <button class="btn btn-primary" type="submit" [disabled]="submitting ? true : null">
-        <span *ngIf="submitting" class="spinner-border spinner-border-sm"></span>
+        @if (submitting) {
+          <span class="spinner-border spinner-border-sm"></span>
+        }
         Submit
       </button>
     </div>

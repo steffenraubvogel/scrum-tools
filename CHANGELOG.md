@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.7
+
+- update to Angular 19
+- use @if, @for, @let
+- started migration to standalone components
+- reformat code with latest prettier
+
 ## 1.6
 
 - fix title

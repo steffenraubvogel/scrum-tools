@@ -6,7 +6,6 @@ import { NameItem, NamesService } from "../service/names.service";
 
 @Component({
   selector: "app-names-editor",
-  standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: "./names-editor.component.html",
   styleUrl: "./names-editor.component.scss",
@@ -23,7 +22,10 @@ export class NamesEditorComponent implements AfterViewInit {
     instance: null as unknown as bootstrap.Modal,
   };
 
-  constructor(public readonly namesService: NamesService, private readonly elementRef: ElementRef<HTMLElement>) {}
+  constructor(
+    public readonly namesService: NamesService,
+    private readonly elementRef: ElementRef<HTMLElement>,
+  ) {}
 
   public ngAfterViewInit() {
     const nameDialogElement = this.elementRef.nativeElement.querySelector("#name-dialog") as HTMLElement;

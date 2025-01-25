@@ -36,7 +36,7 @@ application.use(compression());
 application.use(
   cors({
     origin: corsOrigin,
-  })
+  }),
 );
 application.use(express.static("public"));
 

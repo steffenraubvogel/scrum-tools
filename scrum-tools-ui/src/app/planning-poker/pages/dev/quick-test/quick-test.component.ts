@@ -5,9 +5,14 @@ import { SessionSettings, SessionSettingsService } from "src/app/planning-poker/
 @Component({
   selector: "app-quick-test",
   templateUrl: "./quick-test.component.html",
+  standalone: false,
 })
 export class QuickTestComponent implements OnInit {
-  constructor(private readonly route: ActivatedRoute, private readonly router: Router, public readonly settingsService: SessionSettingsService) {}
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    public readonly settingsService: SessionSettingsService,
+  ) {}
 
   public ngOnInit(): void {
     const sessionId = this.route.snapshot.queryParams["sessionId"];

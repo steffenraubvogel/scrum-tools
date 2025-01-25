@@ -6,7 +6,10 @@ import { Directive, ElementRef, HostListener, Renderer2 } from "@angular/core";
 export class ObfuscateDirective {
   private activated = false;
 
-  constructor(private element: ElementRef, private renderer: Renderer2) {}
+  constructor(
+    private element: ElementRef,
+    private renderer: Renderer2,
+  ) {}
 
   @HostListener("mouseenter")
   public onMouseEnter() {

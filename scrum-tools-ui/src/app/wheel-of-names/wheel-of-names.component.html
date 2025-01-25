@@ -28,81 +28,81 @@
 </div>
 
 @if (effectiveItems.length > 1) {
-<div class="sp-wheel-container d-flex justify-content-center">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 120 120" (click)="start()" [class.sp-wheel-rotating]="rotating">
-    <!-- wheel border -->
-    <filter id="borderFilters">
-      <feDropShadow dx="2" dy="2" stdDeviation="2" flood-opacity="0.25" />
-    </filter>
-    <g filter="url(#borderFilters)">
-      <circle cy="50" r="51" cx="50" fill="grey" stroke="black" stroke-width="0"></circle>
-    </g>
+  <div class="sp-wheel-container d-flex justify-content-center">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 120 120" (click)="start()" [class.sp-wheel-rotating]="rotating">
+      <!-- wheel border -->
+      <filter id="borderFilters">
+        <feDropShadow dx="2" dy="2" stdDeviation="2" flood-opacity="0.25" />
+      </filter>
+      <g filter="url(#borderFilters)">
+        <circle cy="50" r="51" cx="50" fill="grey" stroke="black" stroke-width="0"></circle>
+      </g>
 
-    <g
-      id="wheel-group"
-      transform-origin="50 50"
-      [ngStyle]="{
-        transform: 'rotate(' + targetRotation + 'deg)',
-        '--rotation-duration': rotationDuration + 's'
-      }"
-    >
-      @for (item of effectiveItems; track item.name; let idx = $index) {
-      <!-- arc -->
       <g
-        stroke="black"
-        stroke-width="0"
-        [attr.fill]="nameColor(item.color)"
-        [ngStyle]="{
-        'transform': 'rotate(' + (360 / effectiveItems.length * idx) + 'deg)',
-      }"
+        id="wheel-group"
         transform-origin="50 50"
-        class="sp-radial-chart-arc"
+        [ngStyle]="{
+          transform: 'rotate(' + targetRotation + 'deg)',
+          '--rotation-duration': rotationDuration + 's',
+        }"
       >
+        @for (item of effectiveItems; track item.name; let idx = $index) {
+          <!-- arc -->
+          <g
+            stroke="black"
+            stroke-width="0"
+            [attr.fill]="nameColor(item.color)"
+            [ngStyle]="{
+              transform: 'rotate(' + (360 / effectiveItems.length) * idx + 'deg)',
+            }"
+            transform-origin="50 50"
+            class="sp-radial-chart-arc"
+          >
+            <path
+              attr.d="M 50 50 L 50 0 A 50 50 0 0 1 {{ 50 + math.sin((2 * math.PI) / this.effectiveItems.length) * 50 }} {{
+                50 - math.cos((2 * math.PI) / this.effectiveItems.length) * 50
+              }} Z"
+              transform-origin="50 50"
+            ></path>
+          </g>
+
+          <!-- name text on arc -->
+          <g [ngStyle]="{ transform: 'rotate(' + (360 / effectiveItems.length) * (idx + 0.5) + 'deg)' }" transform-origin="50 50">
+            <text
+              [attr.x]="50"
+              [attr.y]="5"
+              [ngStyle]="{
+                'font-size': item.fontSize + 'px',
+              }"
+              stroke-width="0"
+              fill="black"
+              text-anchor="end"
+              dominant-baseline="middle"
+              transform-origin="50 5"
+              transform="rotate(-90)"
+            >
+              {{ item.name }}
+            </text>
+          </g>
+        }
+      </g>
+
+      <!-- middle dot -->
+      <circle cy="50" r="2" cx="50" fill="white" stroke="black" stroke-width="0"></circle>
+
+      <!-- indicator -->
+      <g transform="translate(100 50) scale(1.5 1.5)">
         <path
-          attr.d="M 50 50 L 50 0 A 50 50 0 0 1 {{ 50 + math.sin((2 * math.PI) / this.effectiveItems.length) * 50 }} {{
-            50 - math.cos((2 * math.PI) / this.effectiveItems.length) * 50
-          }} Z"
-          transform-origin="50 50"
+          id="indicator"
+          d="M -1 -2 L 1 -2 L 1 2 L -1 2 L -3 0 Z M -0.65 -1.5 L -2.15 0 L -0.65 1.5 L 0.25 1.5 L 0.25 -1.5 Z"
+          fill="#222"
+          stroke-width="0"
         ></path>
       </g>
-
-      <!-- name text on arc -->
-      <g [ngStyle]="{ transform: 'rotate(' + (360 / effectiveItems.length) * (idx + 0.5) + 'deg)' }" transform-origin="50 50">
-        <text
-          [attr.x]="50"
-          [attr.y]="5"
-          [ngStyle]="{
-            'font-size': item.fontSize + 'px'
-          }"
-          stroke-width="0"
-          fill="black"
-          text-anchor="end"
-          dominant-baseline="middle"
-          transform-origin="50 5"
-          transform="rotate(-90)"
-        >
-          {{ item.name }}
-        </text>
-      </g>
-      }
-    </g>
-
-    <!-- middle dot -->
-    <circle cy="50" r="2" cx="50" fill="white" stroke="black" stroke-width="0"></circle>
-
-    <!-- indicator -->
-    <g transform="translate(100 50) scale(1.5 1.5)">
-      <path
-        id="indicator"
-        d="M -1 -2 L 1 -2 L 1 2 L -1 2 L -3 0 Z M -0.65 -1.5 L -2.15 0 L -0.65 1.5 L 0.25 1.5 L 0.25 -1.5 Z"
-        fill="#222"
-        stroke-width="0"
-      ></path>
-    </g>
-  </svg>
-</div>
-<button class="btn btn-primary" type="button" (click)="start()" [disabled]="rotating ? true : null">Start</button> &nbsp;
-<button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#share-dialog">Share</button>
+    </svg>
+  </div>
+  <button class="btn btn-primary" type="button" (click)="start()" [disabled]="rotating ? true : null">Start</button> &nbsp;
+  <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#share-dialog">Share</button>
 }
 
 <div style="opacity: 0; pointer-events: none">

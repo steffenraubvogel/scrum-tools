@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "scripts": {
     "build": "sh build.sh",
-    "start": "sh run.sh"
+    "start": "sh run.sh",
+    "prettier:check": "prettier --check .",
+    "prettier:write": "prettier --write ."
   },
-  "devDependencies": {},
-  "dependencies": {}
+  "devDependencies": {
+    "prettier": "^3.4.2"
+  }
 }

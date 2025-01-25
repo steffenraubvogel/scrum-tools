@@ -9,6 +9,7 @@ import { environment } from "src/environment/environment";
 @Component({
   selector: "app-create-session",
   templateUrl: "./create-session.component.html",
+  standalone: false,
 })
 export class CreateSessionComponent {
   public formGroup = new FormGroup({
@@ -18,7 +19,11 @@ export class CreateSessionComponent {
 
   public submitting: boolean = false;
 
-  constructor(private readonly router: Router, private readonly settingsService: SessionSettingsService, private readonly httpClient: HttpClient) {
+  constructor(
+    private readonly router: Router,
+    private readonly settingsService: SessionSettingsService,
+    private readonly httpClient: HttpClient,
+  ) {
     this.formGroup.controls.userName.patchValue(settingsService.settings.userName);
     this.formGroup.controls.sessionName.patchValue(settingsService.settings.create?.sessionName ?? null);
   }

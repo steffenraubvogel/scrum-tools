@@ -10,11 +10,11 @@
         formControlName="userName"
         placeholder="e.g. Joe"
         class="form-control"
-        [ngClass]="{ 'is-invalid': formGroup.controls.userName.touched && formGroup.controls.userName.status === 'INVALID' }"
+        [class.is-invalid]="formGroup.controls.userName.touched && formGroup.controls.userName.status === 'INVALID'"
       />
-      <div *ngIf="formGroup.controls.userName.touched && formGroup.controls.userName.status === 'INVALID'" class="invalid-feedback">
-        Please provide your name.
-      </div>
+      @if (formGroup.controls.userName.touched && formGroup.controls.userName.status === "INVALID") {
+        <div class="invalid-feedback">Please provide your name.</div>
+      }
     </div>
   </div>
 
@@ -25,15 +25,15 @@
         id="roleSelect"
         class="form-select"
         formControlName="role"
-        [ngClass]="{ 'is-invalid': formGroup.controls.role.touched && formGroup.controls.role.status === 'INVALID' }"
+        [class.is-invalid]="formGroup.controls.role.touched && formGroup.controls.role.status === 'INVALID'"
       >
         <option value="guesser">Guesser</option>
         <option value="observer">Observer</option>
       </select>
       <div class="form-text">While the guesser can vote, the observer can't.</div>
-      <div *ngIf="formGroup.controls.role.touched && formGroup.controls.role.status === 'INVALID'" class="invalid-feedback">
-        Please provide your role.
-      </div>
+      @if (formGroup.controls.role.touched && formGroup.controls.role.status === "INVALID") {
+        <div class="invalid-feedback">Please provide your role.</div>
+      }
     </div>
   </div>
 

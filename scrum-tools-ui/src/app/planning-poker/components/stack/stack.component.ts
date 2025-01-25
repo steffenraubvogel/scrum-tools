@@ -2,6 +2,7 @@ import { Component, ContentChildren, Directive, Input, TemplateRef } from "@angu
 
 @Directive({
   selector: "[stackChild]",
+  standalone: false,
 })
 export class StackChildDirective {}
 
@@ -14,6 +15,7 @@ export class StackChildDirective {}
   selector: "app-stack",
   templateUrl: "./stack.component.html",
   styleUrls: ["./stack.component.scss"],
+  standalone: false,
 })
 export class StackComponent {
   @ContentChildren(StackChildDirective, { read: TemplateRef })

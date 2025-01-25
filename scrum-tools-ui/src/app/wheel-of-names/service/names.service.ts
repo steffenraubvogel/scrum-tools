@@ -24,7 +24,10 @@ export class NamesService {
     return this._itemChanges.asObservable();
   }
 
-  constructor(private readonly activatedRoute: ActivatedRoute, private readonly router: Router) {
+  constructor(
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router,
+  ) {
     this.restoreItemsFromLocalStorage();
 
     if (this.activatedRoute.snapshot.queryParams[CONFIG_URL_PARAM_NAME]) {

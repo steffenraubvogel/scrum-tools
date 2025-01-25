@@ -8,7 +8,7 @@ export function handlePlayerUpdate(
   ack: (err: string) => void,
   serverState: ServerState,
   connectionState: ConnectionState,
-  socket: Socket
+  socket: Socket,
 ) {
   if (connectionState.pokerSessionId === undefined || !serverState[connectionState.pokerSessionId]) {
     return disconnectWithError("Session not/no longer known", ack, socket);

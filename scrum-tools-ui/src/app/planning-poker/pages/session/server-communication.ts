@@ -18,7 +18,7 @@ export class ServerCommunication {
   constructor(
     private readonly id: string,
     private readonly settingsService: SessionSettingsService,
-    private readonly errorHandler: (err: string) => void
+    private readonly errorHandler: (err: string) => void,
   ) {
     this.socket = io(environment.backend.socket, {
       reconnectionAttempts: 4,
@@ -58,7 +58,7 @@ export class ServerCommunication {
           config: { id: this.id, name: this.settingsService.settings.create!.sessionName ?? "A Poker Session" },
           player: { name: this.settingsService.settings.userName!, type: "leader" },
         },
-        this.errorHandler
+        this.errorHandler,
       );
     } else if (this.settingsService.settings.active === "joined") {
       console.log("connect: sending playerInit");
@@ -68,7 +68,7 @@ export class ServerCommunication {
           sessionId: this.id,
           player: { name: this.settingsService.settings.userName!, type: this.settingsService.settings.join!.role! },
         },
-        this.errorHandler
+        this.errorHandler,
       );
     }
   }

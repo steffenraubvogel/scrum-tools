@@ -12,6 +12,7 @@ const NAME_COMPARATOR = Intl.Collator().compare;
   selector: "app-session",
   templateUrl: "./session.component.html",
   styleUrls: ["./session.component.scss"],
+  standalone: false,
 })
 export class SessionComponent implements OnInit, OnDestroy {
   private subs: Subscription = new Subscription();
@@ -29,13 +30,19 @@ export class SessionComponent implements OnInit, OnDestroy {
   public playersGuess: number | null = null;
   public chartData: ChartDataPoint[] = [];
   public chartCategories = this.guessOptions.map((opt) =>
-    opt.value === -1 ? { name: "?", color: "var(--sp-chart-color-abstained)" } : { name: `${opt.value}`, color: `var(--sp-chart-color-${opt.value})` }
+    opt.value === -1
+      ? { name: "?", color: "var(--sp-chart-color-abstained)" }
+      : { name: `${opt.value}`, color: `var(--sp-chart-color-${opt.value})` },
   );
   public copied: boolean = false;
   public nudging: boolean = false;
   public nudgeCooldown: boolean = false;
 
-  constructor(private readonly route: ActivatedRoute, private readonly router: Router, public readonly settingsService: SessionSettingsService) {}
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    public readonly settingsService: SessionSettingsService,
+  ) {}
 
   public ngOnInit() {
     this.subs.add(
@@ -51,26 +58,26 @@ export class SessionComponent implements OnInit, OnDestroy {
             .pipe(
               tap((_) => this.calculateChartData()),
               map((s) => s.players.find((p) => p.name === this.settingsService.settings.userName)),
-              filter((p) => this.playersGuess !== null && p?.guess === null)
+              filter((p) => this.playersGuess !== null && p?.guess === null),
             )
             .subscribe(() => {
               // resets the vote input when the leader resets all votes
               this.playersGuess = null;
-            })
+            }),
         );
 
         this.subs.add(
           this.session.connection$.pipe(filter((con) => con.state === "failed")).subscribe(() => {
             // redirect to connection error page
             this.router.navigate(["/planning-poker/connection-error"], { skipLocationChange: true });
-          })
+          }),
         );
 
         this.subs.add(
           // not more than once per 30 seconds (do not spam user)
-          this.session.nudged$.pipe(throttleTime(30_000)).subscribe(() => this.nudged())
+          this.session.nudged$.pipe(throttleTime(30_000)).subscribe(() => this.nudged()),
         );
-      })
+      }),
     );
 
     // ask for notification permission (notifications used by nudging)
@@ -128,10 +135,6 @@ export class SessionComponent implements OnInit, OnDestroy {
     this.session!.nudge();
     this.nudgeCooldown = true;
     setTimeout(() => (this.nudgeCooldown = false), 30_000);
-  }
-
-  public trackByPlayerName(index: number, item: Player) {
-    return item.name;
   }
 
   public playersByRole(role: Player["type"]) {

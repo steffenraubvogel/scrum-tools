@@ -1,39 +1,40 @@
 <div class="sp-radial-chart-container">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 120 120">
     <g id="radial-axis" stroke-width="0.5" stroke="var(--bs-border-color)">
-      <path
-        *ngFor="let c of allCategories; index as i"
-        d="M 50 50 L 50 -2 Z"
-        attr.transform="rotate({{ (360 / allCategories.length) * i }})"
+      @for (c of allCategories; track $index) {
+        <path d="M 50 50 L 50 -2 Z" attr.transform="rotate({{ (360 / allCategories.length) * $index }})" transform-origin="50 50"></path>
+      }
+      @for (tick of axisTicks; track $index) {
+        <circle cy="50" attr.r="{{ (50 / axisMaxValue) * tick }}" cx="50" fill="transparent"></circle>
+      }
+    </g>
+
+    @for (arc of arcs; track arc.details.x) {
+      <g
+        stroke-width="0"
+        [attr.fill]="arc.details.color"
+        [ngStyle]="{
+          transform: 'rotate(' + arc.rotation + 'deg) scale(' + arc.scale + ')',
+          opacity: arc.scale === 0 ? '0' : '1',
+        }"
         transform-origin="50 50"
-      ></path>
-      <circle *ngFor="let tick of axisTicks" cy="50" attr.r="{{ (50 / axisMaxValue) * tick }}" cx="50" fill="transparent"></circle>
-    </g>
+        class="sp-radial-chart-arc"
+      >
+        <path attr.d="M 50 50 L 50 0 A 50 50 0 0 1 {{ arc.end.x }} {{ arc.end.y }} Z" transform-origin="50 50"></path>
+        <title>{{ arc.details.tooltip }}</title>
+      </g>
+    }
 
-    <g
-      *ngFor="let arc of arcs; trackBy: trackDataPointByCategory"
-      stroke-width="0"
-      [attr.fill]="arc.details.color"
-      [ngStyle]="{
-        'transform': 'rotate(' + arc.rotation + 'deg) scale(' + arc.scale + ')',
-        'opacity': arc.scale === 0 ? '0' : '1',
-      }"
-      transform-origin="50 50"
-      class="sp-radial-chart-arc"
-    >
-      <path attr.d="M 50 50 L 50 0 A 50 50 0 0 1 {{ arc.end.x }} {{ arc.end.y }} Z" transform-origin="50 50"></path>
-      <title>{{ arc.details.tooltip }}</title>
-    </g>
-
-    <text
-      *ngFor="let c of allCategories; index as i"
-      [attr.x]="50 + 58 * math.cos(math.PI / 2 - ((2 * math.PI) / allCategories.length) * (i + 0.5))"
-      [attr.y]="50 - 58 * math.sin(math.PI / 2 - ((2 * math.PI) / allCategories.length) * (i + 0.5))"
-      style="font-size: 8px"
-      text-anchor="middle"
-      dominant-baseline="middle"
-    >
-      {{ c.name }}
-    </text>
+    @for (c of allCategories; track $index) {
+      <text
+        [attr.x]="50 + 58 * math.cos(math.PI / 2 - ((2 * math.PI) / allCategories.length) * ($index + 0.5))"
+        [attr.y]="50 - 58 * math.sin(math.PI / 2 - ((2 * math.PI) / allCategories.length) * ($index + 0.5))"
+        style="font-size: 8px"
+        text-anchor="middle"
+        dominant-baseline="middle"
+      >
+        {{ c.name }}
+      </text>
+    }
   </svg>
 </div>

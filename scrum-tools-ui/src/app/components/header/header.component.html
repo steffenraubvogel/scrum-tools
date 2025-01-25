@@ -15,11 +15,13 @@
             <ul class="dropdown-menu dropdown-menu-end">
               <li><h6 class="dropdown-header">Choose your theme:</h6></li>
               <li><hr class="dropdown-divider" /></li>
-              <li *ngFor="let theme of themes">
-                <a class="dropdown-item" [ngClass]="{ active: selectedTheme === theme.id }" href="#" (click)="useTheme($event, theme.id)">{{
-                  theme.name
-                }}</a>
-              </li>
+              @for (theme of themes; track theme.id) {
+                <li>
+                  <a class="dropdown-item" [class.active]="selectedTheme === theme.id" href="#" (click)="useTheme($event, theme.id)">{{
+                    theme.name
+                  }}</a>
+                </li>
+              }
             </ul>
           </li>
         </ul>

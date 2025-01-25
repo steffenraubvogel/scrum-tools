@@ -1,0 +1,8 @@
+.angular
+.github
+.idea
+coverage-reports
+dist
+node_modules
+playwright-report
+test-results

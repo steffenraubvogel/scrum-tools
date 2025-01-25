@@ -10,7 +10,6 @@ import { NameItem, NamesService } from "./service/names.service";
 
 @Component({
   selector: "app-wheel",
-  standalone: true,
   imports: [CommonModule, FormsModule, NamesEditorComponent],
   providers: [NamesService],
   templateUrl: "./wheel-of-names.component.html",
@@ -30,7 +29,7 @@ export class WheelComponent implements OnInit {
   constructor(
     public readonly namesService: NamesService,
     private readonly elementRef: ElementRef<HTMLElement>,
-    private readonly destroyRef: DestroyRef
+    private readonly destroyRef: DestroyRef,
   ) {}
 
   public ngOnInit(): void {

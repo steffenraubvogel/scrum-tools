@@ -9,55 +9,55 @@
   </thead>
   <tbody>
     @for (item of namesService.items; track item.name) {
-    <tr>
-      <td>{{ item.name }}</td>
-      <td>
-        <div class="dropdown">
-          <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i
-              class="bi bi-brush-fill"
-              [ngStyle]="{
-                color: nameColor(item.color)
-              }"
-            ></i>
-          </button>
-          <div class="dropdown-menu p-2">
-            <div class="sp-color-matrix">
-              @for (hue of colors; track hue) {
-              <button
-                class="btn"
-                type="button"
+      <tr>
+        <td>{{ item.name }}</td>
+        <td>
+          <div class="dropdown">
+            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i
+                class="bi bi-brush-fill"
                 [ngStyle]="{
-                  'background-color': nameColor(hue)
+                  color: nameColor(item.color),
                 }"
-                (click)="pickItemColor(item, hue)"
-              ></button>
-              }
+              ></i>
+            </button>
+            <div class="dropdown-menu p-2">
+              <div class="sp-color-matrix">
+                @for (hue of colors; track hue) {
+                  <button
+                    class="btn"
+                    type="button"
+                    [ngStyle]="{
+                      'background-color': nameColor(hue),
+                    }"
+                    (click)="pickItemColor(item, hue)"
+                  ></button>
+                }
+              </div>
             </div>
           </div>
-        </div>
-      </td>
-      <td>
-        <input class="form-check-input" type="checkbox" [ngModel]="item.active" (ngModelChange)="enableItem(item, $event)" />
-      </td>
-      <td>
-        <button
-          class="btn btn-outline-secondary btn-sm"
-          type="button"
-          (click)="prepareEditItem(item)"
-          data-bs-toggle="modal"
-          data-bs-target="#name-dialog"
-        >
-          <i class="bi bi-pencil"></i>
-        </button>
-        &nbsp;
-        <button class="btn btn-outline-secondary btn-sm" type="button" (click)="removeItem(item)"><i class="bi bi-trash"></i></button>
-      </td>
-    </tr>
+        </td>
+        <td>
+          <input class="form-check-input" type="checkbox" [ngModel]="item.active" (ngModelChange)="enableItem(item, $event)" />
+        </td>
+        <td>
+          <button
+            class="btn btn-outline-secondary btn-sm"
+            type="button"
+            (click)="prepareEditItem(item)"
+            data-bs-toggle="modal"
+            data-bs-target="#name-dialog"
+          >
+            <i class="bi bi-pencil"></i>
+          </button>
+          &nbsp;
+          <button class="btn btn-outline-secondary btn-sm" type="button" (click)="removeItem(item)"><i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
     } @empty {
-    <tr>
-      <td colspan="3">-</td>
-    </tr>
+      <tr>
+        <td colspan="3">-</td>
+      </tr>
     }
   </tbody>
 </table>
@@ -89,7 +89,7 @@
           />
 
           @if (nameDialog.validated && nameDialog.formGroup.controls.name.invalid) {
-          <div class="invalid-feedback">Please provide a unique name, no longer than 20 characters.</div>
+            <div class="invalid-feedback">Please provide a unique name, no longer than 20 characters.</div>
           }
         </form>
       </div>

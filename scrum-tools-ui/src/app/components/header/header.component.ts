@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
+import { RouterLink } from "@angular/router";
 import * as bootstrap from "bootstrap";
 
 type Theme = "dark" | "dark-glass" | "light" | "neon" | "auto";
 
 @Component({
   selector: "app-header",
+  imports: [RouterLink],
   templateUrl: "./header.component.html",
 })
 export class HeaderComponent implements OnInit, OnDestroy {

@@ -7,6 +7,7 @@ import { SessionSettingsService } from "src/app/planning-poker/services/session-
 @Component({
   selector: "app-join-session",
   templateUrl: "./join-session.component.html",
+  standalone: false,
 })
 export class JoinSessionComponent implements OnInit, OnDestroy {
   private subs: Subscription = new Subscription();
@@ -16,7 +17,11 @@ export class JoinSessionComponent implements OnInit, OnDestroy {
   });
   private sessionId: string = "";
 
-  constructor(private readonly route: ActivatedRoute, private readonly router: Router, private readonly settingsService: SessionSettingsService) {
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly settingsService: SessionSettingsService,
+  ) {
     this.formGroup.controls.userName.patchValue(settingsService.settings.userName);
     this.formGroup.controls.role.patchValue(settingsService.settings.join?.role ?? null);
   }
@@ -25,7 +30,7 @@ export class JoinSessionComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.route.params.subscribe((params) => {
         this.sessionId = params["id"];
-      })
+      }),
     );
   }
 

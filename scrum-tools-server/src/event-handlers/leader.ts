@@ -27,7 +27,7 @@ export function handleLeaderNudge(
   serverState: ServerState,
   connectionState: ConnectionState,
   socket: Socket,
-  socketio: Server<ClientToServerEvents, ServerToClientEvents>
+  socketio: Server<ClientToServerEvents, ServerToClientEvents>,
 ) {
   const validationError = validateOperation(serverState, connectionState);
   if (validationError) {

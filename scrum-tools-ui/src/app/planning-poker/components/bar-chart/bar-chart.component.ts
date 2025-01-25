@@ -5,6 +5,7 @@ import { ChartDataPoint } from "../chart-commons";
   selector: "app-bar-chart",
   templateUrl: "./bar-chart.component.html",
   styleUrls: ["./bar-chart.component.scss"],
+  standalone: false,
 })
 export class BarChartComponent implements OnChanges {
   @Input()
@@ -33,9 +34,5 @@ export class BarChartComponent implements OnChanges {
       return [0, (this.yAxisMaxValue - 1) / 2, this.yAxisMaxValue - 1];
     }
     return [0, this.yAxisMaxValue];
-  }
-
-  public trackDataPointByValue(index: number, item: ChartDataPoint) {
-    return item.x;
   }
 }

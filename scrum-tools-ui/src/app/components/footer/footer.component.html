@@ -9,31 +9,30 @@
         </a>
         <ul class="list-unstyled small">
           <li class="mb-2">© Steffen Harbich</li>
-          <li class="mb-2" id="version-info">v1.6</li>
+          <li class="mb-2" id="version-info">v1.7</li>
         </ul>
       </div>
-      <ng-container *ngIf="'link-secondary link-underline-opacity-0 link-underline-opacity-75-hover' as linkCssClasses">
-        <div class="col-6 col-sm-3 offset-sm-1 mb-3">
-          <h5>Links</h5>
-          <ul class="list-unstyled">
-            <li class="mb-2"><a [routerLink]="['/']" [class]="linkCssClasses">Home</a></li>
-            <li class="mb-2"><a [routerLink]="['/legal']" [class]="linkCssClasses">Legal, Data Privacy</a></li>
-            <li class="mb-2"><a href="https://github.com/steffenraubvogel/scrum-tools" [class]="linkCssClasses">GitHub</a></li>
-            <li class="mb-2">
-              <a href="https://github.com/steffenraubvogel/scrum-tools/blob/main/CHANGELOG.md" [class]="linkCssClasses">Change Log</a>
-            </li>
-          </ul>
-        </div>
-        <div class="col-6 col-sm-3 offset-sm-1 mb-3">
-          <h5>Technologies</h5>
-          <ul class="list-unstyled">
-            <li class="mb-2"><a href="https://angular.io/" [class]="linkCssClasses">Angular</a></li>
-            <li class="mb-2"><a href="https://getbootstrap.com/" [class]="linkCssClasses">Bootstrap</a></li>
-            <li class="mb-2"><a href="https://socket.io/" [class]="linkCssClasses">Socket.IO</a></li>
-            <li class="mb-2"><a target="_blank" href="https://bgjar.com" title="Free SVG Background by BGJar" [class]="linkCssClasses">BGJar</a></li>
-          </ul>
-        </div>
-      </ng-container>
+      @let linkCssClasses = "link-secondary link-underline-opacity-0 link-underline-opacity-75-hover";
+      <div class="col-6 col-sm-3 offset-sm-1 mb-3">
+        <h5>Links</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a [routerLink]="['/']" [class]="linkCssClasses">Home</a></li>
+          <li class="mb-2"><a [routerLink]="['/legal']" [class]="linkCssClasses">Legal, Data Privacy</a></li>
+          <li class="mb-2"><a href="https://github.com/steffenraubvogel/scrum-tools" [class]="linkCssClasses">GitHub</a></li>
+          <li class="mb-2">
+            <a href="https://github.com/steffenraubvogel/scrum-tools/blob/main/CHANGELOG.md" [class]="linkCssClasses">Change Log</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-6 col-sm-3 offset-sm-1 mb-3">
+        <h5>Technologies</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="https://angular.io/" [class]="linkCssClasses">Angular</a></li>
+          <li class="mb-2"><a href="https://getbootstrap.com/" [class]="linkCssClasses">Bootstrap</a></li>
+          <li class="mb-2"><a href="https://socket.io/" [class]="linkCssClasses">Socket.IO</a></li>
+          <li class="mb-2"><a target="_blank" href="https://bgjar.com" title="Free SVG Background by BGJar" [class]="linkCssClasses">BGJar</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 </footer>

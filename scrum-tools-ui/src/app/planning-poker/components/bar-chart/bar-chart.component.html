@@ -8,35 +8,37 @@
         {{ yAxisMaxValue
         }}<!-- reserves width -->
       </span>
-      <div *ngFor="let yTick of yTicks" class="sp-bar-chart-y-axis-value" [style.top.%]="100 - (100 / yAxisMaxValue) * yTick">
-        <span>{{ yTick }}</span>
-      </div>
+      @for (yTick of yTicks; track $index) {
+        <div class="sp-bar-chart-y-axis-value" [style.top.%]="100 - (100 / yAxisMaxValue) * yTick">
+          <span>{{ yTick }}</span>
+        </div>
+      }
     </div>
   </div>
   <div class="sp-bar-chart-area">
-    <div *ngFor="let yTick of yTicks" class="sp-bar-chart-grid-line" [style.top.%]="100 - (100 / yAxisMaxValue) * yTick"></div>
-    <div
-      *ngFor="let dataPoint of data; let i = index; trackBy: trackDataPointByValue"
-      class="sp-bar-chart-bar-container"
-      [style.height.%]="(100 / yAxisMaxValue) * dataPoint.y"
-      [style.width.%]="100 / data.length"
-      [style.left.%]="(100 / data.length) * i"
-    >
-      <div class="sp-bar-chart-bar" [style.--sp-bar-chart-bar-color]="dataPoint.color" [title]="dataPoint.tooltip ?? ''"></div>
-    </div>
+    @for (yTick of yTicks; track $index) {
+      <div class="sp-bar-chart-grid-line" [style.top.%]="100 - (100 / yAxisMaxValue) * yTick"></div>
+    }
+    @for (dataPoint of data; track dataPoint.x) {
+      <div
+        class="sp-bar-chart-bar-container"
+        [style.height.%]="(100 / yAxisMaxValue) * dataPoint.y"
+        [style.width.%]="100 / data.length"
+        [style.left.%]="(100 / data.length) * $index"
+      >
+        <div class="sp-bar-chart-bar" [style.--sp-bar-chart-bar-color]="dataPoint.color" [title]="dataPoint.tooltip ?? ''"></div>
+      </div>
+    }
   </div>
   <div class="sp-bar-chart-filler"></div>
   <div class="sp-bar-chart-x-axis">
     <div class="sp-bar-chart-x-axis-values">
       <span class="invisible">&nbsp;<!-- reserves height --></span>
-      <div
-        *ngFor="let dataPoint of data; let i = index; trackBy: trackDataPointByValue"
-        class="sp-bar-chart-x-axis-value"
-        [style.width.%]="100 / data.length"
-        [style.left.%]="(100 / data.length) * i"
-      >
-        <span>{{ dataPoint.x }}</span>
-      </div>
+      @for (dataPoint of data; track dataPoint.x) {
+        <div class="sp-bar-chart-x-axis-value" [style.width.%]="100 / data.length" [style.left.%]="(100 / data.length) * $index">
+          <span>{{ dataPoint.x }}</span>
+        </div>
+      }
     </div>
     <div class="sp-bar-chart-axis-label">
       {{ xAxisLabel }}

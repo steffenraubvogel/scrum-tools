@@ -5,6 +5,7 @@ import { ChartDataPoint } from "../chart-commons";
   selector: "app-radial-chart",
   templateUrl: "./radial-chart.component.html",
   styleUrl: "./radial-chart.component.scss",
+  standalone: false,
 })
 export class RadialChartComponent implements OnChanges {
   @Input()
@@ -65,10 +66,6 @@ export class RadialChartComponent implements OnChanges {
       return [(this.axisMaxValue - 1) / 2, this.axisMaxValue - 1];
     }
     return [this.axisMaxValue];
-  }
-
-  public trackDataPointByCategory(index: number, item: Arc) {
-    return item.details.x;
   }
 }
 
