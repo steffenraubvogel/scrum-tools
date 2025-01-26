@@ -15,4 +15,35 @@ test.describe("configure names", () => {
     await locators.wheelOfNames.configureNames.dialog.apply.click();
     await expect(locators.wheelOfNames.configureNames.table.row(0).name).toHaveText("Joe");
   });
+
+  test("remove", async ({ helper, locators }) => {
+    await helper.wheelOfNames.prepareNames([
+      { name: "Joe", color: 0 },
+      { name: "Albert", color: 120 },
+    ]);
+
+    await locators.wheelOfNames.configureNames.accordion.click();
+
+    await expect(locators.wheelOfNames.configureNames.table.row(0).name).toHaveText("Joe");
+    await locators.wheelOfNames.configureNames.table.row(0).deleteButton.click();
+    await expect(locators.wheelOfNames.configureNames.table.row(0).name).toHaveText("Albert");
+    await locators.wheelOfNames.configureNames.table.row(0).deleteButton.click();
+    await expect(locators.wheelOfNames.configureNames.table.emptyRow).toBeVisible();
+  });
+
+  test("edit", async ({ helper, locators }) => {
+    await helper.wheelOfNames.prepareNames([
+      { name: "Joe", color: 0 },
+      { name: "Albert", color: 120 },
+    ]);
+
+    await locators.wheelOfNames.configureNames.accordion.click();
+
+    await expect(locators.wheelOfNames.configureNames.table.row(0).name).toHaveText("Joe");
+    await locators.wheelOfNames.configureNames.table.row(0).editButton.click();
+
+    await locators.wheelOfNames.configureNames.dialog.nameInput.fill("John");
+    await locators.wheelOfNames.configureNames.dialog.apply.click();
+    await expect(locators.wheelOfNames.configureNames.table.row(0).name).toHaveText("John");
+  });
 });

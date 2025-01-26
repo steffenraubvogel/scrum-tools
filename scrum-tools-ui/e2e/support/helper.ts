@@ -1,14 +1,17 @@
 import { Page, expect } from "@playwright/test";
 import { PlanningPokerTestHelper } from "./helper-planning-poker";
+import { WheelOfNamesTestHelper } from "./helper-wheel-of-names";
 
 /**
  * Helpers to prepare a test case or assert something.
  */
 export class TestHelper {
   public planningPoker: PlanningPokerTestHelper;
+  public wheelOfNames: WheelOfNamesTestHelper;
 
   constructor(private readonly page: Page) {
     this.planningPoker = new PlanningPokerTestHelper(page);
+    this.wheelOfNames = new WheelOfNamesTestHelper(page);
   }
 
   /**
