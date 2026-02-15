@@ -7,18 +7,15 @@
 Web tool for collaborative guessing of scrum story complexity. Roles:
 
 - Moderator
-
   - Creates the session
   - Can reset votes when discussing the next story
   - Can reveal the current votes
   - Can nudge distracted guessers ;)
 
 - Guesser
-
   - Votes or abstains from voting the current story
 
 - Observer
-
   - Can do nothing but watching the process
 
 All roles will see the result of voting and the votes of every guesser after they were revealed.

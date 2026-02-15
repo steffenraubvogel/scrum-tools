@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.8
+
+- update to Angular 21 and update several other dependencies
+
 ## 1.7
 
 - update to Angular 19
